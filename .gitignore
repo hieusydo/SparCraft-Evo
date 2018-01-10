@@ -1,0 +1,10 @@
+VisualStudio/Release
+VisualStudio/Debug
+bin/SparCraft
+bin/result/*.txt
+bin/*.pdb
+bin/*.map
+bin/*.dll
+bin/*.exe
+source/*.o
+VisualStudio/*.opensdf 
