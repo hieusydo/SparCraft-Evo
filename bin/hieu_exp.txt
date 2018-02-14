@@ -68,12 +68,16 @@
 
 # My experiment
 # 0 - Red
-Player 0 KiterDPSEvo
-# Player 0 KiterDPS
+# Player 0 KiterDPSEvo
+Player 0 KiterDPS
 
-Player 1 AttackClosest
+Player 1 KiterDPSEvo
+# Player 1 AttackClosest
+# Player 1 AttackDPS
 # Player 1 AttackWeakest
 # Player 1 KiterDPS
+# Player 1 NOKDPS
+# Player 1 Kiter_NOKDPS
 
 ####################################################
 #
@@ -131,7 +135,7 @@ State SeparatedState 100 128 128 400 360 840 360 Protoss_Dragoon 50
 #
 ##################################################
 
-ResultsFile C:\ualbertabot\SparCraft\bin\result\result true
+ResultsFile C:\SparCraft-Evo\bin\result\exp-jan31\result true
 
 ##################################################
 #
@@ -158,4 +162,4 @@ ResultsFile C:\ualbertabot\SparCraft\bin\result\result true
 #
 ##################################################
 
-Display true C:\ualbertabot\SparCraft\starcraft_images
+Display true C:\SparCraft-Evo\starcraft_images
