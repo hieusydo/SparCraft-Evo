@@ -68,16 +68,16 @@
 
 # My experiment
 # 0 - Red
-# Player 0 KiterDPSEvo
-Player 0 KiterDPS
+Player 0 KiterDPSEvo
+# Player 0 Kiter_NOKDPS
 
-Player 1 KiterDPSEvo
+# Player 1 KiterDPS
 # Player 1 AttackClosest
 # Player 1 AttackDPS
 # Player 1 AttackWeakest
 # Player 1 KiterDPS
 # Player 1 NOKDPS
-# Player 1 Kiter_NOKDPS
+Player 1 Kiter_NOKDPS
 
 ####################################################
 #

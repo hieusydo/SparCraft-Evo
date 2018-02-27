@@ -11,10 +11,6 @@ Player_KiterDPSEvo::Player_KiterDPSEvo (const IDType & playerID)
 	_offline = false;
 }
 
-//Player_KiterDPSEvo::Player_KiterDPSEvo(const IDType & playerID, size_t safeDist) {
-//	_playerID = playerID;
-//	_safeDist = safeDist;
-//}
 void Player_KiterDPSEvo::setSafeDist(size_t d) {
 	_safeDist = d;
 }
@@ -42,6 +38,15 @@ void Player_KiterDPSEvo::getMoves(GameState & state, const MoveArray & moves, st
 		ifs >> _safeDist;
 	}
 
+	// Set up for NOK
+	IDType enemy(state.getEnemy(_playerID));
+	Array<int, Constants::Max_Units> hpRemaining;
+	for (IDType u(0); u<state.numUnits(enemy); ++u)
+	{
+		hpRemaining[u] = state.getUnit(enemy, u).currentHP();
+	}
+
+
 	for (IDType u = 0; u < moves.numUnits(); ++u)
 	{
 		bool foundAction = false;
@@ -63,7 +68,8 @@ void Player_KiterDPSEvo::getMoves(GameState & state, const MoveArray & moves, st
 			if (move.type() == ActionTypes::ATTACK)
 			{
 				const Unit & target	= state.getUnit(state.getEnemy(move.player()), move.index());
-				double dpsHPValue = target.dpf() / target.currentHP();
+				//double dpsHPValue = target.dpf() / target.currentHP();
+				double dpsHPValue = (target.dpf() / hpRemaining[move.index()]);
 
 				if (dpsHPValue > actionHighestDPS)
 				{
@@ -114,8 +120,7 @@ void Player_KiterDPSEvo::getMoves(GameState & state, const MoveArray & moves, st
 		// otherwise use the closest move to the opponent
 		else
 		{
-			// Hieu's change
-			//std::cout << _safeDist << "HYAA \n";
+			// Use evolved safeDist
 			size_t dist = closestUnit.getDistanceSqToUnit(ourUnit, state.getTime());
 			
 			if (dist < pow(_safeDist, 2)){
@@ -139,6 +144,13 @@ void Player_KiterDPSEvo::getMoves(GameState & state, const MoveArray & moves, st
 			//}
 		}
 		
+		// Update for NOK
+		Action theMove(moves.getMove(u, actionMoveIndex));
+		if (theMove.type() == ActionTypes::ATTACK)
+		{
+			hpRemaining[theMove.index()] -= state.getUnit(_playerID, theMove.unit()).damage();
+		}
+
 		moveVec.push_back(moves.getMove(u, bestMoveIndex));
 	}
 }
