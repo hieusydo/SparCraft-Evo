@@ -12,6 +12,7 @@ Player * AllPlayers::getPlayer(const IDType & playerID, const IDType & type)
 
 	else if (type == PlayerModels::KiterDPSEvo)     { return new Player_KiterDPSEvo(playerID); }
 	else if (type == PlayerModels::NOKDPSEvo)     { return new Player_NOKDPSEvo(playerID); }
+	else if (type == PlayerModels::KiterEMP)     { return new Player_KiterEMP(playerID); }
 
 	else if		(type == PlayerModels::Kiter_NOKDPS)		{ return new Player_Kiter_NOKDPS(playerID); }
     else if		(type == PlayerModels::Cluster)		    	{ return new Player_Cluster(playerID); }
@@ -30,6 +31,7 @@ PlayerPtr AllPlayers::getPlayerPtr(const IDType & playerID, const IDType & type)
 
 	else if (type == PlayerModels::KiterDPSEvo)     { return PlayerPtr(new Player_KiterDPSEvo(playerID)); }
 	else if (type == PlayerModels::NOKDPSEvo)     { return PlayerPtr(new Player_NOKDPSEvo(playerID)); }
+	else if (type == PlayerModels::KiterEMP)     { return PlayerPtr(new Player_KiterEMP(playerID)); }
 
     else if		(type == PlayerModels::Kiter_NOKDPS)		{ return PlayerPtr(new Player_Kiter_NOKDPS(playerID)); }
     else if		(type == PlayerModels::Cluster)		    	{ return PlayerPtr(new Player_Cluster(playerID)); }
@@ -47,6 +49,7 @@ std::string AllPlayers::getPlayerName(const IDType & type) {
 
 	else if (type == PlayerModels::KiterDPSEvo)     { return "KiterDPSEvo"; }
 	else if (type == PlayerModels::NOKDPSEvo)     { return "NOKDPSEvo"; }
+	else if (type == PlayerModels::KiterEMP)     { return "KiterEMP"; }
 
 	else if (type == PlayerModels::Kiter_NOKDPS)		{ return "Kiter_NOKDPS"; }
 	else if (type == PlayerModels::Cluster)		    	{ return "Cluster"; }

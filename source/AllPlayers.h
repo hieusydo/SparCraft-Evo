@@ -20,8 +20,10 @@
 #include "Player_Cluster.h"
 #include "Player_Random.h"
 
+// evolution-based players
 #include "Player_KiterDPSEvo.h"
 #include "Player_NOKDPSEvo.h"
+#include "Player_KiterEMP.h"
 
 namespace SparCraft
 {

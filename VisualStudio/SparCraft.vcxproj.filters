@@ -121,6 +121,9 @@
     <ClCompile Include="..\source\Player_NOKDPSEvo.cpp">
       <Filter>simulation\players\evolution</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\Player_KiterEMP.cpp">
+      <Filter>simulation\players\evolution</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\AlphaBetaSearch.h">
@@ -277,6 +280,9 @@
       <Filter>evolution</Filter>
     </ClInclude>
     <ClInclude Include="..\source\Player_NOKDPSEvo.h">
+      <Filter>simulation\players\evolution</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\Player_KiterEMP.h">
       <Filter>simulation\players\evolution</Filter>
     </ClInclude>
   </ItemGroup>
