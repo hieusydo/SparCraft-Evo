@@ -38,7 +38,7 @@ namespace SparCraft
 		Chromosome mutate(size_t mutationDelta, const Chromosome& c, const GameState & state, PlayerPtr & p1, PlayerPtr & p2);
 
 		// evaluation method
-		int Population_Kiter::eval(const GameState & state, PlayerPtr & p1, PlayerPtr & p2);
+		int eval(const GameState & state, PlayerPtr & p1, PlayerPtr & p2);
 
 		void printDist();
 

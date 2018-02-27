@@ -68,6 +68,9 @@ namespace SparCraft
 
 		// directions of movement
 		const int Move_Dir[4][2] = {{-1,0}, {1,0}, {0,1}, {0,-1} };
+
+		// number of evo parametes
+		const size_t Num_Params = 13;
 	}
 
     namespace System

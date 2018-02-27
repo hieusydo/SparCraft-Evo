@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 
 namespace SparCraft
 {
@@ -10,6 +11,13 @@ class Array
 	T		_arr[elem];
 
 public:
+	friend std::ostream& operator<<(std::ostream& os, const Array<T, elem>& a) {
+		os << "[";
+		if (a._size >= 1) os << a.get(0);
+		for (size_t i = 1; i < a._size; ++i) { os << " " << a.get(i); }
+		os << "]";
+		return os;
+	}
 
 	Array<T, elem> ()
 		: _size(0)

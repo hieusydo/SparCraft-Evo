@@ -7,16 +7,8 @@ using namespace SparCraft;
 Player_KiterEMP::Player_KiterEMP(const IDType & playerID)
 {
 	_playerID = playerID;
-	_safeDist = 0; // default set it to 0, will set to random when initializing the population
 	_offline = false;
-}
-
-void Player_KiterEMP::setSafeDist(size_t d) {
-	_safeDist = d;
-}
-
-size_t Player_KiterEMP::getSafeDist() const {
-	return _safeDist;
+	_W.fill(0);
 }
 
 void Player_KiterEMP::switchOnOffline() {
@@ -27,6 +19,10 @@ void Player_KiterEMP::switchOffOffline() {
 	_offline = false;
 }
 
+void Player_KiterEMP::setParams(Array<double, Constants::Num_Params> w) {
+	for (size_t i = 0; i < w.size(); ++i) { _W[i] = w[i]; }
+}
+
 void Player_KiterEMP::getMoves(GameState & state, const MoveArray & moves, std::vector<Action> & moveVec)
 {
 	moveVec.clear();
@@ -35,7 +31,7 @@ void Player_KiterEMP::getMoves(GameState & state, const MoveArray & moves, std::
 		//std::cout << "Reading safeDist from file\n";
 		std::ifstream ifs("best.txt");
 		if (!ifs) { std::cerr << "Error opening file\n"; }
-		ifs >> _safeDist;
+		//ifs >> _safeDist;
 	}
 
 	// Set up for NOK
@@ -120,17 +116,9 @@ void Player_KiterEMP::getMoves(GameState & state, const MoveArray & moves, std::
 		// otherwise use the closest move to the opponent
 		else
 		{
-			// Use evolved safeDist
-			size_t dist = closestUnit.getDistanceSqToUnit(ourUnit, state.getTime());
+			// Use evolved params
 
-			if (dist < pow(_safeDist, 2)){
-				bestMoveIndex = furthestMoveIndex;
-			}
-			// otherwise get back into the fight
-			else
-			{
-				bestMoveIndex = closestMoveIndex;
-			}
+
 
 			//// if we are in attack range of the unit, back up
 			//if (closestUnit.canAttackTarget(ourUnit, state.getTime()))

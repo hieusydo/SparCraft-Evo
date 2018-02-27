@@ -183,6 +183,7 @@
     <ClInclude Include="..\source\UnitScriptData.h" />
     <ClInclude Include="..\source\WeaponProperties.h" />
     <ClInclude Include="..\source\Player_NOKDPSEvo.h" />
+    <ClInclude Include="..\source\CoopEvo.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\Player_KiterEMP.cpp" />
@@ -226,6 +227,7 @@
     <ClCompile Include="..\source\UnitScriptData.cpp" />
     <ClCompile Include="..\source\WeaponProperties.cpp" />
     <ClCompile Include="..\source\Player_NOKDPSEvo.cpp" />
+    <ClCompile Include="..\source\CoopEvo.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

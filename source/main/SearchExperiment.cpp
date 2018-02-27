@@ -1,5 +1,6 @@
 #include "SearchExperiment.h"
 #include "../Population_Kiter.h"
+#include "../CoopEvo.h"
 #include <fstream>
 
 using namespace SparCraft;
@@ -478,6 +479,11 @@ void SearchExperiment::addPlayer(const std::string & line)
 		players[playerID].push_back(PlayerPtr(new Player_KiterDPSEvo(playerID)));
 	}
 
+	else if (playerModelID == PlayerModels::KiterEMP)
+	{
+		players[playerID].push_back(PlayerPtr(new Player_KiterEMP(playerID)));
+	}
+
 	else if (playerModelID == PlayerModels::NOKDPSEvo)
 	{
 		players[playerID].push_back(PlayerPtr(new Player_NOKDPSEvo(playerID)));
@@ -892,9 +898,11 @@ void SearchExperiment::runExperiment()
 
 	results << "   P1    P2    ST  UNIT       EVAL    RND           MS | UnitType PlayerID CurrentHP XPos YPos\n";
     
-	// Evolve if it's an Evo player
+	
 	PlayerPtr p1 = PlayerPtr(players[0][0]);
 	PlayerPtr p2 = PlayerPtr(players[1][0]);
+	
+	// Evolve safeDist if it's KiterEvo 
 	Player_KiterDPSEvo* p1Evo = dynamic_cast<Player_KiterDPSEvo *>(p1.get());
 	if (p1Evo) {
 		std::cout << "Starting offline evolution...\n";
@@ -911,6 +919,20 @@ void SearchExperiment::runExperiment()
         best.open("best.txt");
         best << safeDist << "\n";
         best.close();
+	}
+
+	// KiterEMP
+	Player_KiterEMP* p1EMP = dynamic_cast<Player_KiterEMP*> (p1.get());
+	if (p1EMP) {
+		std::cout << "Starting to evolve params...\n";
+		size_t mu = 8;
+		size_t lambda = 2;
+		size_t epoch = 100;
+		size_t evalIter = 100;
+		CoopEvo k = CoopEvo(mu, lambda, epoch, evalIter);
+		k.evolveParams(states[0], p1, p2);
+
+		return; 
 	}
 
 	// for each player one player

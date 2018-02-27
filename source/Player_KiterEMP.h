@@ -18,11 +18,12 @@ namespace SparCraft
 	class Player_KiterEMP : public Player
 	{
 	private:
-		size_t _safeDist;
+		Array<double, Constants::Num_Params> _X; // all features -> NORMALIZE!
+		Array<double, Constants::Num_Params> _W; // weights for each feature. Range: (0, 1)
 		bool _offline;
 	public:
 		Player_KiterEMP(const IDType & playerID);
-		void setSafeDist(size_t d);
+		void setParams(Array<double, Constants::Num_Params> w);
 		size_t getSafeDist() const;
 		void switchOnOffline();
 		void switchOffOffline();
