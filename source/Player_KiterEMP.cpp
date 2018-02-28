@@ -57,6 +57,8 @@ void Player_KiterEMP::getMoves(GameState & state, const MoveArray & moves, std::
 		const Unit & ourUnit = state.getUnit(_playerID, u);
 		const Unit & closestUnit = ourUnit.canHeal() ? state.getClosestOurUnit(_playerID, u) : state.getClosestEnemyUnit(_playerID, u);
 
+		IDType evolvedMoveIndex = 0;
+
 		for (IDType m = 0; m < moves.numMoves(u); ++m)
 		{
 			const Action move = moves.getMove(u, m);
@@ -88,20 +90,55 @@ void Player_KiterEMP::getMoves(GameState & state, const MoveArray & moves, std::
 			}
 			else if (move.type() == ActionTypes::MOVE)
 			{
+				const Unit& closestAlly = state.getClosestOurUnit(_playerID, u);
+				const Unit& closestEnemy = state.getClosestEnemyUnit(_playerID, u);
+
+				// Default false, 0 or 1
+				double leftClosestAlly = 0;
+				double leftClosestEnemy = 0; 
+				double leftCenterAlly = 0;
+				double leftCenterEnemy = 0;
+
+				double rightClosestAlly = 0;
+				double rightClosestEnemy = 0;
+				double rightCenterAlly = 0;
+				double rightCenterEnemy = 0;
+
+				double upClosestAlly = 0;
+				double upClosestEnemy = 0;
+				double upCenterAlly = 0;
+				double upCenterEnemy = 0;
+
+				double downClosestAlly = 0;
+				double downClosestEnemy = 0;
+				double downCenterAlly = 0;
+				double downCenterEnemy = 0;
+
+				size_t distToClosestEnemy = 0;
+				size_t distToClosestAlly = 0;
+				size_t distToFurthestEnemy = 0;
+				size_t distToFurthestAlly = 0;
+
+				// Percentage as double
+				double hp = 0;
+
+				// Fill  _X
+				// Get from GameState.cpp
+
 				Position ourDest = Position(ourUnit.x() + Constants::Move_Dir[move.index()][0], ourUnit.y() + Constants::Move_Dir[move.index()][1]);
 				size_t dist = closestUnit.getDistanceSqToPosition(ourDest, state.getTime());
 
-				if (dist > furthestMoveDist)
-				{
-					furthestMoveDist = dist;
-					furthestMoveIndex = m;
-				}
+				//if (dist > furthestMoveDist)
+				//{
+				//	furthestMoveDist = dist;
+				//	furthestMoveIndex = m;
+				//}
 
-				if (dist < closestMoveDist)
-				{
-					closestMoveDist = dist;
-					closestMoveIndex = m;
-				}
+				//if (dist < closestMoveDist)
+				//{
+				//	closestMoveDist = dist;
+				//	closestMoveIndex = m;
+				//}
 			}
 		}
 
@@ -116,20 +153,16 @@ void Player_KiterEMP::getMoves(GameState & state, const MoveArray & moves, std::
 		// otherwise use the closest move to the opponent
 		else
 		{
-			// Use evolved params
-
-
-
-			//// if we are in attack range of the unit, back up
-			//if (closestUnit.canAttackTarget(ourUnit, state.getTime()))
-			//{
-			//	bestMoveIndex = furthestMoveIndex;
-			//}
-			//// otherwise get back into the fight
-			//else
-			//{
-			//	bestMoveIndex = closestMoveIndex;
-			//}
+			// if we are in attack range of the unit, back up
+			if (closestUnit.canAttackTarget(ourUnit, state.getTime()))
+			{
+				bestMoveIndex = furthestMoveIndex;
+			}
+			// otherwise get back into the fight
+			else
+			{
+				bestMoveIndex = closestMoveIndex;
+			}
 		}
 
 		// Update for NOK
