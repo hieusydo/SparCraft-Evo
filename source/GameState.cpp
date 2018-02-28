@@ -402,6 +402,33 @@ const IDType GameState::getEnemy(const IDType & player) const
 	return (player + 1) % 2;
 }
 
+Position GameState::getEnemyCenter(const IDType& player) const {
+	const IDType enemyPlayer(getEnemy(player));
+	int sumX = 0;
+	int sumY = 0;
+	for (IDType u = 0; u < _numUnits[enemyPlayer]; ++u) {
+		const Unit& enemyUnit(getUnit(enemyPlayer, u));
+		sumX += enemyUnit.x();
+		sumY += enemyUnit.y();
+	}
+	sumX /= _numUnits[enemyPlayer];
+	sumY /= _numUnits[enemyPlayer];
+	return Position(sumX, sumY); 
+}
+
+Position GameState::getAllyCenter(const IDType& player) const {
+	int sumX = 0;
+	int sumY = 0;
+	for (IDType u = 0; u < _numUnits[player]; ++u) {
+		const Unit& myUnit(getUnit(player, u));
+		sumX += myUnit.x();
+		sumY += myUnit.y();
+	}
+	sumX /= _numUnits[player];
+	sumY /= _numUnits[player];
+	return Position(sumX, sumY);
+}
+
 const Unit & GameState::getClosestOurUnit(const IDType & player, const IDType & unitIndex)
 {
 	const Unit & myUnit(getUnit(player,unitIndex));

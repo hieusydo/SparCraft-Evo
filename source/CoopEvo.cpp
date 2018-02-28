@@ -12,7 +12,7 @@ CoopEvo::CoopEvo(size_t mu, size_t lambda, size_t epoch, size_t evalIter)
 	_epoch(epoch),
 	_evalIter(evalIter) {}
 
-void CoopEvo::_initWeights(Array<double, Constants::Num_Params>& w) {
+void CoopEvo::initWeights(Array<double, Constants::Num_Params>& w) {
 	std::random_device rd; // get a random seed from the OS entropy device
 	std::mt19937_64 eng(rd()); // use the 64-bit Mersenne Twister 19937 generator with the rd seed
 	std::uniform_real_distribution<double> distr(0, 1); // define the distribution
@@ -23,12 +23,12 @@ void CoopEvo::_initWeights(Array<double, Constants::Num_Params>& w) {
 }
 
 // initialize method for population of many KiterDPSEvo
-void CoopEvo::_initialize(const GameState& state, PlayerPtr & p1, PlayerPtr & p2) {
+void CoopEvo::initialize(const GameState& state, PlayerPtr & p1, PlayerPtr & p2) {
 	Player_KiterEMP* kiter = dynamic_cast<Player_KiterEMP *>(p1.get());
 	kiter->switchOnOffline();
 	for (size_t i = 0; i < _popSize; ++i) {
 		Array<double, Constants::Num_Params> w;
-		this->_initWeights(w);
+		this->initWeights(w);
 		kiter->setParams(w);
 		//int score = _eval(state, p1, p2);
 		int score = 0;
@@ -82,7 +82,7 @@ void CoopEvo::_initialize(const GameState& state, PlayerPtr & p1, PlayerPtr & p2
 //	return lhs.second > rhs.second;
 //}
 
-void CoopEvo::_printParams() {
+void CoopEvo::printParams() {
 	for (auto it = _genePool.begin(); it != _genePool.end(); it++) {
 		std::cout << "(" << it->first << ", S: " << it->second << ") ";
 	}
@@ -100,7 +100,7 @@ Array<double, Constants::Num_Params> CoopEvo::evolveParams(const GameState & sta
 
 	// initialize population of Kiters to having random safeDist values
 	// and evaluate the baseline population 
-	this->_initialize(state, p1, p2);
+	this->initialize(state, p1, p2);
 	//this->_printParams();
 
 	//bestGene = _genePool[0];

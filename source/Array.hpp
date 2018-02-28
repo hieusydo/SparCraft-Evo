@@ -86,7 +86,7 @@ public:
 	void inc()
 	{
 		_size++;
-	}		
+	}
 
 	void add(const T & e)
 	{
@@ -122,6 +122,21 @@ public:
 	void fill(const T & e)
 	{
 		std::fill(_arr, _arr + elem, e);
+	}
+
+	// Dot produce
+	// Assuming b and this Array have same size
+	T dot(const Array<T, elem>& b) const {
+		T res;
+		for (size_t i = 0; i < _size; ++i) { res += this->get(i) * b.get(i); }
+		return res;
+	}
+
+	// Initialize default values for Array
+	void init(const T& e) {
+		for (size_t i = 0; i < _capacity; ++i) {
+			this->add(e);
+		}
 	}
 };
 

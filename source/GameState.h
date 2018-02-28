@@ -122,6 +122,10 @@ public:
     std::string             toStringCompact() const;
     void                    write(const std::string & filename)                                     const;
     void                    read(const std::string & filename);
+
+	// use for evolving params
+	Position getEnemyCenter(const IDType& player) const;
+	Position getAllyCenter(const IDType& player) const;
 };
 
 }

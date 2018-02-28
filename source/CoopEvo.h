@@ -31,10 +31,10 @@ namespace SparCraft
 		//std::priority_queue<Chromosome, std::vector<Chromosome>, KiterComparator> _genePool;
 		std::vector<ChromosomeEMP> _genePool;
 
-		void _initWeights(Array<double, Constants::Num_Params>& w);
+		void initWeights(Array<double, Constants::Num_Params>& w);
 
 		// initialize method for population of many KiterDPSEvo
-		void _initialize(const GameState& state, PlayerPtr & p1, PlayerPtr & p2);
+		void initialize(const GameState& state, PlayerPtr & p1, PlayerPtr & p2);
 
 		// mutate method
 		//Chromosome _mutate(size_t mutationDelta, const Chromosome& c, const GameState & state, PlayerPtr & p1, PlayerPtr & p2);
@@ -42,7 +42,7 @@ namespace SparCraft
 		// evaluation method
 		//int _eval(const GameState & state, PlayerPtr & p1, PlayerPtr & p2);
 
-		void _printParams();
+		void printParams();
 
 	public:
 		CoopEvo(size_t mu, size_t lambda, size_t epoch, size_t evalIter);

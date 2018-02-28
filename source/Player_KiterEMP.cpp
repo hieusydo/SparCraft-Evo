@@ -8,7 +8,10 @@ Player_KiterEMP::Player_KiterEMP(const IDType & playerID)
 {
 	_playerID = playerID;
 	_offline = false;
-	_W.fill(0);
+	_Wup.init(0);
+	_Wdown.init(0);
+	_Wleft.init(0);
+	_Wright.init(0);
 }
 
 void Player_KiterEMP::switchOnOffline() {
@@ -19,8 +22,48 @@ void Player_KiterEMP::switchOffOffline() {
 	_offline = false;
 }
 
-void Player_KiterEMP::setParams(Array<double, Constants::Num_Params> w) {
-	for (size_t i = 0; i < w.size(); ++i) { _W[i] = w[i]; }
+void Player_KiterEMP::setWup(Array<double, Constants::Num_Params> w) {
+	for (size_t i = 0; i < w.size(); ++i) { _Wup[i] = w[i]; }
+}
+
+void Player_KiterEMP::setWdown(Array<double, Constants::Num_Params> w) {
+	for (size_t i = 0; i < w.size(); ++i) { _Wdown[i] = w[i]; }
+}
+
+void Player_KiterEMP::setWleft(Array<double, Constants::Num_Params> w) {
+	for (size_t i = 0; i < w.size(); ++i) { _Wleft[i] = w[i]; }
+}
+
+void Player_KiterEMP::setWright(Array<double, Constants::Num_Params> w) {
+	for (size_t i = 0; i < w.size(); ++i) { _Wright[i] = w[i]; }
+}
+
+Dxy Player_KiterEMP::getDxyClosestEnemy(const Unit& closestEnemy, const Unit& ourUnit) const {
+	Dxy res; 
+	res.first = closestEnemy.x() - ourUnit.x();
+	res.second = closestEnemy.y() - ourUnit.y();
+	return res;
+}
+
+Dxy Player_KiterEMP::getDxyClosestAlly(const Unit& closestAlly, const Unit& ourUnit) const {
+	Dxy res;
+	res.first = closestAlly.x() - ourUnit.x();
+	res.second = closestAlly.y() - ourUnit.y();
+	return res;
+}
+
+Dxy Player_KiterEMP::getDxyCenterEnemy(const Position& enemyCenter, const Unit& ourUnit) const {
+	Dxy res;
+	res.first = enemyCenter.x() - ourUnit.x();
+	res.second = enemyCenter.y() - ourUnit.y();
+	return res;
+}
+
+Dxy Player_KiterEMP::getDxyCenterAlly(const Position& allyCenter, const Unit& ourUnit) const {
+	Dxy res;
+	res.first = allyCenter.x() - ourUnit.x();
+	res.second = allyCenter.y() - ourUnit.y();
+	return res;
 }
 
 void Player_KiterEMP::getMoves(GameState & state, const MoveArray & moves, std::vector<Action> & moveVec)
@@ -92,42 +135,60 @@ void Player_KiterEMP::getMoves(GameState & state, const MoveArray & moves, std::
 			{
 				const Unit& closestAlly = state.getClosestOurUnit(_playerID, u);
 				const Unit& closestEnemy = state.getClosestEnemyUnit(_playerID, u);
+				Position allyCenter = state.getAllyCenter(_playerID);
+				Position enemyCenter = state.getEnemyCenter(_playerID);
 
-				// Default false, 0 or 1
-				double leftClosestAlly = 0;
-				double leftClosestEnemy = 0; 
-				double leftCenterAlly = 0;
-				double leftCenterEnemy = 0;
+				// dx, dy (encode direction and distance) --> Use cut-off to normalize
+				Dxy dxyClosestEnemy = this->getDxyClosestEnemy(closestEnemy, ourUnit);
+				double dxClosestEnemy = dxyClosestEnemy.first;
+				double dyClosestEnemy = dxyClosestEnemy.second;
 
-				double rightClosestAlly = 0;
-				double rightClosestEnemy = 0;
-				double rightCenterAlly = 0;
-				double rightCenterEnemy = 0;
+				Dxy dxyClosestAlly = this->getDxyClosestAlly(closestAlly, ourUnit);
+				double dxClosestAlly = dxyClosestAlly.first;
+				double dyClosestAlly = dxyClosestAlly.second;
 
-				double upClosestAlly = 0;
-				double upClosestEnemy = 0;
-				double upCenterAlly = 0;
-				double upCenterEnemy = 0;
+				Dxy dxyCenterEnemy = this->getDxyCenterEnemy(enemyCenter, ourUnit);
+				double dxCenterEnemy = dxyCenterEnemy.first;
+				double dyCenterEnemy = dxyCenterEnemy.second;
 
-				double downClosestAlly = 0;
-				double downClosestEnemy = 0;
-				double downCenterAlly = 0;
-				double downCenterEnemy = 0;
+				Dxy dxyCenterAlly = this->getDxyCenterAlly(allyCenter, ourUnit);
+				double dxCenterAlly = dxyCenterAlly.first;
+				double dyCenterAlly = dxyCenterAlly.second;
 
-				size_t distToClosestEnemy = 0;
-				size_t distToClosestAlly = 0;
-				size_t distToFurthestEnemy = 0;
-				size_t distToFurthestAlly = 0;
-
-				// Percentage as double
-				double hp = 0;
-
+				// hp --> Use sqrt or log to normalize
+				double hp = ourUnit.currentHP();
+				
 				// Fill  _X
-				// Get from GameState.cpp
+				std::vector<double> tmp = { dxClosestEnemy, dyClosestEnemy, 
+											dxClosestAlly, dyClosestAlly,
+											dxCenterEnemy, dyCenterEnemy,
+											dxCenterAlly, dyCenterAlly, 
+											hp};
+				for (size_t i = 0; i < tmp.size(); ++i) { _X.add(tmp[i]); }
 
-				Position ourDest = Position(ourUnit.x() + Constants::Move_Dir[move.index()][0], ourUnit.y() + Constants::Move_Dir[move.index()][1]);
-				size_t dist = closestUnit.getDistanceSqToPosition(ourDest, state.getTime());
+				// Calculate V
+				// _W can be either from initialized values or read input
+				double Vup = _X.dot(_Wup);
+				double Vdown = _X.dot(_Wdown);
+				double Vleft = _X.dot(_Wleft);
+				double Vright = _X.dot(_Wright);
+				
+				size_t d = 0;
+				switch (d) {
+				case 0:
+					// Move up
+				case 1:
+					// Move down
+				case 2:
+					// Move left
+				case 3: 
+					// Move right
+				default:
+					// Shouldn't be here lol
+				}
 
+				//Position ourDest = Position(ourUnit.x() + Constants::Move_Dir[move.index()][0], ourUnit.y() + Constants::Move_Dir[move.index()][1]);
+				//size_t dist = closestUnit.getDistanceSqToPosition(ourDest, state.getTime());
 				//if (dist > furthestMoveDist)
 				//{
 				//	furthestMoveDist = dist;

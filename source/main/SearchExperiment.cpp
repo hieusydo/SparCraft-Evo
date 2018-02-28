@@ -930,7 +930,16 @@ void SearchExperiment::runExperiment()
 		size_t epoch = 100;
 		size_t evalIter = 100;
 		CoopEvo k = CoopEvo(mu, lambda, epoch, evalIter);
-		k.evolveParams(states[0], p1, p2);
+		//k.evolveParams(states[0], p1, p2);
+
+		//// Test code for dot product Array
+		//Array<double, 3> a;
+		//Array<double, 3> b;
+		//for (size_t i = 0; i < 3; ++i) {
+		//	a.add(i + 1.5);
+		//	b.add(i + 1.2);
+		//}
+		//std::cout << "a " << a << " dot " << b << " = " << a.dot(b) << "\n";
 
 		return; 
 	}
