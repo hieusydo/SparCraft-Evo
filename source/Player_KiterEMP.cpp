@@ -10,7 +10,7 @@ Player_KiterEMP::Player_KiterEMP(const IDType & playerID)
 	_offline = false;
 	_Wup.init(0);
 	_Wdown.init(0);
-	_Wleft.init(1);
+	_Wleft.init(0);
 	_Wright.init(0);
 }
 
@@ -98,7 +98,15 @@ void Player_KiterEMP::getMoves(GameState & state, const MoveArray & moves, std::
 		const Unit & ourUnit = state.getUnit(_playerID, u);
 		const Unit & closestUnit = ourUnit.canHeal() ? state.getClosestOurUnit(_playerID, u) : state.getClosestEnemyUnit(_playerID, u);
 
-		IDType evolvedMoveIndex = 0;
+		_X.clear();
+		_Wleft.clear();
+		_Wdown.clear();
+		_Wup.clear();
+		_Wdown.clear();
+		const Unit& closestAlly = state.getClosestOurUnit(_playerID, u);
+		const Unit& closestEnemy = state.getClosestEnemyUnit(_playerID, u);
+		Position allyCenter = state.getAllyCenter(_playerID);
+		Position enemyCenter = state.getEnemyCenter(_playerID);
 
 		for (IDType m = 0; m < moves.numMoves(u); ++m)
 		{
@@ -129,26 +137,6 @@ void Player_KiterEMP::getMoves(GameState & state, const MoveArray & moves, std::
 					foundAction = true;
 				}
 			}
-			else if (move.type() == ActionTypes::MOVE)
-			{
-				//
-				// Skip. Follow rule below
-				//
-				//Position ourDest = Position(ourUnit.x() + Constants::Move_Dir[move.index()][0], ourUnit.y() + Constants::Move_Dir[move.index()][1]);
-				//size_t dist = closestUnit.getDistanceSqToPosition(ourDest, state.getTime());
-				//if (dist > furthestMoveDist)
-				//{
-				//	furthestMoveDist = dist;
-				//	furthestMoveIndex = m;
-				//}
-
-				//if (dist < closestMoveDist)
-				//{
-				//	closestMoveDist = dist;
-				//	closestMoveIndex = m;
-				//}
-				continue;
-			}
 		}
 
 		// the move we will be returning
@@ -162,11 +150,6 @@ void Player_KiterEMP::getMoves(GameState & state, const MoveArray & moves, std::
 		// otherwise use the closest move to the opponent
 		else
 		{
-			const Unit& closestAlly = state.getClosestOurUnit(_playerID, u);
-			const Unit& closestEnemy = state.getClosestEnemyUnit(_playerID, u);
-			Position allyCenter = state.getAllyCenter(_playerID);
-			Position enemyCenter = state.getEnemyCenter(_playerID);
-
 			// dx, dy (encode direction and distance) --> Use cut-off to normalize
 			Dxy dxyClosestEnemy = this->getDxyClosest(closestEnemy, ourUnit);
 			double dxClosestEnemy = dxyClosestEnemy.first;
@@ -195,8 +178,8 @@ void Player_KiterEMP::getMoves(GameState & state, const MoveArray & moves, std::
 				hp };
 			for (size_t i = 0; i < tmp.size(); ++i) { _X.add(tmp[i]); }
 
-			std::cout << "_Ws:" << _Wleft << "\n" << _Wright << "\n" << _Wup << "\n" << _Wdown << "\n";
-			std::cout << "_X" << _X << "\n";
+			//std::cout << "_Ws:" << _Wleft << "\n" << _Wright << "\n" << _Wup << "\n" << _Wdown << "\n";
+			//std::cout << "_X" << _X << "\n";
 
 			// Calculate V
 			// _W can be either from initialized values or read input
@@ -205,24 +188,13 @@ void Player_KiterEMP::getMoves(GameState & state, const MoveArray & moves, std::
 			double Vup = _X.dot(_Wup);
 			double Vdown = _X.dot(_Wdown);
 
-			std::cout << "Vs: " << Vleft << " " << Vright << " " << Vup << " " << Vdown << "\n";
+			//std::cout << "Vs: " << Vleft << " " << Vright << " " << Vup << " " << Vdown << "\n";
 
 			// Get best V and corresponding move index
 			double allV[4] = { Vleft, Vright, Vup, Vdown };
 			bestMoveIndex = this->getMaxVDir(allV);
 
-			std::cout << "Best move index: " << bestMoveIndex << "\n";
-
-			//// if we are in attack range of the unit, back up
-			//if (closestUnit.canAttackTarget(ourUnit, state.getTime()))
-			//{
-			//	bestMoveIndex = furthestMoveIndex;
-			//}
-			//// otherwise get back into the fight
-			//else
-			//{
-			//	bestMoveIndex = closestMoveIndex;
-			//}
+			//std::cout << "Best move index: " << bestMoveIndex << "\n";
 		}
 
 		// Update for NOK
