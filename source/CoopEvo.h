@@ -10,7 +10,7 @@
 
 namespace SparCraft
 {
-	typedef std::pair<Array<double, Constants::Num_Params>, int> ChromosomeEMP;
+	typedef std::pair<std::vector<Array<double, Constants::Num_Params>>, int> ChromosomeEMP;
 
 	//class KiterComparator {
 	//	bool increasing;
@@ -31,7 +31,8 @@ namespace SparCraft
 		//std::priority_queue<Chromosome, std::vector<Chromosome>, KiterComparator> _genePool;
 		std::vector<ChromosomeEMP> _genePool;
 
-		void initWeights(Array<double, Constants::Num_Params>& w);
+		// Order of direction Array in vector: Left Right Up Down
+		void initRandomWeights(std::vector<Array<double, Constants::Num_Params>>& weights);
 
 		// initialize method for population of many KiterDPSEvo
 		void initialize(const GameState& state, PlayerPtr & p1, PlayerPtr & p2);
@@ -40,13 +41,13 @@ namespace SparCraft
 		//Chromosome _mutate(size_t mutationDelta, const Chromosome& c, const GameState & state, PlayerPtr & p1, PlayerPtr & p2);
 
 		// evaluation method
-		//int _eval(const GameState & state, PlayerPtr & p1, PlayerPtr & p2);
+		int eval(const GameState & state, PlayerPtr & p1, PlayerPtr & p2);
 
 		void printParams();
 
 	public:
 		CoopEvo(size_t mu, size_t lambda, size_t epoch, size_t evalIter);
-		Array<double, Constants::Num_Params> evolveParams(const GameState & state, PlayerPtr & p1, PlayerPtr & p2);
+		void evolveParams(const GameState & state, PlayerPtr & p1, PlayerPtr & p2);
 	};
 
 }

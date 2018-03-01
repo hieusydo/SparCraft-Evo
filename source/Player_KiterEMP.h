@@ -46,10 +46,8 @@ namespace SparCraft
 		void switchOnOffline();
 		void switchOffOffline();
 
-		void setWup(Array<double, Constants::Num_Params> w);
-		void setWdown(Array<double, Constants::Num_Params> w);
-		void setWleft(Array<double, Constants::Num_Params> w);
-		void setWright(Array<double, Constants::Num_Params> w);
+		// Order of direction Array in vector: Left Right Up Down
+		void setWeights(const std::vector<Array<double, Constants::Num_Params>>& weights);
 
 		void getMoves(GameState & state, const MoveArray & moves, std::vector<Action> & moveVec);
 		IDType getType() { return PlayerModels::KiterEMP; }

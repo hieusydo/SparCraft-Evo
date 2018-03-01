@@ -925,23 +925,14 @@ void SearchExperiment::runExperiment()
 	Player_KiterEMP* p1EMP = dynamic_cast<Player_KiterEMP*> (p1.get());
 	if (p1EMP) {
 		std::cout << "Starting to evolve params...\n";
-		//size_t mu = 8;
-		//size_t lambda = 2;
-		//size_t epoch = 100;
-		//size_t evalIter = 100;
-		//CoopEvo k = CoopEvo(mu, lambda, epoch, evalIter);
-		////k.evolveParams(states[0], p1, p2);
+		size_t mu = 8;
+		size_t lambda = 2;
+		size_t epoch = 100;
+		size_t evalIter = 100;
+		CoopEvo k = CoopEvo(mu, lambda, epoch, evalIter);
+		k.evolveParams(states[0], p1, p2);
 
-		////// Test code for dot product Array
-		////Array<double, 3> a;
-		////Array<double, 3> b;
-		////for (size_t i = 0; i < 3; ++i) {
-		////	a.add(i + 1.5);
-		////	b.add(i + 1.2);
-		////}
-		////std::cout << "a " << a << " dot " << b << " = " << a.dot(b) << "\n";
-
-		//return; 
+		return; 
 	}
 
 	// for each player one player

@@ -22,20 +22,12 @@ void Player_KiterEMP::switchOffOffline() {
 	_offline = false;
 }
 
-void Player_KiterEMP::setWup(Array<double, Constants::Num_Params> w) {
-	for (size_t i = 0; i < w.size(); ++i) { _Wup[i] = w[i]; }
-}
-
-void Player_KiterEMP::setWdown(Array<double, Constants::Num_Params> w) {
-	for (size_t i = 0; i < w.size(); ++i) { _Wdown[i] = w[i]; }
-}
-
-void Player_KiterEMP::setWleft(Array<double, Constants::Num_Params> w) {
-	for (size_t i = 0; i < w.size(); ++i) { _Wleft[i] = w[i]; }
-}
-
-void Player_KiterEMP::setWright(Array<double, Constants::Num_Params> w) {
-	for (size_t i = 0; i < w.size(); ++i) { _Wright[i] = w[i]; }
+// Order of direction Array in vector: Left Right Up Down
+void Player_KiterEMP::setWeights(const std::vector<Array<double, Constants::Num_Params>>& weights) {
+	for (size_t i = 0; i < weights[0].size(); ++i) { _Wleft[i] = weights[0][i]; }
+	for (size_t i = 0; i < weights[1].size(); ++i) { _Wright[i] = weights[1][i]; }
+	for (size_t i = 0; i < weights[2].size(); ++i) { _Wup[i] = weights[2][i]; }
+	for (size_t i = 0; i < weights[3].size(); ++i) { _Wdown[i] = weights[3][i]; }
 }
 
 Dxy Player_KiterEMP::getDxyClosest(const Unit& closestUnit, const Unit& ourUnit) const {
