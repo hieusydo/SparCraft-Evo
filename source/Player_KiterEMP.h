@@ -40,6 +40,8 @@ namespace SparCraft
 
 		size_t getMaxVDir(double allV[4]) const;
 
+		void normalize(Array<double, Constants::Num_Params>& X);
+
 	public:
 		Player_KiterEMP(const IDType & playerID);
 

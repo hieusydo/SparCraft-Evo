@@ -56,6 +56,23 @@ size_t Player_KiterEMP::getMaxVDir(double allV[4]) const {
 	return maxIndex;
 }
 
+void Player_KiterEMP::normalize(Array<double, Constants::Num_Params>& X) {
+	double meanX = 0;
+	double minX = DBL_MAX;
+	double maxX = -DBL_MAX;
+	for (size_t i = 0; i < X.size(); ++i) {
+		if (minX > X[i]) { minX = X[i]; }
+		if (maxX < X[i]) { maxX = X[i]; }
+		meanX += X[i];
+	}
+	meanX /= X.size();
+
+	// Normalize using formula: (x - x_bar)/(x_max - x_min)
+	for (size_t i = 0; i < X.size(); ++i) {
+		X[i] = (X[i] - meanX) / (maxX - minX);
+	}
+}
+
 void Player_KiterEMP::getMoves(GameState & state, const MoveArray & moves, std::vector<Action> & moveVec)
 {
 	moveVec.clear();
@@ -169,6 +186,9 @@ void Player_KiterEMP::getMoves(GameState & state, const MoveArray & moves, std::
 				dxCenterAlly, dyCenterAlly,
 				hp };
 			for (size_t i = 0; i < tmp.size(); ++i) { _X.add(tmp[i]); }
+
+			this->normalize(_X);
+
 
 			//std::cout << "_Ws:" << _Wleft << "\n" << _Wright << "\n" << _Wup << "\n" << _Wdown << "\n";
 			//std::cout << "_X" << _X << "\n";

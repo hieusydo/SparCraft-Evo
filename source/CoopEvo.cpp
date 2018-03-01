@@ -1,4 +1,5 @@
 #include "CoopEvo.h"
+#include "Population_Kiter.h"
 #include <queue>
 #include <random>
 #include <utility> 
@@ -44,29 +45,25 @@ void CoopEvo::initialize(const GameState& state, PlayerPtr & p1, PlayerPtr & p2)
 	}
 }
 
-//// mutate method
-//Chromosome CoopEvo::mutate(size_t mutationDelta, const Chromosome& c, const GameState & state, PlayerPtr & p1, PlayerPtr & p2) {
-//	Chromosome res;
-//	Player_KiterDPSEvo* kiter = dynamic_cast<Player_KiterDPSEvo *>(p1.get());
-//	kiter->switchOnOffline();
-//
-//	// Consider mutation by wiggling the parent dist +/- mutationDelta
-//	if (c.first < mutationDelta) {
-//		kiter->setSafeDist(0);
-//	}
-//	else {
-//		kiter->setSafeDist(c.first - mutationDelta);
-//	}
-//	int leftScore = eval(state, p1, p2);
-//
-//	kiter->setSafeDist(c.first + mutationDelta);
-//	int rightScore = eval(state, p1, p2);
-//
-//	// Choose the offspring with better fitness eval score
-//	res.first = (leftScore > rightScore) ? (c.first < mutationDelta ? 0 : (c.first - mutationDelta)) : (c.first + mutationDelta);
-//	res.second = (leftScore > rightScore) ? leftScore : rightScore;
-//	return res;
-//}
+// mutate method
+ChromosomeEMP CoopEvo::mutate(const ChromosomeEMP& c, const GameState & state, PlayerPtr & p1, PlayerPtr & p2) const {
+	// Set up mutation delta
+	std::random_device rd; 
+	std::mt19937_64 eng(rd()); 
+	std::uniform_real_distribution<double> deltaDistr(-0.05, 0.05);
+	
+	ChromosomeEMP res = c;
+	Player_KiterEMP* kiterEmp = dynamic_cast<Player_KiterEMP *>(p1.get());
+	kiterEmp->switchOnOffline();
+
+	// Apply mutation to weights
+	auto weights = res.first;
+	for (size_t d = 0; d <weights.size(); ++d) {
+		for (size_t i = 0; i < weights[d].capacity(); ++i) { weights[d][i] += deltaDistr(eng); }
+	}
+
+	return res;
+}
 
 // Find the average score of a kiter with a given safeDist
 int CoopEvo::eval(const GameState & state, PlayerPtr & p1, PlayerPtr & p2) {
@@ -84,14 +81,7 @@ int CoopEvo::eval(const GameState & state, PlayerPtr & p1, PlayerPtr & p2) {
 	return kiterScore;
 }
 
-//bool KiterComparator::operator() (Chromosome lhs, Chromosome rhs) const {
-//	if (increasing) {
-//		return lhs.second < rhs.second;
-//	}
-//	return lhs.second > rhs.second;
-//}
-
-void CoopEvo::printParams() {
+void CoopEvo::printPool() {
 	for (auto it = _genePool.begin(); it != _genePool.end(); it++) {
 		std::cout << "\nWeights:\n";
 		for (auto w : it->first) {
@@ -105,43 +95,41 @@ void CoopEvo::printParams() {
 void CoopEvo::evolveParams(const GameState & state, PlayerPtr & p1, PlayerPtr & p2) {
 	ChromosomeEMP bestGene;
 
-	//// result data for each epoch
-	//std::ofstream epochDat;
-	//epochDat.open("epochDat.csv");
-	//epochDat << "epoch, score, d\n";
+	// result data for each epoch
+	std::ofstream epochDat;
+	epochDat.open("kiterEMP/epochDat.csv");
+	epochDat << "epoch, score, d\n";
 
-	// initialize population of Kiters to having random safeDist values
-	// and evaluate the baseline population 
+	// initialize and evaluate the baseline population 
 	this->initialize(state, p1, p2);
-	this->printParams();
+	this->printPool();
 
-	//bestGene = _genePool[0];
-	//// main evolution loop
-	//for (size_t e = 0; e < _epoch; ++e) {
-	//	// remove lambda worst
-	//	std::sort(_genePool.begin(), _genePool.end(), KiterComparator(false));
-	//	for (size_t l = 0; l < _lambda; ++l) {
-	//		_genePool.pop_back();
-	//	}
+	bestGene = _genePool[0];
+	// main evolution loop
+	for (size_t e = 0; e < _epoch; ++e) {
+		// remove lambda worst
+		std::sort(_genePool.begin(), _genePool.end(), KiterComparator(false));
+		for (size_t l = 0; l < _lambda; ++l) {
+			_genePool.pop_back();
+		}
 
-	//	// re-mutate mu best
-	//	for (size_t m = 0; m < _mu; ++m) {
-	//		Chromosome c = _genePool[m];
-	//		size_t mutationDelta = deltaDistr(eng);
-	//		Chromosome mutated = mutate(mutationDelta, c, state, p1, p2);
-	//		_genePool.push_back(mutated);
-	//	}
+		// re-mutate mu best
+		for (size_t m = 0; m < _mu; ++m) {
+			ChromosomeEMP c = _genePool[m];
+			ChromosomeEMP mutated = mutate(c, state, p1, p2);
+			_genePool.push_back(mutated);
+		}
 
-	//	std::sort(_genePool.begin(), _genePool.end(), KiterComparator(false));
-	//	bestGene = _genePool[0];
-	//	//std::cout << "\n End of gen " << e << " - Best d = " << bestGene.first << " with score = " << bestGene.second << "\n";
-	//	epochDat << e << "," << bestGene.second << "," << bestGene.first << "\n";
-	//	//printDist();
-	//}
+		std::sort(_genePool.begin(), _genePool.end(), KiterComparator(false));
+		bestGene = _genePool[0];
+		//std::cout << "\n End of gen " << e << " - Best d = " << bestGene.first << " with score = " << bestGene.second << "\n";
+		epochDat << e << "," << bestGene.second << "," << "\n";
+	}
 
-	//epochDat.close();
+	epochDat.close();
 
 	// Write result to a .txt file
 	// Instead of returning result from evo like in KiterDPSEvo 
+	this->printPool();
 }
 

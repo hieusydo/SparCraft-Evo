@@ -16,7 +16,14 @@ namespace SparCraft
         bool increasing;
 	public:
         KiterComparator(bool i) : increasing(i) {}
-		bool operator() (Chromosome lhs, Chromosome rhs) const;
+		
+		template <class T>
+		bool operator() (const T& lhs, const T& rhs) const {
+			if (increasing) {
+				return lhs.second < rhs.second;
+			}
+			return lhs.second > rhs.second;
+		}
 	};
 
 	class Population_Kiter

@@ -12,13 +12,6 @@ namespace SparCraft
 {
 	typedef std::pair<std::vector<Array<double, Constants::Num_Params>>, int> ChromosomeEMP;
 
-	//class KiterComparator {
-	//	bool increasing;
-	//public:
-	//	KiterComparator(bool i) : increasing(i) {}
-	//	bool operator() (Chromosome lhs, Chromosome rhs) const;
-	//};
-
 	class CoopEvo
 	{
 	private:
@@ -38,12 +31,12 @@ namespace SparCraft
 		void initialize(const GameState& state, PlayerPtr & p1, PlayerPtr & p2);
 
 		// mutate method
-		//Chromosome _mutate(size_t mutationDelta, const Chromosome& c, const GameState & state, PlayerPtr & p1, PlayerPtr & p2);
+		ChromosomeEMP mutate(const ChromosomeEMP& c, const GameState & state, PlayerPtr & p1, PlayerPtr & p2) const;
 
 		// evaluation method
 		int eval(const GameState & state, PlayerPtr & p1, PlayerPtr & p2);
 
-		void printParams();
+		void printPool();
 
 	public:
 		CoopEvo(size_t mu, size_t lambda, size_t epoch, size_t evalIter);

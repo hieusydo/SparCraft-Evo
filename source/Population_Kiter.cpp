@@ -69,13 +69,6 @@ int Population_Kiter::eval(const GameState & state, PlayerPtr & p1, PlayerPtr & 
 	return kiterScore;
 }
 
-bool KiterComparator::operator() (Chromosome lhs, Chromosome rhs) const {
-    if (increasing) {
-        return lhs.second < rhs.second;
-    } 
-    return lhs.second > rhs.second;
-}
-
 void Population_Kiter::printDist() {
     for (auto it = _genePool.begin(); it != _genePool.end(); it++) {
         std::cout << "(" << it->first << ", S: " << it->second << ") "; 
