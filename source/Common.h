@@ -70,7 +70,7 @@ namespace SparCraft
 		const int Move_Dir[4][2] = {{-1,0}, {1,0}, {0,1}, {0,-1} };
 
 		// number of evo parametes
-		const size_t Num_Params = 21;
+		const size_t Num_Params = 9;
 	}
 
     namespace System

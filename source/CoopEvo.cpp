@@ -29,7 +29,7 @@ void CoopEvo::initialize(const GameState& state, PlayerPtr & p1, PlayerPtr & p2)
 	for (size_t i = 0; i < _popSize; ++i) {
 		Array<double, Constants::Num_Params> w;
 		this->initWeights(w);
-		kiter->setParams(w);
+		kiter->setWup(w);
 		//int score = _eval(state, p1, p2);
 		int score = 0;
 		ChromosomeEMP c(w, score);

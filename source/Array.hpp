@@ -127,7 +127,7 @@ public:
 	// Dot produce
 	// Assuming b and this Array have same size
 	T dot(const Array<T, elem>& b) const {
-		T res;
+		T res{};
 		for (size_t i = 0; i < _size; ++i) { res += this->get(i) * b.get(i); }
 		return res;
 	}

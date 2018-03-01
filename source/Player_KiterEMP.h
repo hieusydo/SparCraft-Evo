@@ -27,16 +27,18 @@ namespace SparCraft
 		Array<double, Constants::Num_Params> _X; 
 
 		// Weights for each move dir 
-		// IMPORTANT: Order is Up - Down - Left - Right
+		// IMPORTANT: Order is Left - Right - Up - Down 
+		// Based on Constants::Move_Dir[4][2] 
+		// = { { -1, 0 }, { 1, 0 }, { 0, 1 }, { 0, -1 } };
 		Array<double, Constants::Num_Params> _Wup; 
 		Array<double, Constants::Num_Params> _Wdown;
 		Array<double, Constants::Num_Params> _Wleft;
 		Array<double, Constants::Num_Params> _Wright;
 
-		Dxy getDxyClosestEnemy(const Unit& closestEnemy, const Unit& ourUnit) const;
-		Dxy getDxyClosestAlly(const Unit& closestAlly, const Unit& ourUnit) const;
-		Dxy getDxyCenterEnemy(const Position& enemyCenter, const Unit& ourUnit) const;
-		Dxy getDxyCenterAlly(const Position& allyCenter, const Unit& ourUnit) const;
+		Dxy getDxyClosest(const Unit& closestUnit, const Unit& ourUnit) const;
+		Dxy getDxyCenter(const Position& centerArmy, const Unit& ourUnit) const;
+
+		size_t getMaxVDir(double allV[4]) const;
 
 	public:
 		Player_KiterEMP(const IDType & playerID);
