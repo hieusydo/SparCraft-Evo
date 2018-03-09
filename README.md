@@ -1,14 +1,25 @@
 # SparCraft-Evo
 
-Use offline evolution to improve scripts in micro battles
+The goal of this project is to use offline evolution to make more flexible scripts that are expected to perform better in micro battles compared to fixed scripts. 
 
-SparCraft is open source StarCraft combat simulation package developed by [David Churchill](https://github.com/davechurchill/ualbertabot/tree/master/SparCraft). This project started from the fork of the SparCraft repo and was then separately developed in this repo for easier maintenance.  
+The project uses the SparCraft framework, which is open source StarCraft combat simulation package developed by [David Churchill](https://github.com/davechurchill/ualbertabot/tree/master/SparCraft).
 
-## Installation Notes
-- Fix `SDL.h not found` error: 
-  - Download source of [SDL](https://www.libsdl.org/download-2.0.php) and [SDL_image](https://www.libsdl.org/projects/SDL_image/)
-  - Add directories by right-click on project `Properties > Configuration Properties > VC++ Directories`. Update `Include Directories` by adding `include` folder from the sources. Do the same for `Libraries Directories` by adding `SparCraft/lib`  and `Source Directories` by adding `SparCraft/source`.
-- Build as `Release` and `Win32`. 
-- To run `bin/SparCraft.exe` from `Cmd`, need to include these in the same folder:
-  - `SDL2.dll` and `SDL2_image.dll` (downloaded from the same site of the source codes)
-  - `<experiment-config>.txt` file. Must change the paths in the experiment config file. 
+## Environment Setup Guide
+
+1. Clone this repo
+
+1. Install Microsoft Visual Studio 2013 Community Edition (either from Microsoft site or [here]())
+
+1. Open the solution file `SparCraft-Evo/VisualStudio/SparCraft.sln` 
+
+1. Include source and lib files: 
+   * Download the sources (either `.zip` or `.tar.gz`) from [SDL](https://www.libsdl.org/download-2.0.php) and [SDL_image](https://www.libsdl.org/projects/SDL_image/) and extract them
+   * In the *Solution Explorer* menu of Visual Studio, right-click on the projects and select `Properties > Configuration Properties > VC++ Directories`
+   * In the *Include Directories* option, add the `include` folder from the extracted sources above
+   * Repeat the same steps for *Libraries Directories* option by adding `SparCraft-Evo/lib`, and for *Source Directories* option by adding `SparCraft-Evo/source`
+
+1. To build the project, choose the options to build as *Release* and *Win32* 
+
+1. After the build is done, run `bin/SparCraft.exe` from command line (recommend Windows PowerShell). Notes: must include these files in the same folder:
+   * `SDL2.dll` and `SDL2_image.dll` (downloaded from the same site of the sources above)
+   * `<config-file-name>.txt` file. Notes: must update all the paths to be consistent with the test system
