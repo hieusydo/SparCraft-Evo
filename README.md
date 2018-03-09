@@ -8,7 +8,7 @@ The project uses the SparCraft framework, which is open source StarCraft combat 
 
 1. Clone this repo
 
-1. Install Microsoft Visual Studio 2013 Community Edition (either from Microsoft site or [here]())
+1. Install Microsoft Visual Studio 2013 Community Edition (either from Microsoft site or [here](https://drive.google.com/file/d/1dDvoAIyiA9RkJ0zL5SLEKaGHnDYafn81/view?usp=sharing))
 
 1. Open the solution file `SparCraft-Evo/VisualStudio/SparCraft.sln` 
 
