@@ -2,7 +2,6 @@
 
 The goal of this project is to use offline evolution to make more flexible scripts that are expected to perform better in micro battles compared to fixed scripts. 
 
-The project uses the SparCraft framework, which is open source StarCraft combat simulation package developed by [David Churchill](https://github.com/davechurchill/ualbertabot/tree/master/SparCraft).
 
 ## Environment Setup Guide
 
@@ -23,3 +22,8 @@ The project uses the SparCraft framework, which is open source StarCraft combat 
 1. After the build is done, run `bin/SparCraft.exe` from command line (recommend Windows PowerShell). Notes: must include these files in the same folder:
    * `SDL2.dll` and `SDL2_image.dll` (downloaded from the same site of the sources above)
    * `<config-file-name>.txt` file. Notes: must update all the paths to be consistent with the test system
+
+
+## Credits
+
+The project is built upon the SparCraft framework, which is open source StarCraft combat simulation package developed by [David Churchill](https://github.com/davechurchill/ualbertabot/tree/master/SparCraft).
