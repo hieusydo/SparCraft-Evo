@@ -34,9 +34,12 @@ namespace SparCraft
 		ChromosomeEMP mutate(const ChromosomeEMP& c, const GameState & state, PlayerPtr & p1, PlayerPtr & p2) const;
 
 		// evaluation method
-		int eval(const GameState & state, PlayerPtr & p1, PlayerPtr & p2);
+		int eval(const GameState & state, PlayerPtr & p1, PlayerPtr & p2) const;
 
-		void printPool();
+		void printPool() const;
+		void writePoolResult() const;
+		void writeFinalResult(const ChromosomeEMP& c) const;
+		void printChrom(const ChromosomeEMP& c, std::ostream& os = std::cout) const;
 
 	public:
 		CoopEvo(size_t mu, size_t lambda, size_t epoch, size_t evalIter);

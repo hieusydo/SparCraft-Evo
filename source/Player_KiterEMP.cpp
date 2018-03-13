@@ -77,12 +77,26 @@ void Player_KiterEMP::getMoves(GameState & state, const MoveArray & moves, std::
 {
 	moveVec.clear();
 
-	//if (_offline == false) {
-	//	//std::cout << "Reading safeDist from file\n";
-	//	std::ifstream ifs("best.txt");
-	//	if (!ifs) { std::cerr << "Error opening file\n"; }
-	//	//ifs >> _safeDist;
-	//}
+	if (_offline == false) {
+		//std::cout << "Reading safeDist from file\n";
+		std::ifstream ifs("finalRes.txt");
+		if (!ifs) { std::cerr << "Error opening file\n"; }
+
+		std::vector<Array<double, Constants::Num_Params>> weights;
+		for (size_t i = 0; i < 4; ++i) {
+			Array<double, Constants::Num_Params> w;
+			w.init(0);
+			weights.push_back(w);
+		}
+
+		double w;
+		for (size_t d = 0; d < weights.size(); ++d) {
+			for (size_t i = 0; i < weights[d].capacity(); ++i) { 
+				ifs >> w;
+				weights[d][i] = w;
+			}
+		}
+	}
 
 	// Set up for NOK
 	IDType enemy(state.getEnemy(_playerID));

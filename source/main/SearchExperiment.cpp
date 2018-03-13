@@ -924,15 +924,15 @@ void SearchExperiment::runExperiment()
 	// KiterEMP
 	Player_KiterEMP* p1EMP = dynamic_cast<Player_KiterEMP*> (p1.get());
 	if (p1EMP) {
-		std::cout << "Starting to evolve params...\n";
+		std::cout << "Starting to evolve params for KiterEMP...\n";
 		size_t mu = 8;
 		size_t lambda = 2;
-		size_t epoch = 100;
+		size_t epoch = 250;
 		size_t evalIter = 100;
 		CoopEvo k = CoopEvo(mu, lambda, epoch, evalIter);
 		k.evolveParams(states[0], p1, p2);
-
-		return; 
+		p1EMP->switchOffOffline();
+		//return; 
 	}
 
 	// for each player one player
