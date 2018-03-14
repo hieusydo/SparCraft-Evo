@@ -36,8 +36,6 @@ namespace SparCraft
 		// evaluation method
 		int eval(const GameState & state, PlayerPtr & p1, PlayerPtr & p2) const;
 
-		void printPool() const;
-		void writePoolResult() const;
 		void writeFinalResult(const ChromosomeEMP& c) const;
 		void printChrom(const ChromosomeEMP& c, std::ostream& os = std::cout) const;
 

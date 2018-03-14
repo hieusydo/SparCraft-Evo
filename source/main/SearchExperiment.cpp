@@ -2,6 +2,7 @@
 #include "../Population_Kiter.h"
 #include "../CoopEvo.h"
 #include <fstream>
+#include <chrono> // C++11
 
 using namespace SparCraft;
 
@@ -924,7 +925,9 @@ void SearchExperiment::runExperiment()
 	// KiterEMP
 	Player_KiterEMP* p1EMP = dynamic_cast<Player_KiterEMP*> (p1.get());
 	if (p1EMP) {
-		std::cout << "Starting to evolve params for KiterEMP...\n";
+		std::cout << "Evolving params for KiterEMP...\n";
+		std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
+
 		size_t mu = 8;
 		size_t lambda = 2;
 		size_t epoch = 250;
@@ -932,7 +935,9 @@ void SearchExperiment::runExperiment()
 		CoopEvo k = CoopEvo(mu, lambda, epoch, evalIter);
 		k.evolveParams(states[0], p1, p2);
 		p1EMP->switchOffOffline();
-		//return; 
+
+		std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
+		std::cout << "Time elasped: " << std::chrono::duration_cast<std::chrono::seconds>(end - start).count() <<"seconds\n";
 	}
 
 	// for each player one player

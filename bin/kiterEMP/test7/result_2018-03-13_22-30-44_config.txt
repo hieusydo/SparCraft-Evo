@@ -1,0 +1,5 @@
+Player 0 KiterEMP
+Player 1 AttackClosest
+State SeparatedState 100 128 128 400 360 840 360 Protoss_Dragoon 50
+ResultsFile C:\SparCraft-Evo\bin\result\exp-temp\result true
+Display true C:\SparCraft-Evo\starcraft_images

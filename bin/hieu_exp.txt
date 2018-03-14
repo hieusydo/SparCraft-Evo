@@ -73,12 +73,12 @@
 Player 0 KiterEMP
 
 # Player 1 KiterDPS
-# Player 1 AttackClosest
+Player 1 AttackClosest
 # Player 1 AttackDPS
 # Player 1 AttackWeakest
 # Player 1 KiterDPS
 # Player 1 NOKDPS
-Player 1 Kiter_NOKDPS
+# Player 1 Kiter_NOKDPS
 
 ####################################################
 #
@@ -136,7 +136,7 @@ State SeparatedState 100 128 128 400 360 840 360 Protoss_Dragoon 50
 #
 ##################################################
 
-ResultsFile C:\SparCraft-Evo\bin\result\exp-temp\result false
+ResultsFile C:\SparCraft-Evo\bin\result\exp-temp\result true
 
 ##################################################
 #

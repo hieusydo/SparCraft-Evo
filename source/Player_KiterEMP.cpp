@@ -79,7 +79,7 @@ void Player_KiterEMP::getMoves(GameState & state, const MoveArray & moves, std::
 
 	if (_offline == false) {
 		//std::cout << "Reading safeDist from file\n";
-		std::ifstream ifs("finalRes.txt");
+		std::ifstream ifs("kiterEMP/finalRes.txt");
 		if (!ifs) { std::cerr << "Error opening file\n"; }
 
 		std::vector<Array<double, Constants::Num_Params>> weights;
