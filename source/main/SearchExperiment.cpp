@@ -929,15 +929,14 @@ void SearchExperiment::runExperiment()
 		std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
 
 		size_t mu = 8;
-		size_t lambda = 2;
-		size_t epoch = 250;
-		size_t evalIter = 100;
-		CoopEvo k = CoopEvo(mu, lambda, epoch, evalIter);
+		size_t lambda = 4;
+		size_t epoch = 1000;
+		CoopEvo k = CoopEvo(mu, lambda, epoch);
 		k.evolveParams(states[0], p1, p2);
 		p1EMP->switchOffOffline();
 
 		std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
-		std::cout << "Time elasped: " << std::chrono::duration_cast<std::chrono::seconds>(end - start).count() <<"seconds\n";
+		std::cout << "Time elasped: " << std::chrono::duration_cast<std::chrono::seconds>(end - start).count() <<" seconds\n";
 	}
 
 	// for each player one player

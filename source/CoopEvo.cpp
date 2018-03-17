@@ -6,12 +6,11 @@
 #include "Common.h"
 using namespace SparCraft;
 
-CoopEvo::CoopEvo(size_t mu, size_t lambda, size_t epoch, size_t evalIter)
+CoopEvo::CoopEvo(size_t mu, size_t lambda, size_t epoch)
 	: _mu(mu),
 	_lambda(lambda),
 	_popSize(mu + lambda),
-	_epoch(epoch),
-	_evalIter(evalIter) {}
+	_epoch(epoch) {}
 
 void CoopEvo::initRandomWeights(std::vector<Array<double, Constants::Num_Params>>& weights) {
 	std::random_device rd; // get a random seed from the OS entropy device

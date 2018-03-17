@@ -19,7 +19,6 @@ namespace SparCraft
 		size_t _lambda;
 		size_t _popSize;
 		size_t _epoch;
-		int _evalIter; // type is int instead of size_t to make sure division of kiterScore/evalIter does not give garbage value
 
 		//std::priority_queue<Chromosome, std::vector<Chromosome>, KiterComparator> _genePool;
 		std::vector<ChromosomeEMP> _genePool;
@@ -40,7 +39,7 @@ namespace SparCraft
 		void printChrom(const ChromosomeEMP& c, std::ostream& os = std::cout) const;
 
 	public:
-		CoopEvo(size_t mu, size_t lambda, size_t epoch, size_t evalIter);
+		CoopEvo(size_t mu, size_t lambda, size_t epoch);
 		void evolveParams(const GameState & state, PlayerPtr & p1, PlayerPtr & p2);
 	};
 
