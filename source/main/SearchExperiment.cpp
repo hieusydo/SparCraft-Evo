@@ -908,11 +908,11 @@ void SearchExperiment::runExperiment()
 	if (p1Evo) {
 		std::cout << "Starting offline evolution...\n";
 		size_t mu = 8;
-		size_t lambda = 2;
-		size_t epoch = 100;
+		size_t lambda = 4;
+		size_t epoch = 25;
 		size_t evalIter = 100;
 		Population_Kiter k = Population_Kiter(mu, lambda, epoch, evalIter);
-		size_t safeDist = k.evolveSafeDist(states[0], p1, p2);
+		size_t safeDist = k.evolveSafeDist(states[3], p1, p2);
 		p1Evo->switchOffOffline();
 		// Write result to a .txt file
 		std::cout << "Offline result: " << safeDist << "\n";
@@ -930,9 +930,9 @@ void SearchExperiment::runExperiment()
 
 		size_t mu = 8;
 		size_t lambda = 4;
-		size_t epoch = 1000;
+		size_t epoch = 100;
 		CoopEvo k = CoopEvo(mu, lambda, epoch);
-		k.evolveParams(states[0], p1, p2);
+		k.evolveParams(states[3], p1, p2);
 		p1EMP->switchOffOffline();
 
 		std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
@@ -948,6 +948,9 @@ void SearchExperiment::runExperiment()
 			// for each state we care about
 			for (size_t state(2); state < states.size(); ++state)
 			{
+
+				//state = 4; // TODO: debug. Fixed state. try for different army size too? 
+
                 char buf[255];
                 fprintf(stderr, "%s  ", configFileSmall.c_str());
 				fprintf(stderr, "%5d %5d %5d %5d", (int)p1Player, (int)p2Player, (int)state, (int)states[state].numUnits(Players::Player_One));

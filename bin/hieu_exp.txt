@@ -112,6 +112,9 @@ Player 1 Kiter_NOKDPS
 #State StateDescriptionFile 10 PATH_TO\sample_state.txt
 
 # Sample SeparatedState States
+
+# State SeparatedState 10 1 50 400 360 840 360 Protoss_Dragoon 20
+
 State SeparatedState 100 128 128 400 360 840 360 Protoss_Dragoon 50
 # State SeparatedState 100 128 128 400 360 840 360 Zerg_Zergling 50
 # State SeparatedState 100 128 128 400 360 840 360 Protoss_Dragoon 25 Protoss_Zealot 25

@@ -82,7 +82,7 @@ size_t Population_Kiter::evolveSafeDist(const GameState & state, PlayerPtr & p1,
 
 	// result data for each epoch
 	std::ofstream epochDat;
-	epochDat.open("epochDat.csv");
+	epochDat.open("epochDat-KiterEvo.txt");
 	epochDat << "epoch, score, d\n";
 
 	// Used in calculating mutation delta

@@ -42,11 +42,15 @@ namespace SparCraft
 
 		void normalize(Array<double, Constants::Num_Params>& X);
 
+		
+
 	public:
 		Player_KiterEMP(const IDType & playerID);
 
 		void switchOnOffline();
 		void switchOffOffline();
+
+		void printWeights() const;
 
 		// Order of direction Array in vector: Left Right Up Down
 		void setWeights(const std::vector<Array<double, Constants::Num_Params>>& weights);

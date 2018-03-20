@@ -73,12 +73,17 @@ void Player_KiterEMP::normalize(Array<double, Constants::Num_Params>& X) {
 	}
 }
 
+void Player_KiterEMP::printWeights() const {
+	std::cout << "\nPrinting...\n";
+	std::cout << "_Ws:" << _Wleft << "\n" << _Wright << "\n" << _Wup << "\n" << _Wdown << "\n";
+}
+
 void Player_KiterEMP::getMoves(GameState & state, const MoveArray & moves, std::vector<Action> & moveVec)
 {
 	moveVec.clear();
 
 	if (_offline == false) {
-		//std::cout << "Reading safeDist from file\n";
+		//std::cout << "Reading params from file\n";
 		std::ifstream ifs("kiterEMP/finalRes.txt");
 		if (!ifs) { std::cerr << "Error opening file\n"; }
 
@@ -91,11 +96,13 @@ void Player_KiterEMP::getMoves(GameState & state, const MoveArray & moves, std::
 
 		double w;
 		for (size_t d = 0; d < weights.size(); ++d) {
-			for (size_t i = 0; i < weights[d].capacity(); ++i) { 
+			for (size_t i = 0; i < weights[d].capacity(); ++i) {
 				ifs >> w;
 				weights[d][i] = w;
 			}
 		}
+
+		this->setWeights(weights);
 	}
 
 	// Set up for NOK
@@ -122,10 +129,7 @@ void Player_KiterEMP::getMoves(GameState & state, const MoveArray & moves, std::
 		const Unit & closestUnit = ourUnit.canHeal() ? state.getClosestOurUnit(_playerID, u) : state.getClosestEnemyUnit(_playerID, u);
 
 		_X.clear();
-		_Wleft.clear();
-		_Wdown.clear();
-		_Wup.clear();
-		_Wdown.clear();
+
 		const Unit& closestAlly = state.getClosestOurUnit(_playerID, u);
 		const Unit& closestEnemy = state.getClosestEnemyUnit(_playerID, u);
 		Position allyCenter = state.getAllyCenter(_playerID);
@@ -202,7 +206,6 @@ void Player_KiterEMP::getMoves(GameState & state, const MoveArray & moves, std::
 			for (size_t i = 0; i < tmp.size(); ++i) { _X.add(tmp[i]); }
 
 			this->normalize(_X);
-
 
 			//std::cout << "_Ws:" << _Wleft << "\n" << _Wright << "\n" << _Wup << "\n" << _Wdown << "\n";
 			//std::cout << "_X" << _X << "\n";

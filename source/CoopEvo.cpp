@@ -71,9 +71,9 @@ ChromosomeEMP CoopEvo::mutate(const ChromosomeEMP& c, const GameState & state, P
 // Find the average score of a kiter with a given safeDist
 int CoopEvo::eval(const GameState & state, PlayerPtr & p1, PlayerPtr & p2) const {
 	int kiterScore = 0;
-	Game g(state, p1, p2, 100);
-	g.play();
-	kiterScore = g.getState().evalLTD2(Players::Player_One);
+	Game gcopy(state, p1, p2, 1000);
+	gcopy.play();
+	kiterScore = gcopy.getState().evalLTD2(Players::Player_One);
 	return kiterScore;
 }
 
