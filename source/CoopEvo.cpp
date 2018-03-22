@@ -31,21 +31,21 @@ void CoopEvo::initRandomWeights(std::vector<Array<double, Constants::Num_Params>
 }
 
 // initialize method for population of many KiterEMP
-void CoopEvo::initialize(const GameState& state, PlayerPtr & p1, PlayerPtr & p2) {
+void CoopEvo::initialize(const std::vector<GameState>& states, PlayerPtr & p1, PlayerPtr & p2) {
 	Player_KiterEMP* kiter = dynamic_cast<Player_KiterEMP *>(p1.get());
 	kiter->switchOnOffline();
 	for (size_t i = 0; i < _popSize; ++i) {
 		std::vector<Array<double, Constants::Num_Params>> weights;
 		this->initRandomWeights(weights);
 		kiter->setWeights(weights);
-		int score = this->eval(state, p1, p2);
+		int score = this->eval(states, p1, p2);
 		ChromosomeEMP c(weights, score);
 		_genePool.push_back(c);
 	}
 }
 
 // mutate method
-ChromosomeEMP CoopEvo::mutate(const ChromosomeEMP& c, const GameState & state, PlayerPtr & p1, PlayerPtr & p2) const {
+ChromosomeEMP CoopEvo::mutate(const ChromosomeEMP& c, const std::vector<GameState>& states, PlayerPtr & p1, PlayerPtr & p2) const {
 	// Set up mutation delta
 	std::random_device rd; 
 	std::mt19937_64 eng(rd()); 
@@ -61,7 +61,7 @@ ChromosomeEMP CoopEvo::mutate(const ChromosomeEMP& c, const GameState & state, P
 		for (size_t i = 0; i < res.first[d].capacity(); ++i) {
 			res.first[d][i] += deltaDistr(eng);
 			kiterEmp->setWeights(res.first);
-			res.second = this->eval(state, p1, p2);
+			res.second = this->eval(states, p1, p2);
 		}
 	}
 
@@ -69,12 +69,14 @@ ChromosomeEMP CoopEvo::mutate(const ChromosomeEMP& c, const GameState & state, P
 }
 
 // Find the average score of a kiter with a given safeDist
-int CoopEvo::eval(const GameState & state, PlayerPtr & p1, PlayerPtr & p2) const {
+int CoopEvo::eval(const std::vector<GameState>& states, PlayerPtr & p1, PlayerPtr & p2) const {
 	int kiterScore = 0;
-	Game gcopy(state, p1, p2, 1000);
-	gcopy.play();
-	kiterScore = gcopy.getState().evalLTD2(Players::Player_One);
-	return kiterScore;
+	for (size_t i = 0; i < states.size(); ++i) {
+		Game gcopy(states[i], p1, p2, 1000);
+		gcopy.play();
+		kiterScore += gcopy.getState().evalLTD2(Players::Player_One);
+	}
+	return kiterScore/states.size();
 }
 
 void CoopEvo::writeFinalResult(const ChromosomeEMP& c) const {
@@ -100,10 +102,10 @@ void CoopEvo::printChrom(const ChromosomeEMP& c, std::ostream& os) const {
 }
 
 // EVOLUTION STRATEGY: http://www.cleveralgorithms.com/nature-inspired/evolution/evolution_strategies.html
-void CoopEvo::evolveParams(const GameState & state, PlayerPtr & p1, PlayerPtr & p2) {
+void CoopEvo::evolveParams(const std::vector<GameState>& states, PlayerPtr & p1, PlayerPtr & p2) {
 	// initialize and evaluate the baseline population 
 	ChromosomeEMP bestGene;
-	this->initialize(state, p1, p2);
+	this->initialize(states, p1, p2);
 	bestGene = _genePool[0];
 
 	// summary result for each epoch
@@ -126,7 +128,7 @@ void CoopEvo::evolveParams(const GameState & state, PlayerPtr & p1, PlayerPtr & 
 		// re-mutate mu best
 		for (size_t m = 0; m < _mu; ++m) {
 			ChromosomeEMP c = _genePool[m];
-			ChromosomeEMP mutated = mutate(c, state, p1, p2);
+			ChromosomeEMP mutated = mutate(c, states, p1, p2);
 			_genePool.push_back(mutated);
 		}
 

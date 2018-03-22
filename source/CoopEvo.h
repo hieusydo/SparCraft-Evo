@@ -27,20 +27,20 @@ namespace SparCraft
 		void initRandomWeights(std::vector<Array<double, Constants::Num_Params>>& weights);
 
 		// initialize method for population of many KiterDPSEvo
-		void initialize(const GameState& state, PlayerPtr & p1, PlayerPtr & p2);
+		void initialize(const std::vector<GameState>& state, PlayerPtr & p1, PlayerPtr & p2);
 
 		// mutate method
-		ChromosomeEMP mutate(const ChromosomeEMP& c, const GameState & state, PlayerPtr & p1, PlayerPtr & p2) const;
+		ChromosomeEMP mutate(const ChromosomeEMP& c, const std::vector<GameState>& state, PlayerPtr & p1, PlayerPtr & p2) const;
 
 		// evaluation method
-		int eval(const GameState & state, PlayerPtr & p1, PlayerPtr & p2) const;
+		int eval(const std::vector<GameState>& states, PlayerPtr & p1, PlayerPtr & p2) const;
 
 		void writeFinalResult(const ChromosomeEMP& c) const;
 		void printChrom(const ChromosomeEMP& c, std::ostream& os = std::cout) const;
 
 	public:
 		CoopEvo(size_t mu, size_t lambda, size_t epoch);
-		void evolveParams(const GameState & state, PlayerPtr & p1, PlayerPtr & p2);
+		void evolveParams(const std::vector<GameState>& state, PlayerPtr & p1, PlayerPtr & p2);
 	};
 
 }

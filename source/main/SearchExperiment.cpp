@@ -930,9 +930,9 @@ void SearchExperiment::runExperiment()
 
 		size_t mu = 8;
 		size_t lambda = 4;
-		size_t epoch = 100;
+		size_t epoch = 50;
 		CoopEvo k = CoopEvo(mu, lambda, epoch);
-		k.evolveParams(states[3], p1, p2);
+		k.evolveParams(states, p1, p2);
 		p1EMP->switchOffOffline();
 
 		std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
