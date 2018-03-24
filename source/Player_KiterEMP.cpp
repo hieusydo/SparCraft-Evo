@@ -177,7 +177,7 @@ void Player_KiterEMP::getMoves(GameState & state, const MoveArray & moves, std::
 		// otherwise use the closest move to the opponent
 		else
 		{
-			// dx, dy (encode direction and distance) --> Use cut-off to normalize
+			// dx, dy (encode direction and distance) --> Use cut-off to normalize?
 			Dxy dxyClosestEnemy = this->getDxyClosest(closestEnemy, ourUnit);
 			double dxClosestEnemy = dxyClosestEnemy.first;
 			double dyClosestEnemy = dxyClosestEnemy.second;
@@ -194,7 +194,7 @@ void Player_KiterEMP::getMoves(GameState & state, const MoveArray & moves, std::
 			double dxCenterAlly = dxyCenterAlly.first;
 			double dyCenterAlly = dxyCenterAlly.second;
 
-			// hp --> Use sqrt or log to normalize
+			// hp --> Use sqrt or log to normalize?
 			double hp = ourUnit.currentHP();
 
 			// Fill  _X
@@ -205,6 +205,7 @@ void Player_KiterEMP::getMoves(GameState & state, const MoveArray & moves, std::
 				hp };
 			for (size_t i = 0; i < tmp.size(); ++i) { _X.add(tmp[i]); }
 
+			// For now, use standard method
 			this->normalize(_X);
 
 			//std::cout << "_Ws:" << _Wleft << "\n" << _Wright << "\n" << _Wup << "\n" << _Wdown << "\n";

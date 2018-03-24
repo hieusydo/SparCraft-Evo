@@ -27,6 +27,13 @@ class SearchExperiment
 	std::vector<PlayerPtr>      players[2];
     std::vector<std::string>    playerStrings[2];
     std::vector<GameState>      states;
+
+	// Params for evo players
+	std::vector<GameState>      evoStates;
+	int							numEvoStates = 0;
+	bool						doOfflineEvo = true;
+	int							evoSide = 2;
+
     Map *                       map;
     bool                        showDisplay;
 
@@ -65,6 +72,10 @@ class SearchExperiment
     void   addSeparatedState(	std::vector<std::string> & unitTypes, std::vector<int> & numUnits,
                                     const int cx1, const int cy1, const int cx2, const int cy2,
 								    const PositionType & xLimit, const PositionType & yLimit);
+
+	void addSeparatedStateEvo(	std::vector<std::string> & unitTypes, std::vector<int> & numUnits,
+									const int cx1, const int cy1, const int cx2, const int cy2,
+									const PositionType & xLimit, const PositionType & yLimit);
 
     GameState   getSymmetricState(	std::vector<std::string> & unitTypes, std::vector<int> & numUnits,
 								    const PositionType & xLimit, const PositionType & yLimit);

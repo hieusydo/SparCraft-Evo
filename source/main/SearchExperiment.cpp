@@ -370,6 +370,28 @@ void SearchExperiment::addState(const std::string & line)
         {
             addSeparatedState(unitVec, numUnitVec, cx1, cy1, cx2, cy2, xLimit, yLimit);
         }
+
+		// add all evoStates
+		for (int s = 0; s < (this->numEvoStates / 2); ++s) {
+			addSeparatedStateEvo(unitVec, numUnitVec, cx1, cy1, cx2, cy2, xLimit, yLimit);
+		}
+
+		if (this->evoSide == 0) {
+			// Keep left states only
+			for (int i = 1; i < this->numEvoStates / 2; i += 2) {
+				std::swap(evoStates[i], evoStates[this->numEvoStates - i]);
+			}
+			for (int i = 0; i < this->numEvoStates / 2; ++i) { this->evoStates.pop_back(); }
+		}
+		if (this->evoSide == 1) {
+			// Keep right states only
+			for (int i = 0; i < this->numEvoStates / 2; i += 2) {
+				std::swap(evoStates[i], evoStates[this->numEvoStates - i]);
+			}
+			for (int i = 0; i < this->numEvoStates / 2; ++i) { this->evoStates.pop_back(); }
+		}
+		std::cout << "\nAdded " << this->numEvoStates << " Symmetric State for evolution. evoStates size: " <<  this->evoStates.size() << "\n\n";
+
     }
     else
     {
@@ -483,6 +505,39 @@ void SearchExperiment::addPlayer(const std::string & line)
 	else if (playerModelID == PlayerModels::KiterEMP)
 	{
 		players[playerID].push_back(PlayerPtr(new Player_KiterEMP(playerID)));
+
+		iss >> this->numEvoStates;
+		iss >> this->doOfflineEvo;
+
+	}
+
+	else if (playerModelID == PlayerModels::KiterEvo1)
+	{
+		std::string filePath;
+		iss >> filePath;
+		players[playerID].push_back(PlayerPtr(new Player_KiterEvo1(playerID, filePath)));
+	}
+
+	else if (playerModelID == PlayerModels::KiterEvo2)
+	{
+		std::string filePath;
+		iss >> filePath;
+		players[playerID].push_back(PlayerPtr(new Player_KiterEvo2(playerID, filePath)));
+	}
+
+	else if (playerModelID == PlayerModels::PortfolioGreedySearchEvo)
+	{
+		std::string enemyPlayerModel;
+		size_t timeLimit(0);
+		int iterations(1);
+		int responses(0);
+
+		iss >> timeLimit;
+		iss >> enemyPlayerModel;
+		iss >> iterations;
+		iss >> responses;
+
+		players[playerID].push_back(PlayerPtr(new Player_PortfolioGreedySearchEvo(playerID, PlayerModels::getID(enemyPlayerModel), iterations, responses, timeLimit)));
 	}
 
 	else if (playerModelID == PlayerModels::NOKDPSEvo)
@@ -719,6 +774,47 @@ GameState SearchExperiment::getSymmetricState( std::vector<std::string> & unitTy
 	return state;
 }
 
+void SearchExperiment::addSeparatedStateEvo(std::vector<std::string> & unitTypes, std::vector<int> & numUnits,
+	const PositionType cx1, const PositionType cy1,
+	const PositionType cx2, const PositionType cy2,
+	const PositionType & xLimit, const PositionType & yLimit)
+{
+	GameState state;
+	GameState state2;
+
+	// for each unit type to add
+	for (size_t i(0); i<unitTypes.size(); ++i)
+	{
+		BWAPI::UnitType type;
+		for (const BWAPI::UnitType & t : BWAPI::UnitTypes::allUnitTypes())
+		{
+			if (t.getName().compare(unitTypes[i]) == 0)
+			{
+				type = t;
+				break;
+			}
+		}
+
+		// add the symmetric unit for each count in the numUnits Vector
+		for (int u(0); u<numUnits[i]; ++u)
+		{
+			Position r((rand.nextInt() % (2 * xLimit)) - xLimit, (rand.nextInt() % (2 * yLimit)) - yLimit);
+			Position u1(cx1 + r.x(), cy1 + r.y());
+			Position u2(cx2 - r.x(), cy2 - r.y());
+
+			state.addUnit(type, Players::Player_One, u1);
+			state.addUnit(type, Players::Player_Two, u2);
+			state2.addUnit(type, Players::Player_One, u2);
+			state2.addUnit(type, Players::Player_Two, u1);
+		}
+	}
+
+	state.finishedMoving();
+
+	evoStates.push_back(state);
+	evoStates.push_back(state2);
+}
+
 void SearchExperiment::addSeparatedState(  std::vector<std::string> & unitTypes, std::vector<int> & numUnits,
                                                 const PositionType cx1, const PositionType cy1, 
                                                 const PositionType cx2, const PositionType cy2,
@@ -924,7 +1020,7 @@ void SearchExperiment::runExperiment()
 
 	// KiterEMP
 	Player_KiterEMP* p1EMP = dynamic_cast<Player_KiterEMP*> (p1.get());
-	if (p1EMP) {
+	if (p1EMP && this->doOfflineEvo) {
 		std::cout << "Evolving params for KiterEMP...\n";
 		std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
 
@@ -932,7 +1028,7 @@ void SearchExperiment::runExperiment()
 		size_t lambda = 4;
 		size_t epoch = 50;
 		CoopEvo k = CoopEvo(mu, lambda, epoch);
-		k.evolveParams(states, p1, p2);
+		k.evolveParams(this->evoStates , p1, p2);
 		p1EMP->switchOffOffline();
 
 		std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
@@ -948,9 +1044,6 @@ void SearchExperiment::runExperiment()
 			// for each state we care about
 			for (size_t state(2); state < states.size(); ++state)
 			{
-
-				//state = 4; // TODO: debug. Fixed state. try for different army size too? 
-
                 char buf[255];
                 fprintf(stderr, "%s  ", configFileSmall.c_str());
 				fprintf(stderr, "%5d %5d %5d %5d", (int)p1Player, (int)p2Player, (int)state, (int)states[state].numUnits(Players::Player_One));

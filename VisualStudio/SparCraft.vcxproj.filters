@@ -127,6 +127,18 @@
     <ClCompile Include="..\source\CoopEvo.cpp">
       <Filter>evolution</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\Player_KiterEvo1.cpp">
+      <Filter>simulation\players\evolution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Player_KiterEvo2.cpp">
+      <Filter>simulation\players\evolution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\PortfolioGreedySearchEvo.cpp">
+      <Filter>search\Greedy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Player_PortfolioGreedySearchEvo.cpp">
+      <Filter>simulation\players\search</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\AlphaBetaSearch.h">
@@ -290,6 +302,18 @@
     </ClInclude>
     <ClInclude Include="..\source\CoopEvo.h">
       <Filter>evolution</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\Player_KiterEvo1.h">
+      <Filter>simulation\players\evolution</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\Player_KiterEvo2.h">
+      <Filter>simulation\players\evolution</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PortfolioGreedySearchEvo.h">
+      <Filter>search\Greedy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\Player_PortfolioGreedySearchEvo.h">
+      <Filter>simulation\players\search</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

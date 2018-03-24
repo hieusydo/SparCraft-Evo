@@ -24,6 +24,14 @@ The goal of this project is to use offline evolution to make more flexible scrip
    * `<config-file-name>.txt` file. Notes: must update all the paths to be consistent with the test system
 
 
+## How to add new player/script
+
+1. Add header file to `AllPlayers.h`
+1. Add new player to `AllPlayers::getPlayer` and `AllPlayers::getPlayerPtr`
+1. Add player name to `AllPlayers::getPlayerName(const IDType & type)`
+1. Add player model to `class PlayerModels : public EnumData<PlayerModels>` in **both** `enum` and `init`
+1. Add logic handling in `SearchExperiment.cpp`
+
 ## Credits
 
 The project is built upon the SparCraft framework, which is open source StarCraft combat simulation package developed by [David Churchill](https://github.com/davechurchill/ualbertabot/tree/master/SparCraft).

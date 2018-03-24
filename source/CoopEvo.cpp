@@ -76,7 +76,9 @@ int CoopEvo::eval(const std::vector<GameState>& states, PlayerPtr & p1, PlayerPt
 		gcopy.play();
 		kiterScore += gcopy.getState().evalLTD2(Players::Player_One);
 	}
-	return kiterScore/states.size();
+	// static_cast from size_t to int might cause overflow 
+	// if the states size exceeds INT_MAX, which won't be the case for this project
+	return kiterScore / static_cast<int>(states.size());
 }
 
 void CoopEvo::writeFinalResult(const ChromosomeEMP& c) const {
