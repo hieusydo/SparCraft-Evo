@@ -376,6 +376,7 @@ void SearchExperiment::addState(const std::string & line)
 			addSeparatedStateEvo(unitVec, numUnitVec, cx1, cy1, cx2, cy2, xLimit, yLimit);
 		}
 
+		iss >> this->evoSide;
 		if (this->evoSide == 0) {
 			// Keep left states only
 			for (int i = 1; i < this->numEvoStates / 2; i += 2) {
@@ -390,7 +391,8 @@ void SearchExperiment::addState(const std::string & line)
 			}
 			for (int i = 0; i < this->numEvoStates / 2; ++i) { this->evoStates.pop_back(); }
 		}
-		std::cout << "\nAdded " << this->numEvoStates << " Symmetric State for evolution. evoStates size: " <<  this->evoStates.size() << "\n\n";
+		std::cout << "\nAdded " << this->numEvoStates << " Symmetric State for evolution. evoStates size: " 
+			<<  this->evoStates.size() << " with evoSide = " << this->evoSide << "\n\n";
 
     }
     else
