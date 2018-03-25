@@ -371,29 +371,29 @@ void SearchExperiment::addState(const std::string & line)
             addSeparatedState(unitVec, numUnitVec, cx1, cy1, cx2, cy2, xLimit, yLimit);
         }
 
-		// add all evoStates
-		for (int s = 0; s < (this->numEvoStates / 2); ++s) {
-			addSeparatedStateEvo(unitVec, numUnitVec, cx1, cy1, cx2, cy2, xLimit, yLimit);
-		}
-
-		iss >> this->evoSide;
-		if (this->evoSide == 0) {
-			// Keep left states only
-			for (int i = 1; i < this->numEvoStates / 2; i += 2) {
-				std::swap(evoStates[i], evoStates[this->numEvoStates - i]);
+		if (this->doOfflineEvo) {
+			// add all evoStates
+			for (int s = 0; s < (this->numEvoStates / 2); ++s) {
+				addSeparatedStateEvo(unitVec, numUnitVec, cx1, cy1, cx2, cy2, xLimit, yLimit);
 			}
-			for (int i = 0; i < this->numEvoStates / 2; ++i) { this->evoStates.pop_back(); }
-		}
-		if (this->evoSide == 1) {
-			// Keep right states only
-			for (int i = 0; i < this->numEvoStates / 2; i += 2) {
-				std::swap(evoStates[i], evoStates[this->numEvoStates - i]);
-			}
-			for (int i = 0; i < this->numEvoStates / 2; ++i) { this->evoStates.pop_back(); }
-		}
-		std::cout << "\nAdded " << this->numEvoStates << " Symmetric State for evolution. evoStates size: " 
-			<<  this->evoStates.size() << " with evoSide = " << this->evoSide << "\n\n";
 
+			if (this->evoSide == 0) {
+				// Keep left states only
+				for (int i = 1; i < this->numEvoStates / 2; i += 2) {
+					std::swap(evoStates[i], evoStates[this->numEvoStates - 1 - i]);
+				}
+				for (int i = 0; i < this->numEvoStates / 2; ++i) { this->evoStates.pop_back(); }
+			}
+			if (this->evoSide == 1) {
+				// Keep right states only
+				for (int i = 0; i < this->numEvoStates / 2; i += 2) {
+					std::swap(evoStates[i], evoStates[this->numEvoStates - 1 - i]);
+				}
+				for (int i = 0; i < this->numEvoStates / 2; ++i) { this->evoStates.pop_back(); }
+			}
+			std::cout << "\nAdded " << this->numEvoStates << " Symmetric State for evolution. evoStates[] size = "
+				<< this->evoStates.size() << ", evoSide = " << this->evoSide << "\n\n";
+		}
     }
     else
     {
@@ -508,9 +508,12 @@ void SearchExperiment::addPlayer(const std::string & line)
 	{
 		players[playerID].push_back(PlayerPtr(new Player_KiterEMP(playerID)));
 
+		std::string s; 
 		iss >> this->numEvoStates;
-		iss >> this->doOfflineEvo;
-
+		iss >> s;
+		this->doOfflineEvo = (s == "true") ? true : false;
+		iss >> this->evoSide;
+		//std::cout << "Params for KiterEMP: " << this->numEvoStates << " " << std::boolalpha << this->doOfflineEvo << " " << this->evoSide << "\n";
 	}
 
 	else if (playerModelID == PlayerModels::KiterEvo1)

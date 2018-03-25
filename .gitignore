@@ -7,4 +7,6 @@ bin/*.map
 bin/*.dll
 bin/*.exe
 source/*.o
-VisualStudio/*.opensdf 
+VisualStudio/*.opensdf
+VisualStudio/SparCraft.v12.suo
+VisualStudio/SparCraft.sdf

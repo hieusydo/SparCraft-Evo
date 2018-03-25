@@ -8,17 +8,18 @@
 
 # My experiment
 # Player X KiterEMP NumEvoStates DoOfflineEvo(true=evolve/false=use last result) EvoSide(0=left, 1=right, 2=both)
-# Player 0 KiterEMP 4 true 1
+# Player 0 KiterDPS
+Player 0 KiterEMP 4 true 0
 # Player 0 KiterEvo1 kiterEvo\wEvo1.txt
 # Player 0 KiterEvo2 C:\SparCraft-Evo\bin\kiterEvo\wEvo2.txt
-Player 0 PortfolioGreedySearchEvo 0 KiterEvo1 1 0
+# Player 0 PortfolioGreedySearchEvo 0 KiterEvo1 1 0
 
-# Player 1 AttackClosest
+Player 1 AttackClosest
 # Player 1 AttackWeakest
 # Player 1 KiterDPS
 # Player 1 NOKDPS
 # Player 1 Kiter_NOKDPS
-Player 1 PortfolioGreedySearch 0 NOKDPS 1 0
+# Player 1 PortfolioGreedySearch 0 NOKDPS 1 0
 
 ##################################################
 #  State StateSymmetric NumStates MaxX MaxY [UnitType UnitNum]+
