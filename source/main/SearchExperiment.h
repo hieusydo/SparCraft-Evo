@@ -31,7 +31,7 @@ class SearchExperiment
 	// Params for evo players
 	std::vector<GameState>      evoStates;
 	int							numEvoStates = 0;
-	bool						doOfflineEvo = true;
+	bool						doOfflineEvo = false;
 	int							evoSide = 2;
 
     Map *                       map;
