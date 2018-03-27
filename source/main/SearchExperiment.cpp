@@ -512,8 +512,18 @@ void SearchExperiment::addPlayer(const std::string & line)
 		iss >> this->numEvoStates;
 		iss >> s;
 		this->doOfflineEvo = (s == "true") ? true : false;
-		iss >> this->evoSide;
-		//std::cout << "Params for KiterEMP: " << this->numEvoStates << " " << std::boolalpha << this->doOfflineEvo << " " << this->evoSide << "\n";
+		if (this->doOfflineEvo) {
+			iss >> this->evoSide;
+			iss >> this->mu;
+			iss >> this->lambda;
+			iss >> this->epoch;
+			std::cout << "Params for KiterEMP: " << this->numEvoStates << " " << std::boolalpha << this->doOfflineEvo << " " << this->evoSide <<
+				" " << this->mu << " " << this->lambda << " " << this->epoch << "\n";
+		}
+		else {
+			std::cout << "Not doing offline evolution. Using last params...\n";
+		}
+
 	}
 
 	else if (playerModelID == PlayerModels::KiterEvo1)
@@ -1029,10 +1039,10 @@ void SearchExperiment::runExperiment()
 		std::cout << "Evolving params for KiterEMP...\n";
 		std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
 
-		size_t mu = 8;
-		size_t lambda = 4;
-		size_t epoch = 50;
-		CoopEvo k = CoopEvo(mu, lambda, epoch);
+		//size_t mu = 8;
+		//size_t lambda = 4;
+		//size_t epoch = 50;
+		CoopEvo k = CoopEvo(this->mu, this->lambda, this->epoch);
 		k.evolveParams(this->evoStates , p1, p2);
 		p1EMP->switchOffOffline();
 

@@ -15,7 +15,7 @@ CoopEvo::CoopEvo(size_t mu, size_t lambda, size_t epoch)
 void CoopEvo::initRandomWeights(std::vector<Array<double, Constants::Num_Params>>& weights) {
 	std::random_device rd; // get a random seed from the OS entropy device
 	std::mt19937_64 eng(rd()); // use the 64-bit Mersenne Twister 19937 generator with the rd seed
-	std::uniform_real_distribution<double> distr(0, 1); // define the distribution
+	std::normal_distribution<double> distr(0, 1); // define the distribution
 
 	for (size_t i = 0; i < 4; ++i) {
 		Array<double, Constants::Num_Params> w;

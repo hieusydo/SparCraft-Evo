@@ -33,6 +33,9 @@ class SearchExperiment
 	int							numEvoStates = 0;
 	bool						doOfflineEvo = false;
 	int							evoSide = 2;
+	size_t						mu;
+	size_t						lambda;
+	size_t						epoch;
 
     Map *                       map;
     bool                        showDisplay;
