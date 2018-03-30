@@ -139,6 +139,9 @@
     <ClCompile Include="..\source\Player_PortfolioGreedySearchEvo.cpp">
       <Filter>simulation\players\search</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\CoopEvoSingle.cpp">
+      <Filter>evolution</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\AlphaBetaSearch.h">
@@ -314,6 +317,9 @@
     </ClInclude>
     <ClInclude Include="..\source\Player_PortfolioGreedySearchEvo.h">
       <Filter>simulation\players\search</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\CoopEvoSingle.h">
+      <Filter>evolution</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

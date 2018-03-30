@@ -71,6 +71,7 @@ namespace SparCraft
 
 		// number of evo parametes
 		const size_t Num_Params = 9;
+		const size_t Dna_Len = 3;
 	}
 
     namespace System
