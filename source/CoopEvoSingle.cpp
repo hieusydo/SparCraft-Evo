@@ -32,14 +32,17 @@ void CoopEvoSingle::initRandomWeights(std::vector<Array<double, Constants::Num_P
 
 // initialize method for population of many KiterEMP
 void CoopEvoSingle::initialize(const std::vector<GameState>& states, PlayerPtr & p1, PlayerPtr & p2) {
-	Player_KiterEMP* kiter = dynamic_cast<Player_KiterEMP *>(p1.get());
-	kiter->switchOnOffline();
+	Player_PortfolioGreedySearchEvo* pgsPlayer = dynamic_cast<Player_PortfolioGreedySearchEvo*>(p1.get());
+
 	for (size_t i = 0; i < _popSize; ++i) {
 		Dna dna;
 		for (size_t j = 0; j < Constants::Dna_Len; ++j) {
 			Chrms weights;
 			this->initRandomWeights(weights);
 			//kiter->setWeights(weights);
+
+			//PLayer_KiterEMP* kiter = new Player_KiterEMP(0);
+
 			dna.first.push_back(weights);
 		}
 

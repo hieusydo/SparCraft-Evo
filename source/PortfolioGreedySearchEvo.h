@@ -34,6 +34,9 @@ namespace SparCraft
 		IDType                      calculateInitialSeed(const IDType & player, const GameState & state);
 		void                        setAllScripts(const IDType & player, const GameState & state, UnitScriptData & data, const IDType & script);
 
+		void						clearPortfolio();
+		void						addScript(IDType player);
+
 	public:
 
 		PortfolioGreedySearchEvo(const IDType & player, const IDType & enemyScript, const size_t & iter, const size_t & responses, const size_t & timeLimit);
