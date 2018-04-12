@@ -1036,7 +1036,7 @@ void SearchExperiment::runExperiment()
 	// KiterEMP
 	Player_KiterEMP* p1EMP = dynamic_cast<Player_KiterEMP*> (p1.get());
 	if (p1EMP && this->doOfflineEvo) {
-		std::cout << "Evolving params for KiterEMP...\n";
+		std::cout << "Evolving params for KiterEMP with mu=" << mu << ", lambda=" << lambda << ", epoch=" << epoch << "...\n";
 		std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
 
 		//size_t mu = 8;

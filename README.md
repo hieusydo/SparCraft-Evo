@@ -24,6 +24,8 @@ The goal of this project is to use offline evolution to make more flexible scrip
    * `<config-file-name>.txt` file. Notes: must update all the paths to be consistent with the test system
 
 
+1. [Optional] [Instructions](https://www.ics.uci.edu/~pattis/common/handouts/mingweclipse/mingw.html) to install MinGW for Windows 
+
 ## How to add new player/script
 
 1. Add header file to `AllPlayers.h`

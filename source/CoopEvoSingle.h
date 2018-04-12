@@ -25,7 +25,6 @@ namespace SparCraft
 		size_t _popSize;
 		size_t _epoch;
 
-		//std::priority_queue<Chromosome, std::vector<Chromosome>, KiterComparator> _genePool;
 		std::vector<Dna> _genePool;
 
 		// Order of direction Array in vector: Left Right Up Down

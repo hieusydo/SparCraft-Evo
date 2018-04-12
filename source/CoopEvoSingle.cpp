@@ -41,10 +41,22 @@ void CoopEvoSingle::initialize(const std::vector<GameState>& states, PlayerPtr &
 			this->initRandomWeights(weights);
 			//kiter->setWeights(weights);
 
-			//PLayer_KiterEMP* kiter = new Player_KiterEMP(0);
+			//Player_KiterEMP* kiter = dynamic_cast<Player_KiterEMP*>(PlayerPtr(new Player_KiterEMP(0)).get());
+			Player_KiterEvo1* kiter1 = new Player_KiterEvo1(0);
+			Player_KiterEvo2* kiter2 = new Player_KiterEvo2(0);
 
 			dna.first.push_back(weights);
 		}
+
+		// Set first evo script
+		Chrms w1;
+		this->initRandomWeights(w1);
+		Player_KiterEvo1* kiter1 = new Player_KiterEvo1(0);
+		kiter1->setWeights(w1);
+		
+		//pgsPlayer->
+
+		dna.first.push_back(w1);
 
 		// TODO: play PGS to eval!
 		dna.second = this->eval(states, p1, p2);

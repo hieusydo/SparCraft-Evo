@@ -10,9 +10,9 @@
 ####################################################################################################
 
 # My experiment
-Player 0 Kiter_NOKDPS
-# Player 0 KiterEMP 4 false 1 8 4 50
-# Player 0 KiterEvo1 C:\Users\Hieu\Desktop\benchmark1\with-normal-dist-init-weird-good-left\finalRes.txt
+# Player 0 Kiter_NOKDPS
+Player 0 KiterEMP 4 true 1 8 4 50
+# Player 0 KiterEvo1 C:\Users\Hieu\Desktop\benchmark1\with-normal--left\finalRes.txt
 # Player 0 KiterEvo2 C:\SparCraft-Evo\bin\kiterEvo\wEvo2.txt
 # Player 0 PortfolioGreedySearchEvo 0 KiterEvo1 1 0
 
@@ -31,7 +31,9 @@ Player 1 Kiter_NOKDPS
 #  State StateSymmetric NumStates MaxX MaxY [UnitType UnitNum]+
 #  State SeparatedState NumStates RandX RandY cx1 cy1 cx2 cy2 [UnitType UnitNum]+
 ##################################################
-State SeparatedState 100 128 128 400 360 840 360 Protoss_Dragoon 50
+State SeparatedState 100 128 128 400 360 840 360 Protoss_Dragoon 16
+# State SeparatedState 100 128 128 400 360 840 360 Protoss_Dragoon 8 Protoss_Zealot 8
+
 
 # Sample SeparatedState States
 # State SeparatedState 100 128 128 400 360 840 360 Zerg_Zergling 50
@@ -47,6 +49,6 @@ State SeparatedState 100 128 128 400 360 840 360 Protoss_Dragoon 50
 #State StateSymmetric 10 128 128 Terran_Marine 16 Zerg_Zergling 16
 
 
-ResultsFile C:\SparCraft-Evo\bin\result\result true
+ResultsFile C:\SparCraft-Evo\bin\kiterEMP\result true
 
 Display true C:\SparCraft-Evo\starcraft_images

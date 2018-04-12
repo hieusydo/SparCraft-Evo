@@ -10,18 +10,17 @@ PortfolioGreedySearchEvo::PortfolioGreedySearchEvo(const IDType & player, const 
 	, _totalEvals(0)
 	, _timeLimit(timeLimit)
 {
-	//_playerScriptPortfolio.push_back(PlayerModels::KiterEvo1);
-	//_playerScriptPortfolio.push_back(PlayerModels::KiterEvo2);
-
+	_playerScriptPortfolio.push_back(PlayerModels::KiterEvo1);
+	_playerScriptPortfolio.push_back(PlayerModels::KiterEvo2);
 }
 
-void PortfolioGreedySearchEvo::addScript(IDType player) {
-	_playerScriptPortfolio.push_back(player);
-}
-
-void PortfolioGreedySearchEvo::clearPortfolio() {
-	_playerScriptPortfolio.clear();
-}
+//void PortfolioGreedySearchEvo::addScript(IDType player) {
+//	_playerScriptPortfolio.push_back(player);
+//}
+//
+//void PortfolioGreedySearchEvo::clearPortfolio() {
+//	_playerScriptPortfolio.clear();
+//}
 
 std::vector<Action> PortfolioGreedySearchEvo::search(const IDType & player, const GameState & state)
 {
