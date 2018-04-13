@@ -24,6 +24,9 @@
 #include "Player_KiterDPSEvo.h"
 #include "Player_NOKDPSEvo.h"
 #include "Player_KiterEMP.h"
+#include "Player_KiterEvo1.h"
+#include "Player_KiterEvo2.h"
+#include "Player_PortfolioGreedySearchEvo.h"
 
 //POE
 #include "Player_POE.h"
