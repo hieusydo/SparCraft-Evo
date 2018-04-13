@@ -8,6 +8,7 @@
 #include "UnitScriptData.h"
 #include <memory>
 #include "Timer.h"
+#include "POEChromosome.h"
 
 namespace SparCraft
 {
@@ -44,6 +45,9 @@ public:
 	void            play();
     void            playNextTurn();
     void            playIndividualScripts(UnitScriptData & scriptsChosen);
+
+	void POEPlayOut(const IDType player, POEChromosome chr, const int poeRoundLimit);
+
 	void            storeHistory(const bool & store);
 	bool            gameOver() const;
     

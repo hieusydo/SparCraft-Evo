@@ -5,6 +5,8 @@
 #include "MoveArray.h"
 #include "Unit.h"
 #include <memory>
+#include <vector>
+#include <set>
 
 namespace SparCraft
 {
@@ -22,6 +24,15 @@ public:
     virtual IDType      getType() { return PlayerModels::None; }
 };
 
+class POEScriptPlayer :Player
+{
+protected:
+	IDType _playerID;
+	//this type of player is only used as a POE subroutine
+public:
+	virtual void		getLimitedMoves(GameState & state, const MoveArray & moves, std::vector<Action> & moveVec, std::set<IDType> allowedUnits, bool clearMoveVec);
+};
+
 class CompareUnitDPSThreat
 {
     const bool operator() (Unit * u1, Unit * u2) const
@@ -34,5 +45,5 @@ class CompareUnitDPSThreat
 };
 
 typedef	std::shared_ptr<Player> PlayerPtr; 
-
+typedef	std::shared_ptr<POEScriptPlayer> POEScriptPlayerPtr;
 }
