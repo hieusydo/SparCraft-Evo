@@ -28,6 +28,9 @@
 #include "Player_KiterEvo2.h"
 #include "Player_PortfolioGreedySearchEvo.h"
 
+//POE
+#include "Player_POE.h"
+
 namespace SparCraft
 {
     

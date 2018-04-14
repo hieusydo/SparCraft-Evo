@@ -81,6 +81,89 @@ void Game::playNextTurn()
     rounds++;
 }
 
+
+void Game::POEPlayOut(const IDType player, POEChromosome chr, const int poeRoundLimit){
+	//this is the playout function for POE player.
+	//a poe player will use this function to evaluate a chromosome
+	//will play the game until there is a winner
+	// array which will hold all the script moves for players
+	//poeRoundLimit is how many rounds it can play during a POE playout
+	Array2D<std::vector<Action>, Constants::Num_Players, PlayerModels::Size> allScriptMoves;
+
+	scriptMoves[Players::Player_One] = std::vector<Action>(state.numUnits(Players::Player_One));
+	scriptMoves[Players::Player_Two] = std::vector<Action>(state.numUnits(Players::Player_Two));
+
+	t.start();
+
+	int poeTimeStep = 0;
+
+	int poeRound = 0;//this is different from round, or movelimit
+
+	// play until there is no winner
+	while (!gameOver())
+	{
+		//for each round in the game
+		if (moveLimit && rounds > moveLimit)
+		{
+			break;
+		}
+
+		if (poeRound >= poeRoundLimit){
+			break;
+		}
+
+		Timer frameTimer;
+		frameTimer.start();
+
+		// clear all script moves for both players
+		for (IDType p(0); p<Constants::Num_Players; p++)
+		{
+			for (IDType s(0); s<PlayerModels::Size; ++s)
+			{
+				allScriptMoves[p][s].clear();
+			}
+		}
+
+		// clear the moves we will actually be doing
+		scriptMoves[0].clear();
+		scriptMoves[1].clear();
+
+		// the playr that will move next
+		const IDType playerToMove(getPlayerToMove());
+		const IDType enemyPlayer(state.getEnemy(playerToMove));
+
+		// generate the moves possible from this state
+		state.generateMoves(moves[playerToMove], playerToMove);
+
+		// calculate the moves the unit would do given its script preferences
+		//FINISHED I THINK ALL I NEED IS TO HAVE A "CALCULATEMOVES" METHOD
+		//WHICH RETURNS THE MOVES FOR POE PLAYER AND THE NOKAV PLAYER
+		chr.generateMoves(playerToMove, moves[playerToMove], state, poeTimeStep, scriptMoves[playerToMove]);
+		//scriptData.calculateMoves(playerToMove, moves[playerToMove], state, scriptMoves[playerToMove]);
+
+		// if both players can move, generate the other player's moves
+		if (state.bothCanMove())
+		{
+			state.generateMoves(moves[enemyPlayer], enemyPlayer);
+			chr.generateMoves(enemyPlayer, moves[enemyPlayer], state, poeTimeStep, scriptMoves[enemyPlayer]);
+			//scriptData.calculateMoves(enemyPlayer, moves[enemyPlayer], state, scriptMoves[enemyPlayer]);
+
+			state.makeMoves(scriptMoves[enemyPlayer]);
+		}
+
+		// make the moves
+		state.makeMoves(scriptMoves[playerToMove]);
+		state.finishedMoving();
+		rounds++;
+		poeTimeStep++;
+
+		poeRound++;
+	}
+
+	gameTimeMS = t.getElapsedTimeInMilliSec();
+
+}
+
 // play the game until there is a winner
 void Game::playIndividualScripts(UnitScriptData & scriptData)
 {

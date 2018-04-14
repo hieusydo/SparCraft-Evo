@@ -15,6 +15,7 @@ Player * AllPlayers::getPlayer(const IDType & playerID, const IDType & type)
 	else if (type == PlayerModels::KiterEMP)     { return new Player_KiterEMP(playerID); }
 	else if (type == PlayerModels::KiterEvo1)     { return new Player_KiterEvo1(playerID); }
 	else if (type == PlayerModels::KiterEvo2)     { return new Player_KiterEvo2(playerID); }
+	else if (type == PlayerModels::POE)     { return new Player_POE(playerID); }
 
 	else if		(type == PlayerModels::Kiter_NOKDPS)		{ return new Player_Kiter_NOKDPS(playerID); }
     else if		(type == PlayerModels::Cluster)		    	{ return new Player_Cluster(playerID); }
@@ -36,8 +37,9 @@ PlayerPtr AllPlayers::getPlayerPtr(const IDType & playerID, const IDType & type)
 	else if (type == PlayerModels::KiterEMP)     { return PlayerPtr(new Player_KiterEMP(playerID)); }
 	else if (type == PlayerModels::KiterEvo1)     { return PlayerPtr(new Player_KiterEvo1(playerID)); }
 	else if (type == PlayerModels::KiterEvo2)     { return PlayerPtr(new Player_KiterEvo2(playerID)); }
+	else if (type == PlayerModels::POE)     { return PlayerPtr(new Player_POE(playerID)); }
 
-	else if		(type == PlayerModels::Kiter_NOKDPS)		{ return PlayerPtr(new Player_Kiter_NOKDPS(playerID)); }
+    else if		(type == PlayerModels::Kiter_NOKDPS)		{ return PlayerPtr(new Player_Kiter_NOKDPS(playerID)); }
     else if		(type == PlayerModels::Cluster)		    	{ return PlayerPtr(new Player_Cluster(playerID)); }
 	else if		(type == PlayerModels::NOKDPS)              { return PlayerPtr(new Player_NOKDPS(playerID)); }
 	else if		(type == PlayerModels::Random)				{ return PlayerPtr(new Player_Random(playerID)); }
@@ -56,6 +58,7 @@ std::string AllPlayers::getPlayerName(const IDType & type) {
 	else if (type == PlayerModels::KiterEMP)     { return "KiterEMP"; }
 	else if (type == PlayerModels::KiterEvo1)     { return "KiterEvo1"; }
 	else if (type == PlayerModels::KiterEvo2)     { return "KiterEvo2"; }
+	else if (type == PlayerModels::POE)     { return "POE"; }
 
 	else if (type == PlayerModels::Kiter_NOKDPS)		{ return "Kiter_NOKDPS"; }
 	else if (type == PlayerModels::Cluster)		    	{ return "Cluster"; }
