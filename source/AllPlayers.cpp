@@ -64,5 +64,6 @@ std::string AllPlayers::getPlayerName(const IDType & type) {
 	else if (type == PlayerModels::Cluster)		    	{ return "Cluster"; }
 	else if (type == PlayerModels::NOKDPS)              { return "NOKDPS"; }
 	else if (type == PlayerModels::Random)				{ return "Random"; }
-	else													{ return "NOKDPS"; }
+	else if (type == PlayerModels::PortfolioGreedySearch) { return "PGS"; }
+	else													{ return "No name specified"; }
 }
