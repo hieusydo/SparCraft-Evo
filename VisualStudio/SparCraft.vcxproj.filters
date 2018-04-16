@@ -142,6 +142,21 @@
     <ClCompile Include="..\source\CoopEvoSingle.cpp">
       <Filter>evolution</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\Player_POE.cpp">
+      <Filter>simulation\players\poe</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\PortfolioOnlineEvolution.cpp">
+      <Filter>poe</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\POEChromosome.cpp">
+      <Filter>poe</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\POEPlayer_KiterDPS.cpp">
+      <Filter>poe</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\POEPlayer_NOKDPS.cpp">
+      <Filter>poe</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\AlphaBetaSearch.h">
@@ -321,6 +336,21 @@
     <ClInclude Include="..\source\CoopEvoSingle.h">
       <Filter>evolution</Filter>
     </ClInclude>
+    <ClInclude Include="..\source\Player_POE.h">
+      <Filter>simulation\players\poe</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PortfolioOnlineEvolution.h">
+      <Filter>poe</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\POEChromosome.h">
+      <Filter>poe</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\POEPlayer_KiterDPS.h">
+      <Filter>poe</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\POEPlayer_NOKDPS.h">
+      <Filter>poe</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="util">
@@ -364,6 +394,12 @@
     </Filter>
     <Filter Include="evolution">
       <UniqueIdentifier>{6d7a0697-bd5d-4fde-8aa5-e350cccfbfc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="simulation\players\poe">
+      <UniqueIdentifier>{7d708220-b4f0-4727-bc02-3fa92afbd737}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="poe">
+      <UniqueIdentifier>{733ac723-48ff-4ee7-a3c8-ee2cab65d670}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

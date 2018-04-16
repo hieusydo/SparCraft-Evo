@@ -134,7 +134,11 @@
     <ClInclude Include="..\source\Player_KiterEvo1.h" />
     <ClInclude Include="..\source\Player_KiterEMP.h" />
     <ClInclude Include="..\source\Player_KiterEvo2.h" />
+    <ClInclude Include="..\source\Player_POE.h" />
     <ClInclude Include="..\source\Player_PortfolioGreedySearchEvo.h" />
+    <ClInclude Include="..\source\POEChromosome.h" />
+    <ClInclude Include="..\source\POEPlayer_KiterDPS.h" />
+    <ClInclude Include="..\source\POEPlayer_NOKDPS.h" />
     <ClInclude Include="..\source\Population_Kiter.h" />
     <ClInclude Include="..\source\Action.h" />
     <ClInclude Include="..\source\AllPlayers.h" />
@@ -169,6 +173,7 @@
     <ClInclude Include="..\source\Player_UCT.h" />
     <ClInclude Include="..\source\PortfolioGreedySearch.h" />
     <ClInclude Include="..\source\PortfolioGreedySearchEvo.h" />
+    <ClInclude Include="..\source\PortfolioOnlineEvolution.h" />
     <ClInclude Include="..\source\Random.hpp" />
     <ClInclude Include="..\source\Common.h" />
     <ClInclude Include="..\source\Position.hpp" />
@@ -195,7 +200,11 @@
     <ClCompile Include="..\source\Player_KiterEMP.cpp" />
     <ClCompile Include="..\source\Player_KiterEvo1.cpp" />
     <ClCompile Include="..\source\Player_KiterEvo2.cpp" />
+    <ClCompile Include="..\source\Player_POE.cpp" />
     <ClCompile Include="..\source\Player_PortfolioGreedySearchEvo.cpp" />
+    <ClCompile Include="..\source\POEChromosome.cpp" />
+    <ClCompile Include="..\source\POEPlayer_KiterDPS.cpp" />
+    <ClCompile Include="..\source\POEPlayer_NOKDPS.cpp" />
     <ClCompile Include="..\source\Population_Kiter.cpp" />
     <ClCompile Include="..\source\Action.cpp" />
     <ClCompile Include="..\source\AllPlayers.cpp" />
@@ -226,6 +235,7 @@
     <ClCompile Include="..\source\Player_UCT.cpp" />
     <ClCompile Include="..\source\PortfolioGreedySearch.cpp" />
     <ClCompile Include="..\source\PortfolioGreedySearchEvo.cpp" />
+    <ClCompile Include="..\source\PortfolioOnlineEvolution.cpp" />
     <ClCompile Include="..\source\SparCraft.cpp" />
     <ClCompile Include="..\source\SparCraftAssert.cpp" />
     <ClCompile Include="..\source\SparCraftException.cpp" />
