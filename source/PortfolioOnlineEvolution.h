@@ -5,13 +5,12 @@
 #include "Player.h"
 #include "Game.h"
 #include "Action.h"
-#include "POEUnitScriptData.h"
 #include <memory>
 #include "POEPlayer_NOKDPS.h"
 #include "POEPlayer_KiterDPS.h"
 #include "POEChromosome.h"
 #include "random"
-
+ 
 namespace SparCraft
 {
 
@@ -43,11 +42,7 @@ namespace SparCraft
 		size_t                      _totalEvals;
 		size_t                      _timeLimit;
 
-		void                        doPortfolioSearch(const IDType & player, const GameState & state, POEUnitScriptData & currentData);
 		std::vector<Action>     getMoveVec(const IDType & player, const GameState & state, const std::vector<IDType> & playerScripts);
-		StateEvalScore              eval(const IDType & player, const GameState & state, POEUnitScriptData & playerScriptsChosen);
-		IDType                      calculateInitialSeed(const IDType & player, const GameState & state);
-		void                        setAllScripts(const IDType & player, const GameState & state, POEUnitScriptData & data, const IDType & script);
 
 	public:
 		PortfolioOnlineEvolution(const IDType & player, const IDType & enemyScript, const size_t & num_generations, const size_t & timeLimit, std::vector<POEScriptPlayerPtr>  poePlayerPtrPortfolio);

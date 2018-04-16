@@ -590,6 +590,10 @@ void SearchExperiment::addPlayer(const std::string & line)
 
         players[playerID].push_back(PlayerPtr(new Player_PortfolioGreedySearch(playerID, PlayerModels::getID(enemyPlayerModel), iterations, responses, timeLimit))); 
     }
+	else if (playerModelID == PlayerModels::POE)
+	{
+		players[playerID].push_back(PlayerPtr(new Player_POE(playerID)));
+	}
     else if (playerModelID == PlayerModels::AlphaBeta)
     {
         int             timeLimitMS;
