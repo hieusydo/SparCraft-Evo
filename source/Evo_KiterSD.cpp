@@ -1,4 +1,4 @@
-#include "Population_Kiter.h"
+#include "Evo_KiterSD.h"
 #include <queue>
 #include <random>
 #include <utility> 
@@ -7,20 +7,20 @@ using namespace SparCraft;
 
 double MU_RATIO = 0.6;
 
-Population_Kiter::Population_Kiter(size_t mu, size_t lambda, size_t epoch, size_t evalIter)
+Evo_KiterSD::Evo_KiterSD(size_t mu, size_t lambda, size_t epoch, size_t evalIter)
 	: _mu(mu),
 	_lambda(lambda),
 	_popSize(mu + lambda),
 	_epoch(epoch),
 	_evalIter(evalIter) {}
 
-// initialize method for population of many KiterDPSEvo
-void Population_Kiter::initialize(const GameState& state, PlayerPtr & p1, PlayerPtr & p2) {
+// initialize method for population of many KiterSD
+void Evo_KiterSD::initialize(const GameState& state, PlayerPtr & p1, PlayerPtr & p2) {
 	std::random_device rd; // get a random seed from the OS entropy device
 	std::mt19937_64 eng(rd()); // use the 64-bit Mersenne Twister 19937 generator with the rd seed
 	std::uniform_int_distribution<size_t> distr(0, 150); // define the distribution
 
-	Player_KiterDPSEvo* kiter = dynamic_cast<Player_KiterDPSEvo *>(p1.get());
+	Player_KiterSD* kiter = dynamic_cast<Player_KiterSD *>(p1.get());
 	kiter->switchOnOffline();
 	for (size_t i = 0; i < _popSize; ++i) {
 		size_t d = distr(eng);
@@ -32,9 +32,9 @@ void Population_Kiter::initialize(const GameState& state, PlayerPtr & p1, Player
 }
 
 // mutate method
-Chromosome Population_Kiter::mutate(size_t mutationDelta, const Chromosome& c, const GameState & state, PlayerPtr & p1, PlayerPtr & p2) {
+Chromosome Evo_KiterSD::mutate(size_t mutationDelta, const Chromosome& c, const GameState & state, PlayerPtr & p1, PlayerPtr & p2) {
     Chromosome res;
-    Player_KiterDPSEvo* kiter = dynamic_cast<Player_KiterDPSEvo *>(p1.get());
+    Player_KiterSD* kiter = dynamic_cast<Player_KiterSD *>(p1.get());
     kiter->switchOnOffline();
 
     // Consider mutation by wiggling the parent dist +/- mutationDelta
@@ -56,8 +56,8 @@ Chromosome Population_Kiter::mutate(size_t mutationDelta, const Chromosome& c, c
 }
 
 // Find the average score of a kiter with a given safeDist
-int Population_Kiter::eval(const GameState & state, PlayerPtr & p1, PlayerPtr & p2) {
-	//std::cout << "\n \n Evaluating d = " << dynamic_cast<Player_KiterDPSEvo *>(p1.get())->getSafeDist() << "\n";
+int Evo_KiterSD::eval(const GameState & state, PlayerPtr & p1, PlayerPtr & p2) {
+	//std::cout << "\n \n Evaluating d = " << dynamic_cast<Player_KiterSD *>(p1.get())->getSafeDist() << "\n";
 	int kiterScore = 0;
 	//for (int i = 0; i < _evalIter; ++i) {
 		Game g(state, p1, p2, 1000);
@@ -69,7 +69,7 @@ int Population_Kiter::eval(const GameState & state, PlayerPtr & p1, PlayerPtr & 
 	return kiterScore;
 }
 
-void Population_Kiter::printDist() {
+void Evo_KiterSD::printDist() {
     for (auto it = _genePool.begin(); it != _genePool.end(); it++) {
         std::cout << "(" << it->first << ", S: " << it->second << ") "; 
     }
@@ -77,7 +77,7 @@ void Population_Kiter::printDist() {
 }
 
 // EVOLUTION STRATEGY: http://www.cleveralgorithms.com/nature-inspired/evolution/evolution_strategies.html
-size_t Population_Kiter::evolveSafeDist(const GameState & state, PlayerPtr & p1, PlayerPtr & p2) {
+size_t Evo_KiterSD::evolveSafeDist(const GameState & state, PlayerPtr & p1, PlayerPtr & p2) {
 	Chromosome bestGene;
 
 	// result data for each epoch

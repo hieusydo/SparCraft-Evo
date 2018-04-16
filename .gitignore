@@ -2,6 +2,8 @@ VisualStudio/Release
 VisualStudio/Debug
 bin/SparCraft
 bin/result/*.txt
+bin/KiterEMP/*
+bin/hieu_exp.txt
 bin/*.pdb
 bin/*.map
 bin/*.dll

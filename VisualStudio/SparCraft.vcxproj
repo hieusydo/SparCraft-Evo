@@ -130,16 +130,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\source\CoopEvoSingle.h" />
+    <ClInclude Include="..\source\Player_KiterMvmt.h" />
     <ClInclude Include="..\source\Player_KiterEvo1.h" />
-    <ClInclude Include="..\source\Player_KiterEMP.h" />
     <ClInclude Include="..\source\Player_KiterEvo2.h" />
     <ClInclude Include="..\source\Player_POE.h" />
     <ClInclude Include="..\source\Player_PortfolioGreedySearchEvo.h" />
     <ClInclude Include="..\source\POEChromosome.h" />
     <ClInclude Include="..\source\POEPlayer_KiterDPS.h" />
     <ClInclude Include="..\source\POEPlayer_NOKDPS.h" />
-    <ClInclude Include="..\source\Population_Kiter.h" />
+    <ClInclude Include="..\source\Evo_KiterSD.h" />
     <ClInclude Include="..\source\Action.h" />
     <ClInclude Include="..\source\AllPlayers.h" />
     <ClInclude Include="..\source\AlphaBetaMove.h" />
@@ -165,7 +164,7 @@
     <ClInclude Include="..\source\Player_Cluster.h" />
     <ClInclude Include="..\source\Player_Kiter.h" />
     <ClInclude Include="..\source\Player_KiterDPS.h" />
-    <ClInclude Include="..\source\Player_KiterDPSEvo.h" />
+    <ClInclude Include="..\source\Player_KiterSD.h" />
     <ClInclude Include="..\source\Player_Kiter_NOKDPS.h" />
     <ClInclude Include="..\source\Player_NOKDPS.h" />
     <ClInclude Include="..\source\Player_PortfolioGreedySearch.h" />
@@ -192,12 +191,10 @@
     <ClInclude Include="..\source\UnitProperties.h" />
     <ClInclude Include="..\source\UnitScriptData.h" />
     <ClInclude Include="..\source\WeaponProperties.h" />
-    <ClInclude Include="..\source\Player_NOKDPSEvo.h" />
-    <ClInclude Include="..\source\CoopEvo.h" />
+    <ClInclude Include="..\source\Evo_KiterMvmt.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\source\CoopEvoSingle.cpp" />
-    <ClCompile Include="..\source\Player_KiterEMP.cpp" />
+    <ClCompile Include="..\source\Player_KiterMvmt.cpp" />
     <ClCompile Include="..\source\Player_KiterEvo1.cpp" />
     <ClCompile Include="..\source\Player_KiterEvo2.cpp" />
     <ClCompile Include="..\source\Player_POE.cpp" />
@@ -205,7 +202,7 @@
     <ClCompile Include="..\source\POEChromosome.cpp" />
     <ClCompile Include="..\source\POEPlayer_KiterDPS.cpp" />
     <ClCompile Include="..\source\POEPlayer_NOKDPS.cpp" />
-    <ClCompile Include="..\source\Population_Kiter.cpp" />
+    <ClCompile Include="..\source\Evo_KiterSD.cpp" />
     <ClCompile Include="..\source\Action.cpp" />
     <ClCompile Include="..\source\AllPlayers.cpp" />
     <ClCompile Include="..\source\AlphaBetaMove.cpp" />
@@ -227,7 +224,7 @@
     <ClCompile Include="..\source\Player_Cluster.cpp" />
     <ClCompile Include="..\source\Player_Kiter.cpp" />
     <ClCompile Include="..\source\Player_KiterDPS.cpp" />
-    <ClCompile Include="..\source\Player_KiterDPSEvo.cpp" />
+    <ClCompile Include="..\source\Player_KiterSD.cpp" />
     <ClCompile Include="..\source\Player_Kiter_NOKDPS.cpp" />
     <ClCompile Include="..\source\Player_NOKDPS.cpp" />
     <ClCompile Include="..\source\Player_PortfolioGreedySearch.cpp" />
@@ -246,8 +243,7 @@
     <ClCompile Include="..\source\UnitProperties.cpp" />
     <ClCompile Include="..\source\UnitScriptData.cpp" />
     <ClCompile Include="..\source\WeaponProperties.cpp" />
-    <ClCompile Include="..\source\Player_NOKDPSEvo.cpp" />
-    <ClCompile Include="..\source\CoopEvo.cpp" />
+    <ClCompile Include="..\source\Evo_KiterMvmt.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

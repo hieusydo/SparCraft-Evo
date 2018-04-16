@@ -1,6 +1,6 @@
 #include "SearchExperiment.h"
-#include "../Population_Kiter.h"
-#include "../CoopEvo.h"
+#include "../Evo_KiterSD.h"
+#include "../Evo_KiterMvmt.h"
 #include <fstream>
 #include <chrono> // C++11
 
@@ -499,14 +499,14 @@ void SearchExperiment::addPlayer(const std::string & line)
         players[playerID].push_back(PlayerPtr(new Player_KiterDPS(playerID))); 
     }
 	
-	else if (playerModelID == PlayerModels::KiterDPSEvo)
+	else if (playerModelID == PlayerModels::KiterSD)
 	{
-		players[playerID].push_back(PlayerPtr(new Player_KiterDPSEvo(playerID)));
+		players[playerID].push_back(PlayerPtr(new Player_KiterSD(playerID)));
 	}
 
-	else if (playerModelID == PlayerModels::KiterEMP)
+	else if (playerModelID == PlayerModels::KiterMvmt)
 	{
-		players[playerID].push_back(PlayerPtr(new Player_KiterEMP(playerID)));
+		players[playerID].push_back(PlayerPtr(new Player_KiterMvmt(playerID)));
 
 		std::string s; 
 		iss >> this->numEvoStates;
@@ -517,7 +517,7 @@ void SearchExperiment::addPlayer(const std::string & line)
 			iss >> this->mu;
 			iss >> this->lambda;
 			iss >> this->epoch;
-			std::cout << "Params for KiterEMP: " << this->numEvoStates << " " << std::boolalpha << this->doOfflineEvo << " " << this->evoSide <<
+			std::cout << "Params for KiterMvmt: " << this->numEvoStates << " " << std::boolalpha << this->doOfflineEvo << " " << this->evoSide <<
 				" " << this->mu << " " << this->lambda << " " << this->epoch << "\n";
 		}
 		else {
@@ -553,11 +553,6 @@ void SearchExperiment::addPlayer(const std::string & line)
 		iss >> responses;
 
 		players[playerID].push_back(PlayerPtr(new Player_PortfolioGreedySearchEvo(playerID, PlayerModels::getID(enemyPlayerModel), iterations, responses, timeLimit)));
-	}
-
-	else if (playerModelID == PlayerModels::NOKDPSEvo)
-	{
-		players[playerID].push_back(PlayerPtr(new Player_NOKDPSEvo(playerID)));
 	}
 
 	else if (playerModelID == PlayerModels::Kiter_NOKDPS)			
@@ -961,7 +956,7 @@ std::string SearchExperiment::getBaseFilename(const std::string & filename)
 void SearchExperiment::bruteForceBestDist() {
 	PlayerPtr p1 = PlayerPtr(players[0][0]);
 	PlayerPtr p2 = PlayerPtr(players[1][0]);
-	Player_KiterDPSEvo* p1Evo = dynamic_cast<Player_KiterDPSEvo *>(p1.get());
+	Player_KiterSD* p1Evo = dynamic_cast<Player_KiterSD *>(p1.get());
 	int maxScore = -9999;
 	int bestDist = 0;
 	std::vector<int> vs;
@@ -1019,14 +1014,14 @@ void SearchExperiment::runExperiment()
 	PlayerPtr p2 = PlayerPtr(players[1][0]);
 	
 	// Evolve safeDist if it's KiterEvo 
-	Player_KiterDPSEvo* p1Evo = dynamic_cast<Player_KiterDPSEvo *>(p1.get());
+	Player_KiterSD* p1Evo = dynamic_cast<Player_KiterSD *>(p1.get());
 	if (p1Evo) {
 		std::cout << "Starting offline evolution...\n";
 		size_t mu = 8;
 		size_t lambda = 4;
 		size_t epoch = 25;
 		size_t evalIter = 100;
-		Population_Kiter k = Population_Kiter(mu, lambda, epoch, evalIter);
+		Evo_KiterSD k = Evo_KiterSD(mu, lambda, epoch, evalIter);
 		size_t safeDist = k.evolveSafeDist(states[3], p1, p2);
 		p1Evo->switchOffOffline();
 		// Write result to a .txt file
@@ -1037,16 +1032,16 @@ void SearchExperiment::runExperiment()
         best.close();
 	}
 
-	// KiterEMP
-	Player_KiterEMP* p1EMP = dynamic_cast<Player_KiterEMP*> (p1.get());
+	// KiterMvmt
+	Player_KiterMvmt* p1EMP = dynamic_cast<Player_KiterMvmt*> (p1.get());
 	if (p1EMP && this->doOfflineEvo) {
-		std::cout << "Evolving params for KiterEMP with mu=" << mu << ", lambda=" << lambda << ", epoch=" << epoch << "...\n";
+		std::cout << "Evolving params for KiterMvmt with mu=" << mu << ", lambda=" << lambda << ", epoch=" << epoch << "...\n";
 		std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
 
 		//size_t mu = 8;
 		//size_t lambda = 4;
 		//size_t epoch = 50;
-		CoopEvo k = CoopEvo(this->mu, this->lambda, this->epoch);
+		Evo_KiterMvmt k = Evo_KiterMvmt(this->mu, this->lambda, this->epoch);
 		k.evolveParams(this->evoStates , p1, p2);
 		p1EMP->switchOffOffline();
 

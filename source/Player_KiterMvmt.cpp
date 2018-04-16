@@ -1,10 +1,10 @@
-#include "Player_KiterEMP.h"
-#include "Population_Kiter.h"
+#include "Player_KiterMvmt.h"
+#include "Evo_KiterSD.h"
 #include "iostream"
 
 using namespace SparCraft;
 
-Player_KiterEMP::Player_KiterEMP(const IDType & playerID)
+Player_KiterMvmt::Player_KiterMvmt(const IDType & playerID)
 {
 	_playerID = playerID;
 	_offline = false;
@@ -14,37 +14,37 @@ Player_KiterEMP::Player_KiterEMP(const IDType & playerID)
 	_Wright.init(0);
 }
 
-void Player_KiterEMP::switchOnOffline() {
+void Player_KiterMvmt::switchOnOffline() {
 	_offline = true;
 }
 
-void Player_KiterEMP::switchOffOffline() {
+void Player_KiterMvmt::switchOffOffline() {
 	_offline = false;
 }
 
 // Order of direction Array in vector: Left Right Up Down
-void Player_KiterEMP::setWeights(const std::vector<Array<double, Constants::Num_Params>>& weights) {
+void Player_KiterMvmt::setWeights(const std::vector<Array<double, Constants::Num_Params>>& weights) {
 	for (size_t i = 0; i < weights[0].size(); ++i) { _Wleft[i] = weights[0][i]; }
 	for (size_t i = 0; i < weights[1].size(); ++i) { _Wright[i] = weights[1][i]; }
 	for (size_t i = 0; i < weights[2].size(); ++i) { _Wup[i] = weights[2][i]; }
 	for (size_t i = 0; i < weights[3].size(); ++i) { _Wdown[i] = weights[3][i]; }
 }
 
-Dxy Player_KiterEMP::getDxyClosest(const Unit& closestUnit, const Unit& ourUnit) const {
+Dxy Player_KiterMvmt::getDxyClosest(const Unit& closestUnit, const Unit& ourUnit) const {
 	Dxy res; 
 	res.first = closestUnit.x() - ourUnit.x();
 	res.second = closestUnit.y() - ourUnit.y();
 	return res;
 }
 
-Dxy Player_KiterEMP::getDxyCenter(const Position& centerArmy, const Unit& ourUnit) const {
+Dxy Player_KiterMvmt::getDxyCenter(const Position& centerArmy, const Unit& ourUnit) const {
 	Dxy res;
 	res.first = centerArmy.x() - ourUnit.x();
 	res.second = centerArmy.y() - ourUnit.y();
 	return res;
 }
 
-size_t Player_KiterEMP::getMaxVDir(double allV[4]) const {
+size_t Player_KiterMvmt::getMaxVDir(double allV[4]) const {
 	double maxV = -DBL_MAX;
 	size_t maxIndex = 4;
 	for (size_t i = 0; i < 4; ++i) { 
@@ -56,7 +56,7 @@ size_t Player_KiterEMP::getMaxVDir(double allV[4]) const {
 	return maxIndex;
 }
 
-void Player_KiterEMP::normalize(Array<double, Constants::Num_Params>& X) {
+void Player_KiterMvmt::normalize(Array<double, Constants::Num_Params>& X) {
 	double meanX = 0;
 	double minX = DBL_MAX;
 	double maxX = -DBL_MAX;
@@ -73,18 +73,18 @@ void Player_KiterEMP::normalize(Array<double, Constants::Num_Params>& X) {
 	}
 }
 
-void Player_KiterEMP::printWeights() const {
+void Player_KiterMvmt::printWeights() const {
 	std::cout << "\nPrinting...\n";
 	std::cout << "_Ws:" << _Wleft << "\n" << _Wright << "\n" << _Wup << "\n" << _Wdown << "\n";
 }
 
-void Player_KiterEMP::getMoves(GameState & state, const MoveArray & moves, std::vector<Action> & moveVec)
+void Player_KiterMvmt::getMoves(GameState & state, const MoveArray & moves, std::vector<Action> & moveVec)
 {
 	moveVec.clear();
 
 	if (_offline == false) {
 		//std::cout << "Reading params from file\n";
-		std::ifstream ifs("kiterEMP/finalRes.txt");
+		std::ifstream ifs("KiterMvmt/finalRes.txt");
 		if (!ifs) { std::cerr << "Error opening file\n"; }
 
 		std::vector<Array<double, Constants::Num_Params>> weights;

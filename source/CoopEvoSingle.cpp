@@ -1,5 +1,5 @@
 #include "CoopEvoSingle.h"
-#include "Population_Kiter.h"
+#include "Evo_KiterSD.h"
 #include <queue>
 #include <random>
 #include <utility> 

@@ -1,33 +1,33 @@
-#include "Player_KiterDPSEvo.h"
-#include "Population_Kiter.h"
+#include "Player_KiterSD.h"
+#include "Evo_KiterSD.h"
 #include "iostream"
 
 using namespace SparCraft;
 
-Player_KiterDPSEvo::Player_KiterDPSEvo (const IDType & playerID) 
+Player_KiterSD::Player_KiterSD (const IDType & playerID) 
 {
 	_playerID = playerID;
 	_safeDist = 0; // default set it to 0, will set to random when initializing the population
 	_offline = false;
 }
 
-void Player_KiterDPSEvo::setSafeDist(size_t d) {
+void Player_KiterSD::setSafeDist(size_t d) {
 	_safeDist = d;
 }
 
-size_t Player_KiterDPSEvo::getSafeDist() const {
+size_t Player_KiterSD::getSafeDist() const {
 	return _safeDist;
 }
 
-void Player_KiterDPSEvo::switchOnOffline() {
+void Player_KiterSD::switchOnOffline() {
 	_offline = true;
 }
 
-void Player_KiterDPSEvo::switchOffOffline() {
+void Player_KiterSD::switchOffOffline() {
 	_offline = false;
 }
 
-void Player_KiterDPSEvo::getMoves(GameState & state, const MoveArray & moves, std::vector<Action> & moveVec)
+void Player_KiterSD::getMoves(GameState & state, const MoveArray & moves, std::vector<Action> & moveVec)
 {
 	moveVec.clear();
 

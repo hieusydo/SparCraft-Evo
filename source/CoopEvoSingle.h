@@ -17,7 +17,7 @@ namespace SparCraft
 	// considering as the baseline before cooperative coevolution
 	typedef std::pair<std::vector<Chrms>, int> Dna;
 
-	class CoopEvoSingle
+	class Evo_KiterMvmtSingle
 	{
 	private:
 		size_t _mu;
@@ -30,7 +30,7 @@ namespace SparCraft
 		// Order of direction Array in vector: Left Right Up Down
 		void initRandomWeights(std::vector<Array<double, Constants::Num_Params>>& weights);
 
-		// initialize method for population of many KiterDPSEvo
+		// initialize method for population of many KiterSD
 		void initialize(const std::vector<GameState>& state, PlayerPtr & p1, PlayerPtr & p2);
 
 		// mutate method
@@ -43,7 +43,7 @@ namespace SparCraft
 		void printChrom(const Dna& c, std::ostream& os = std::cout) const;
 
 	public:
-		CoopEvoSingle(size_t mu, size_t lambda, size_t epoch);
+		Evo_KiterMvmtSingle(size_t mu, size_t lambda, size_t epoch);
 		void evolveParams(const std::vector<GameState>& state, PlayerPtr & p1, PlayerPtr & p2);
 	};
 

@@ -21,9 +21,8 @@
 #include "Player_Random.h"
 
 // evolution-based players
-#include "Player_KiterDPSEvo.h"
-#include "Player_NOKDPSEvo.h"
-#include "Player_KiterEMP.h"
+#include "Player_KiterSD.h"
+#include "Player_KiterMvmt.h"
 #include "Player_KiterEvo1.h"
 #include "Player_KiterEvo2.h"
 #include "Player_PortfolioGreedySearchEvo.h"

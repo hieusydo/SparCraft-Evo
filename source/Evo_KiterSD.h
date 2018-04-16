@@ -26,7 +26,7 @@ namespace SparCraft
 		}
 	};
 
-	class Population_Kiter
+	class Evo_KiterSD
 	{
 	private:
 		size_t _mu; 
@@ -38,7 +38,7 @@ namespace SparCraft
 		//std::priority_queue<Chromosome, std::vector<Chromosome>, KiterComparator> _genePool;
         std::vector<Chromosome> _genePool;
 
-		// initialize method for population of many KiterDPSEvo
+		// initialize method for population of many KiterSD
 		void initialize(const GameState& state, PlayerPtr & p1, PlayerPtr & p2);
 
 		// mutate method
@@ -50,7 +50,7 @@ namespace SparCraft
 		void printDist();
 
 	public:
-		Population_Kiter(size_t mu, size_t lambda, size_t epoch, size_t evalIter);
+		Evo_KiterSD(size_t mu, size_t lambda, size_t epoch, size_t evalIter);
 		size_t evolveSafeDist(const GameState & state, PlayerPtr & p1, PlayerPtr & p2);
 	};
 

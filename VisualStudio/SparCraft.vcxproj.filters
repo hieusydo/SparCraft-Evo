@@ -112,21 +112,6 @@
     <ClCompile Include="..\source\SparCraftException.cpp">
       <Filter>common</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\Player_KiterDPSEvo.cpp">
-      <Filter>simulation\players\evolution</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Population_Kiter.cpp">
-      <Filter>evolution</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Player_NOKDPSEvo.cpp">
-      <Filter>simulation\players\evolution</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\Player_KiterEMP.cpp">
-      <Filter>simulation\players\evolution</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\CoopEvo.cpp">
-      <Filter>evolution</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\Player_KiterEvo1.cpp">
       <Filter>simulation\players\evolution</Filter>
     </ClCompile>
@@ -138,9 +123,6 @@
     </ClCompile>
     <ClCompile Include="..\source\Player_PortfolioGreedySearchEvo.cpp">
       <Filter>simulation\players\search</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\CoopEvoSingle.cpp">
-      <Filter>evolution</Filter>
     </ClCompile>
     <ClCompile Include="..\source\Player_POE.cpp">
       <Filter>simulation\players\poe</Filter>
@@ -156,6 +138,18 @@
     </ClCompile>
     <ClCompile Include="..\source\POEPlayer_NOKDPS.cpp">
       <Filter>poe</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Evo_KiterSD.cpp">
+      <Filter>evolution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Player_KiterSD.cpp">
+      <Filter>simulation\players\evolution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Evo_KiterMvmt.cpp">
+      <Filter>evolution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\Player_KiterMvmt.cpp">
+      <Filter>simulation\players\evolution</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -306,21 +300,6 @@
     <ClInclude Include="..\source\SparCraftException.h">
       <Filter>common</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\Player_KiterDPSEvo.h">
-      <Filter>simulation\players\evolution</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\Population_Kiter.h">
-      <Filter>evolution</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\Player_NOKDPSEvo.h">
-      <Filter>simulation\players\evolution</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\Player_KiterEMP.h">
-      <Filter>simulation\players\evolution</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\CoopEvo.h">
-      <Filter>evolution</Filter>
-    </ClInclude>
     <ClInclude Include="..\source\Player_KiterEvo1.h">
       <Filter>simulation\players\evolution</Filter>
     </ClInclude>
@@ -332,9 +311,6 @@
     </ClInclude>
     <ClInclude Include="..\source\Player_PortfolioGreedySearchEvo.h">
       <Filter>simulation\players\search</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\CoopEvoSingle.h">
-      <Filter>evolution</Filter>
     </ClInclude>
     <ClInclude Include="..\source\Player_POE.h">
       <Filter>simulation\players\poe</Filter>
@@ -350,6 +326,18 @@
     </ClInclude>
     <ClInclude Include="..\source\POEPlayer_NOKDPS.h">
       <Filter>poe</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\Evo_KiterSD.h">
+      <Filter>evolution</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\Player_KiterSD.h">
+      <Filter>simulation\players\evolution</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\Evo_KiterMvmt.h">
+      <Filter>evolution</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\Player_KiterMvmt.h">
+      <Filter>simulation\players\evolution</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

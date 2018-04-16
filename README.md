@@ -37,3 +37,7 @@ The goal of this project is to use offline evolution to make more flexible scrip
 ## Credits
 
 The project is built upon the SparCraft framework, which is open source StarCraft combat simulation package developed by [David Churchill](https://github.com/davechurchill/ualbertabot/tree/master/SparCraft).
+
+## Files summary
+- `Evo_KiterSD` uses mu-lambda ES to evolve a population of `Player_KiterSD` - simple one-param kiter, that is the Safe Distance
+- `Evo_KiterMvmt`, same as `Evo_KiterSD`, but for `Player_KiterMvmt` - a Kiter whose movement (Mvmt) is parameterized into different weights 

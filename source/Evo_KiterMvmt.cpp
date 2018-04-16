@@ -1,5 +1,5 @@
-#include "CoopEvo.h"
-#include "Population_Kiter.h"
+#include "Evo_KiterMvmt.h"
+#include "Evo_KiterSD.h"
 #include <queue>
 #include <random>
 #include <utility> 
@@ -12,13 +12,13 @@ std::mt19937_64 ENGINE(SEED);
 std::normal_distribution<double> WDISTR(0, 1); 
 std::normal_distribution<double> MDISTR(0, 0.1);
 
-CoopEvo::CoopEvo(size_t mu, size_t lambda, size_t epoch)
+Evo_KiterMvmt::Evo_KiterMvmt(size_t mu, size_t lambda, size_t epoch)
 	: _mu(mu),
 	_lambda(lambda),
 	_popSize(mu + lambda),
 	_epoch(epoch) {}
 
-void CoopEvo::initRandomWeights(std::vector<Array<double, Constants::Num_Params>>& weights) {
+void Evo_KiterMvmt::initRandomWeights(std::vector<Array<double, Constants::Num_Params>>& weights) {
 	//std::random_device rd; // get a random seed from the OS entropy device
 	//std::mt19937_64 eng(SEED); // use the 64-bit Mersenne Twister 19937 generator with the rd seed
 	//std::normal_distribution<double> distr(0, 1); // define the distribution
@@ -39,9 +39,9 @@ void CoopEvo::initRandomWeights(std::vector<Array<double, Constants::Num_Params>
 	}
 }
 
-// initialize method for population of many KiterEMP
-void CoopEvo::initialize(const std::vector<GameState>& states, PlayerPtr & p1, PlayerPtr & p2) {
-	Player_KiterEMP* kiter = dynamic_cast<Player_KiterEMP *>(p1.get());
+// initialize method for population of many KiterMvmt
+void Evo_KiterMvmt::initialize(const std::vector<GameState>& states, PlayerPtr & p1, PlayerPtr & p2) {
+	Player_KiterMvmt* kiter = dynamic_cast<Player_KiterMvmt *>(p1.get());
 	kiter->switchOnOffline();
 	for (size_t i = 0; i < _popSize; ++i) {
 		std::vector<Array<double, Constants::Num_Params>> weights;
@@ -54,15 +54,15 @@ void CoopEvo::initialize(const std::vector<GameState>& states, PlayerPtr & p1, P
 }
 
 // mutate method
-ChromosomeEMP CoopEvo::mutate(const ChromosomeEMP& c, const std::vector<GameState>& states, PlayerPtr & p1, PlayerPtr & p2) const {
+ChromosomeEMP Evo_KiterMvmt::mutate(const ChromosomeEMP& c, const std::vector<GameState>& states, PlayerPtr & p1, PlayerPtr & p2) const {
 	// Set up mutation delta
 	//std::random_device rd; 
 	//std::mt19937_64 eng(rd()); 
 	//std::normal_distribution<double> deltaDistr(0, 0.1);
 	
 	ChromosomeEMP res = c;
-	Player_KiterEMP* kiterEmp = dynamic_cast<Player_KiterEMP *>(p1.get());
-	kiterEmp->switchOnOffline();
+	Player_KiterMvmt* KiterMvmt = dynamic_cast<Player_KiterMvmt *>(p1.get());
+	KiterMvmt->switchOnOffline();
 
 	// Apply mutation to weights
 	//auto weights = res.first;
@@ -70,7 +70,7 @@ ChromosomeEMP CoopEvo::mutate(const ChromosomeEMP& c, const std::vector<GameStat
 		for (size_t i = 0; i < res.first[d].capacity(); ++i) {
 			//res.first[d][i] += deltaDistr(eng);
 			res.first[d][i] += MDISTR(ENGINE);
-			kiterEmp->setWeights(res.first);
+			KiterMvmt->setWeights(res.first);
 			res.second = this->eval(states, p1, p2);
 		}
 	}
@@ -79,7 +79,7 @@ ChromosomeEMP CoopEvo::mutate(const ChromosomeEMP& c, const std::vector<GameStat
 }
 
 // Find the average score of a kiter with a given safeDist
-int CoopEvo::eval(const std::vector<GameState>& states, PlayerPtr & p1, PlayerPtr & p2) const {
+int Evo_KiterMvmt::eval(const std::vector<GameState>& states, PlayerPtr & p1, PlayerPtr & p2) const {
 	int kiterScore = 0;
 	for (size_t i = 0; i < states.size(); ++i) {
 		Game gcopy(states[i], p1, p2, 1000);
@@ -91,7 +91,7 @@ int CoopEvo::eval(const std::vector<GameState>& states, PlayerPtr & p1, PlayerPt
 	return kiterScore / static_cast<int>(states.size());
 }
 
-void CoopEvo::writeFinalResult(const ChromosomeEMP& c) const {
+void Evo_KiterMvmt::writeFinalResult(const ChromosomeEMP& c) const {
 	std::cout << "Evolution complete. Writing final result...\n";
 	// result data for each epoch
 	std::ofstream finalRes;
@@ -106,7 +106,7 @@ void CoopEvo::writeFinalResult(const ChromosomeEMP& c) const {
 	finalRes.close();
 }
 
-void CoopEvo::printChrom(const ChromosomeEMP& c, std::ostream& os) const {
+void Evo_KiterMvmt::printChrom(const ChromosomeEMP& c, std::ostream& os) const {
 	for (auto w : c.first) {
 		os << w << "\n";
 	}
@@ -114,7 +114,7 @@ void CoopEvo::printChrom(const ChromosomeEMP& c, std::ostream& os) const {
 }
 
 // EVOLUTION STRATEGY: http://www.cleveralgorithms.com/nature-inspired/evolution/evolution_strategies.html
-void CoopEvo::evolveParams(const std::vector<GameState>& states, PlayerPtr & p1, PlayerPtr & p2) {
+void Evo_KiterMvmt::evolveParams(const std::vector<GameState>& states, PlayerPtr & p1, PlayerPtr & p2) {
 	std::cout << "Generated seed: " << SEED << "\n";
 
 	// initialize and evaluate the baseline population 

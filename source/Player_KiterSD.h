@@ -15,18 +15,18 @@ namespace SparCraft
 	|    a) If it is not in range of safeDist, move away from closest one
 	|    b) If it is in range of safeDist, MOVE towards closest one
 	`----------------------------------------------------------------------*/
-	class Player_KiterDPSEvo : public Player
+	class Player_KiterSD : public Player
 	{
 	private:
 		size_t _safeDist;
 		bool _offline;
 	public:
-		Player_KiterDPSEvo(const IDType & playerID);
+		Player_KiterSD(const IDType & playerID);
 		void setSafeDist(size_t d);
 		size_t getSafeDist() const;
 		void switchOnOffline();
 		void switchOffOffline();
 		void getMoves(GameState & state, const MoveArray & moves, std::vector<Action> & moveVec);
-		IDType getType() { return PlayerModels::KiterDPSEvo; }
+		IDType getType() { return PlayerModels::KiterSD; }
 	};
 }

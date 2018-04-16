@@ -19,7 +19,7 @@ namespace SparCraft
 	typedef std::pair<double, double> Dxy;
 	
 	// Uses NOK!! Kiting movement is parameterized for evolution
-	class Player_KiterEMP : public Player
+	class Player_KiterMvmt : public Player
 	{
 	private:
 		bool _offline;
@@ -43,7 +43,7 @@ namespace SparCraft
 		void normalize(Array<double, Constants::Num_Params>& X);
 
 	public:
-		Player_KiterEMP(const IDType & playerID);
+		Player_KiterMvmt(const IDType & playerID);
 
 		void switchOnOffline();
 		void switchOffOffline();
@@ -54,6 +54,6 @@ namespace SparCraft
 		void setWeights(const std::vector<Array<double, Constants::Num_Params>>& weights);
 
 		void getMoves(GameState & state, const MoveArray & moves, std::vector<Action> & moveVec);
-		IDType getType() { return PlayerModels::KiterEMP; }
+		IDType getType() { return PlayerModels::KiterMvmt; }
 	};
 }

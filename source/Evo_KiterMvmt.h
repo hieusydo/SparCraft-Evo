@@ -12,7 +12,7 @@ namespace SparCraft
 {
 	typedef std::pair<std::vector<Array<double, Constants::Num_Params>>, int> ChromosomeEMP;
 
-	class CoopEvo
+	class Evo_KiterMvmt
 	{
 	private:
 		size_t _mu;
@@ -26,7 +26,7 @@ namespace SparCraft
 		// Order of direction Array in vector: Left Right Up Down
 		void initRandomWeights(std::vector<Array<double, Constants::Num_Params>>& weights);
 
-		// initialize method for population of many KiterDPSEvo
+		// initialize method for population of many KiterSD
 		void initialize(const std::vector<GameState>& state, PlayerPtr & p1, PlayerPtr & p2);
 
 		// mutate method
@@ -39,7 +39,7 @@ namespace SparCraft
 		void printChrom(const ChromosomeEMP& c, std::ostream& os = std::cout) const;
 
 	public:
-		CoopEvo(size_t mu, size_t lambda, size_t epoch);
+		Evo_KiterMvmt(size_t mu, size_t lambda, size_t epoch);
 		void evolveParams(const std::vector<GameState>& state, PlayerPtr & p1, PlayerPtr & p2);
 	};
 
