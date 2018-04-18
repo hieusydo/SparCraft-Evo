@@ -151,6 +151,9 @@
     <ClCompile Include="..\source\Player_KiterMvmt.cpp">
       <Filter>simulation\players\evolution</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\CooperativeCoevolution.cpp">
+      <Filter>evolution</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\AlphaBetaSearch.h">
@@ -338,6 +341,9 @@
     </ClInclude>
     <ClInclude Include="..\source\Player_KiterMvmt.h">
       <Filter>simulation\players\evolution</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\CooperativeCoevolution.h">
+      <Filter>evolution</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -130,6 +130,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\source\CooperativeCoevolution.h" />
     <ClInclude Include="..\source\Player_KiterMvmt.h" />
     <ClInclude Include="..\source\Player_KiterEvo1.h" />
     <ClInclude Include="..\source\Player_KiterEvo2.h" />
@@ -194,6 +195,7 @@
     <ClInclude Include="..\source\Evo_KiterMvmt.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\source\CooperativeCoevolution.cpp" />
     <ClCompile Include="..\source\Player_KiterMvmt.cpp" />
     <ClCompile Include="..\source\Player_KiterEvo1.cpp" />
     <ClCompile Include="..\source\Player_KiterEvo2.cpp" />
