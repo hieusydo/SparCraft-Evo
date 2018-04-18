@@ -138,6 +138,7 @@
     <ClInclude Include="..\source\Player_PortfolioGreedySearchEvo.h" />
     <ClInclude Include="..\source\POEChromosome.h" />
     <ClInclude Include="..\source\POEPlayer_KiterDPS.h" />
+    <ClInclude Include="..\source\POEPlayer_KiterEvo.h" />
     <ClInclude Include="..\source\POEPlayer_NOKDPS.h" />
     <ClInclude Include="..\source\Evo_KiterSD.h" />
     <ClInclude Include="..\source\Action.h" />
@@ -203,6 +204,7 @@
     <ClCompile Include="..\source\Player_PortfolioGreedySearchEvo.cpp" />
     <ClCompile Include="..\source\POEChromosome.cpp" />
     <ClCompile Include="..\source\POEPlayer_KiterDPS.cpp" />
+    <ClCompile Include="..\source\POEPlayer_KiterEvo.cpp" />
     <ClCompile Include="..\source\POEPlayer_NOKDPS.cpp" />
     <ClCompile Include="..\source\Evo_KiterSD.cpp" />
     <ClCompile Include="..\source\Action.cpp" />

@@ -8,6 +8,8 @@
 #include <memory>
 #include <random>
 
+#include "POEPlayer_KiterEvo.h"
+
 namespace SparCraft
 {
 	/*
@@ -69,6 +71,10 @@ namespace SparCraft
 		*/
 		// generate the subpopulations, each having random weights and initial score of -LLInt
 		void initEvosys(const std::vector<GameState>& state, PlayerPtr & p1, PlayerPtr & p2);
+
+		int eval(const std::vector<GameState>& states, PlayerPtr & p1, PlayerPtr & p2) const;
+
+		MGene mutate(const MGene& c, const std::vector<GameState>& state, PlayerPtr & p1, PlayerPtr & p2) const;
 
 	public:
 		CooperativeCoevolution(size_t mu, size_t lambda, size_t epoch, size_t ecosysSize);

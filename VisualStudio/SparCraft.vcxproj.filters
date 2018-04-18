@@ -154,6 +154,9 @@
     <ClCompile Include="..\source\CooperativeCoevolution.cpp">
       <Filter>evolution</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\POEPlayer_KiterEvo.cpp">
+      <Filter>evolution</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\AlphaBetaSearch.h">
@@ -343,6 +346,9 @@
       <Filter>simulation\players\evolution</Filter>
     </ClInclude>
     <ClInclude Include="..\source\CooperativeCoevolution.h">
+      <Filter>evolution</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\POEPlayer_KiterEvo.h">
       <Filter>evolution</Filter>
     </ClInclude>
   </ItemGroup>
