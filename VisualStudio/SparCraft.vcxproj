@@ -74,9 +74,9 @@
     <SourcePath>C:\SparCraft-Evo\source;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <SourcePath>C:\SparCraft-Evo\source;$(SourcePath)</SourcePath>
-    <IncludePath>C:\SDL2_image-2.0.2;C:\SDL2-2.0.7\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\SparCraft-Evo\lib;$(LibraryPath)</LibraryPath>
+    <SourcePath>D:\Desktop\Evolution_Hieu_Research\SparCraft-Evo\source;C:\SparCraft-Evo\source;$(SourcePath)</SourcePath>
+    <IncludePath>C:\SDL2_image-2.0.2;C:\SDL2-2.0.7\include;D:\Desktop\Evolution_Hieu_Research\SparCraft-Evo\lib_src\SDL2-2.0.8\include;D:\Desktop\Evolution_Hieu_Research\SparCraft-Evo\lib_src\SDL2_image-2.0.3;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Desktop\Evolution_Hieu_Research\SparCraft-Evo\lib;C:\SparCraft-Evo\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

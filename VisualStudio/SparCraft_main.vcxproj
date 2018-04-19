@@ -69,10 +69,10 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <TargetName>SparCraft</TargetName>
-    <LibraryPath>C:\SparCraft-Evo\lib;C:\Users\Hieu Do\Desktop\ualbertabot\SparCraft\lib;$(LibraryPath)</LibraryPath>
-    <SourcePath>C:\SparCraft-Evo\source;C:\Users\Hieu Do\Desktop\ualbertabot\SparCraft\source;$(SourcePath)</SourcePath>
+    <LibraryPath>D:\Desktop\Evolution_Hieu_Research\SparCraft-Evo\lib;C:\SparCraft-Evo\lib;C:\Users\Hieu Do\Desktop\ualbertabot\SparCraft\lib;$(LibraryPath)</LibraryPath>
+    <SourcePath>D:\Desktop\Evolution_Hieu_Research\SparCraft-Evo\source;C:\SparCraft-Evo\source;C:\Users\Hieu Do\Desktop\ualbertabot\SparCraft\source;$(SourcePath)</SourcePath>
     <ExecutablePath>$(ExecutablePath)</ExecutablePath>
-    <IncludePath>C:\SDL2_image-2.0.2;C:\SDL2-2.0.7\include;C:\libraries\SDL2-2.0.7\include;C:\libraries\SDL2_image-2.0.2;$(IncludePath)</IncludePath>
+    <IncludePath>C:\SDL2_image-2.0.2;C:\SDL2-2.0.7\include;D:\Desktop\Evolution_Hieu_Research\SparCraft-Evo\lib_src\SDL2-2.0.8\include;D:\Desktop\Evolution_Hieu_Research\SparCraft-Evo\lib_src\SDL2_image-2.0.3;C:\libraries\SDL2-2.0.7\include;C:\libraries\SDL2_image-2.0.2;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <TargetName>SparCraft</TargetName>
