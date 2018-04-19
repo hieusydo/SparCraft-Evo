@@ -585,7 +585,17 @@ void SearchExperiment::addPlayer(const std::string & line)
     }
 	else if (playerModelID == PlayerModels::POE)
 	{
-		players[playerID].push_back(PlayerPtr(new Player_POE(playerID)));
+		size_t num_generations(20);
+		size_t poe_playout_round_limit(10);
+		size_t population_size(18);
+		size_t num_best_to_keep(6);
+
+		iss >> num_generations;
+		iss >> poe_playout_round_limit;
+		iss >> population_size;
+		iss >> num_best_to_keep;
+
+		players[playerID].push_back(PlayerPtr(new Player_POE(playerID, num_generations,poe_playout_round_limit,population_size,num_best_to_keep)));
 	}
     else if (playerModelID == PlayerModels::AlphaBeta)
     {
@@ -1047,18 +1057,19 @@ void SearchExperiment::runExperiment()
 		std::cout << "Time elasped: " << std::chrono::duration_cast<std::chrono::seconds>(end - start).count() <<" seconds\n";
 	}
 
-	Player_POE* poePlayer = dynamic_cast<Player_POE*>(p1.get());
-	if (poePlayer) {
-		std::cout << "Doing POE evolution\n";
-		std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
-		
-		CooperativeCoevolution cc = CooperativeCoevolution(8, 4, 20, 2);
-		cc.evolveParams(states, p1, p2);
+	//Player_POE* poePlayer = dynamic_cast<Player_POE*>(p1.get());
 
-		std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
-		std::cout << "Time elasped: " << std::chrono::duration_cast<std::chrono::seconds>(end - start).count() << " seconds\n";
-		return;
-	}
+	//if (poePlayer) {
+	//	std::cout << "Doing POE evolution\n";
+	//	std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
+	//	
+	//	CooperativeCoevolution cc = CooperativeCoevolution(8, 4, 20, 2);
+	//	cc.evolveParams(states, p1, p2);
+
+	//	std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
+	//	std::cout << "Time elasped: " << std::chrono::duration_cast<std::chrono::seconds>(end - start).count() << " seconds\n";
+	//	return;
+	//}
 
 	// for each player one player
 	for (size_t p1Player(0); p1Player < players[0].size(); p1Player++)

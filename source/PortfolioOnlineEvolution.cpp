@@ -6,23 +6,24 @@ using std::cout;
 using std::endl;
 
 
-PortfolioOnlineEvolution::PortfolioOnlineEvolution(const IDType & player, const IDType & enemyScript, 
-	const size_t & num_generations, const size_t & timeLimit, std::vector<POEScriptPlayerPtr>  poePlayerPtrPortfolio)
+PortfolioOnlineEvolution::PortfolioOnlineEvolution(const IDType & player, const IDType & enemyScript, const size_t & num_generations,
+	const size_t & poe_playout_round_limit, const size_t & population_size, const size_t & num_best_to_keep, std::vector<POEScriptPlayerPtr>  poePlayerPtrPortfolio)
 	: _player(player)
 	, _enemyScript(enemyScript) //this is the enemy script used for playout.
-	, _num_generations(num_generations)
-	, _timeLimit(timeLimit)
+	, _num_generation(num_generations)
+	, _poe_playout_round_limit(poe_playout_round_limit)
+	, _population_size(population_size)
+	, _num_best_to_keep(num_best_to_keep) 
 {
+
 	//now we use PlayerPtr instead of enum.
 	_poePlayerPtrPortfolio = poePlayerPtrPortfolio;//passed to this from a POE player
 
+	//now the horizon length just fixed to 5
+	_poeHorizonLength = 5;
+
 	//POE hyperparameters
-	_poeTimeLength = 10; //this means how many rows a chromosome has, this is different from max round limit in playout
-	_population_size = 18;
-	_num_best_to_keep = 6;
-	_num_generation=8;
 	_mutate_rate = 0.5f;
-	_poe_playout_round_limit = 10;
 
 	_random_generator = std::mt19937_64(std::time(0));//seed the random generator
 }
@@ -38,15 +39,18 @@ std::vector<Action> PortfolioOnlineEvolution::search(const IDType & player, cons
 	Timer t;
 	t.start();
 
+
 	// get the id of the enemy
 	const IDType enemyPlayer(state.getEnemy(player));
 	// get an empty moveVec
 	std::vector<Action> moveVec;
 
 	// call evolve to get the best chromosome we want.
-	POEChromosome bestChromosome = evolve(player,state, 20);//TODO testing now, later should add more parameters
+	POEChromosome bestChromosome = evolve(player,state, _num_generation);//TODO testing now, later should add more parameters
+
 
 	bestChromosome.generateMoves(player, moves, state, 0, moveVec);
+
 
 	return moveVec;
 }
@@ -58,24 +62,33 @@ std::vector<POEChromosome> PortfolioOnlineEvolution::init_population(){
 	//you get <num of script> number of such individuals
 	std::vector<POEChromosome> population;
 
+
 	if (_population_size >= _poePlayerPtrPortfolio.size()){
+
 		for (size_t i = 0; i < _poePlayerPtrPortfolio.size(); i++)
 		{
-			population.push_back(POEChromosome(_player, Constants::Max_Units, _poeTimeLength, _poePlayerPtrPortfolio.size(), _poePlayerPtrPortfolio));
+			population.push_back(POEChromosome(_player, Constants::Max_Units, _poeHorizonLength, _poePlayerPtrPortfolio.size(), _poePlayerPtrPortfolio));
 			population[i].initialize_with_script_index(i);
 		}
 
+
+
 		for (size_t i = _poePlayerPtrPortfolio.size(); i < _population_size; i++)
 		{
-			population.push_back(POEChromosome(_player, Constants::Max_Units, _poeTimeLength, _poePlayerPtrPortfolio.size(), _poePlayerPtrPortfolio));
+
+
+			population.push_back(POEChromosome(_player, Constants::Max_Units, _poeHorizonLength, _poePlayerPtrPortfolio.size(), _poePlayerPtrPortfolio));
+
 			population[i].initialize_randomly();
+
 		}
+
 	}
 	else{
 		//if population is really small
 		for (size_t i = 0; i < _population_size; i++)
 		{
-			population.push_back(POEChromosome(_player, Constants::Max_Units, _poeTimeLength, _poePlayerPtrPortfolio.size(), _poePlayerPtrPortfolio));
+			population.push_back(POEChromosome(_player, Constants::Max_Units, _poeHorizonLength, _poePlayerPtrPortfolio.size(), _poePlayerPtrPortfolio));
 			population[i].initialize_randomly();
 		}
 	}
@@ -120,13 +133,19 @@ POEChromosome PortfolioOnlineEvolution::evolve(const IDType & player, const Game
 	std::vector<POEChromosome> population;
 
 
+
 	for (size_t epoch = 0; epoch < num_generation; epoch++)
 	{
 		//for each generation, first generate the new chromosomes.
 		if (population.empty()){ // if has no population yet, then generate new population
 			population = init_population();
 		}
+
+		
+
 		else{//if has population, then do natural selection (keep the best several, and change the rest to new ones)
+
+
 			for (size_t i = _num_best_to_keep; i < population.size(); i++)
 			{
 				//for each one individual that we will discard. (for each new chromosome that we will generate)
@@ -136,7 +155,10 @@ POEChromosome PortfolioOnlineEvolution::evolve(const IDType & player, const Game
 				vector<vector<int>> childScriptMap = getMutatedScriptMap(parent, _mutate_rate);
 				population[i].setScriptMapAndResetScore(childScriptMap);
 			}
+		
 		}
+
+
 
 		//then we evaluate the new individuals in the population, and sort the population 
 		for (size_t i = 0; i < population.size(); i++)
