@@ -4,6 +4,10 @@
 #include "../gui/GUI.h"
 #include <iomanip>
 
+#include "../Evo_KiterSD.h"
+#include "../Evo_KiterMvmt.h"
+#include "../CooperativeCoevolution.h"
+
 namespace SparCraft
 {
     class SearchExperiment;

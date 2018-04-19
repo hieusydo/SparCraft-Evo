@@ -11,13 +11,13 @@
 
 # My experiment
 # Player 0 Kiter_NOKDPS
-Player 0 KiterEMP 4 true 1 8 4 50
+# Player 0 KiterMvmt 4 true 1 8 4 50
 # Player 0 KiterEvo1 C:\Users\Hieu\Desktop\benchmark1\with-normal--left\finalRes.txt
 # Player 0 KiterEvo2 C:\SparCraft-Evo\bin\kiterEvo\wEvo2.txt
 # Player 0 PortfolioGreedySearchEvo 0 KiterEvo1 1 0
 
 # Player 0 KiterEvo1 C:\Users\Hieu\Desktop\benchmark1\with-normal--left\finalRes.txt
-# Player 0 KiterEvo1
+Player 0 POE
 
 
 # Player 1 AttackClosest
@@ -31,7 +31,7 @@ Player 1 Kiter_NOKDPS
 #  State StateSymmetric NumStates MaxX MaxY [UnitType UnitNum]+
 #  State SeparatedState NumStates RandX RandY cx1 cy1 cx2 cy2 [UnitType UnitNum]+
 ##################################################
-State SeparatedState 100 128 128 400 360 840 360 Protoss_Dragoon 16
+State SeparatedState 4 128 128 400 360 840 360 Protoss_Dragoon 4
 # State SeparatedState 100 128 128 400 360 840 360 Protoss_Dragoon 8 Protoss_Zealot 8
 
 

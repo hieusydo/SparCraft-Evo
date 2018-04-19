@@ -3,6 +3,13 @@
 #include "Common.h"
 using namespace SparCraft;
 
+bool DEBUG = true;
+std::random_device CC_RD;
+unsigned int CC_SEED = 1294198436;
+std::mt19937_64 CC_ENGINE(CC_SEED);
+std::normal_distribution<double> CC_WDISTR(0, 1);
+std::normal_distribution<double> CC_MDISTR(0, 0.1);
+
 CooperativeCoevolution::CooperativeCoevolution(size_t mu, size_t lambda, size_t epoch, size_t ecosysSize) 
 	: _mu(mu),
 	_lambda(lambda),
@@ -13,7 +20,7 @@ CooperativeCoevolution::CooperativeCoevolution(size_t mu, size_t lambda, size_t 
 void CooperativeCoevolution::initRandomWeights(vector<WeightDNA>& weights) {
 	for (size_t i = 0; i < Constants::MGene_Len; ++i) {
 		WeightDNA w(Constants::Num_Params);
-		for (size_t j = 0; j < Constants::Num_Params; ++j) { w[j] = WDISTR(ENGINE); }
+		for (size_t j = 0; j < Constants::Num_Params; ++j) { w[j] = CC_WDISTR(CC_ENGINE); }
 		weights.push_back(w);
 	}
 }
@@ -52,13 +59,23 @@ MGene CooperativeCoevolution::mutate(const MGene& c, const std::vector<GameState
 	// Apply mutation to weights
 	for (size_t d = 0; d < res.first.size(); ++d) {
 		for (size_t i = 0; i < res.first[d].size(); ++i) {
-			res.first[d][i] += MDISTR(ENGINE);
+			res.first[d][i] += CC_MDISTR(CC_ENGINE);
 			res.second = INT_MIN; 
 			// No evaluation here since it will be done at the beginning of the next epoch
 		}
 	}
 
 	return res;
+}
+
+void printMGene(MGene mg) {
+	for (vector<double>& dna : mg.first) {
+		for (double w : dna) {
+			std::cout << w << " ";
+		}
+		std::cout << "\n";
+	}
+	std::cout << "Gene score: " << mg.second << "\n\n";
 }
 
 void CooperativeCoevolution::evolveParams(const std::vector<GameState>& state, PlayerPtr & p1, PlayerPtr & p2) {
@@ -103,6 +120,13 @@ void CooperativeCoevolution::evolveParams(const std::vector<GameState>& state, P
 				// Evaluate and record score
 				int score = eval(state, p1, p2);
 				_ecosys[currentSubpop][ind].second = score;
+
+				if (DEBUG) {
+					std::cout << "Epoch " << e << ", subPop " << currentSubpop << ", ind " << ind << "\n";
+					printMGene(_ecosys[currentSubpop][ind]);
+					std::cout << "...against other reps:\n";
+					for (MGene mg : reps) { printMGene(mg); }
+				}
 			}
 
 			sort(_ecosys[currentSubpop].begin(), _ecosys[currentSubpop].end(), MGeneComparator(false));
