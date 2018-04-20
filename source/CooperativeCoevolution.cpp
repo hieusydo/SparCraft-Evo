@@ -3,7 +3,8 @@
 #include "Common.h"
 using namespace SparCraft;
 
-bool DEBUG = true;
+std::string SEP = "========================================================================";
+bool DEBUG = false;
 std::random_device CC_RD;
 unsigned int CC_SEED = 1294198436;
 std::mt19937_64 CC_ENGINE(CC_SEED);
@@ -68,15 +69,18 @@ MGene CooperativeCoevolution::mutate(const MGene& c, const std::vector<GameState
 	return res;
 }
 
-void printMGene(MGene mg) {
+void printMGene(MGene mg, std::ostream& os = std::cout) {
 	for (vector<double>& dna : mg.first) {
 		for (double w : dna) {
-			std::cout << w << " ";
+			os << w << " ";
 		}
-		std::cout << "\n";
+		os << "\n";
 	}
-	std::cout << "Gene score: " << mg.second << "\n\n";
+	//os << "Gene score: " << mg.second << "\n\n";
+	os << "\n";
 }
+
+
 
 void CooperativeCoevolution::evolveParams(const std::vector<GameState>& state, PlayerPtr & p1, PlayerPtr & p2) {
 	
@@ -84,6 +88,11 @@ void CooperativeCoevolution::evolveParams(const std::vector<GameState>& state, P
 	initEvosys(state, p1, p2);
 
 	vector<MGene> bestGenes(_ecosysSize);
+
+	// summary result for each epoch
+	std::ofstream epochDat;
+	epochDat.open("CC_result/epochDat.txt");
+	epochDat << "epoch, bestGenes, score\n";
 
 	// Main cooperative coevolution loop
 	for (size_t e = 0; e < _epoch; ++e) {
@@ -103,6 +112,9 @@ void CooperativeCoevolution::evolveParams(const std::vector<GameState>& state, P
 
 			// Evaluate performance of each individual in currentSubpop with reps
 			for (size_t ind = 0; ind < _ecosys[currentSubpop].size(); ++ind) {
+				
+				std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
+
 				// Add the current individual to the portfolio 
 				Player_POE* poePlayer = dynamic_cast<Player_POE*>(p1.get());
 				poePlayer->clearPortfolio();
@@ -122,11 +134,16 @@ void CooperativeCoevolution::evolveParams(const std::vector<GameState>& state, P
 				_ecosys[currentSubpop][ind].second = score;
 
 				if (DEBUG) {
-					std::cout << "Epoch " << e << ", subPop " << currentSubpop << ", ind " << ind << "\n";
+					std::cout << "\n============================== \n Epoch " << e << ", subPop " << currentSubpop \
+						<< ", ind " << ind << "\n";
 					printMGene(_ecosys[currentSubpop][ind]);
 					std::cout << "...against other reps:\n";
-					for (MGene mg : reps) { printMGene(mg); }
+					for (MGene& mg : reps) { printMGene(mg); }
+					std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
+					std::cout << "Evaluation duration: " << std::chrono::duration_cast<std::chrono::seconds>(end - start).count() << " seconds\n";
 				}
+
+
 			}
 
 			sort(_ecosys[currentSubpop].begin(), _ecosys[currentSubpop].end(), MGeneComparator(false));
@@ -137,14 +154,20 @@ void CooperativeCoevolution::evolveParams(const std::vector<GameState>& state, P
 			for (size_t l = 0; l < _lambda; ++l) {
 				_ecosys[currentSubpop].pop_back();
 			}
-			// Re-mutate mu best
-			for (size_t m = 0; m < _mu; ++m) {
+			// Replace lambda worst with mutated mu best
+			for (size_t m = 0; m < _lambda; ++m) {
 				MGene mg = _ecosys[currentSubpop][m];
 				MGene mgMutated = mutate(mg, state, p1, p2);
 				_ecosys[currentSubpop].push_back(mgMutated);
 			}
-
 		}
+
+		epochDat << "====================================\nEpoch " \
+			<< e << " - Best genes score: ";
+		for (MGene& mg : bestGenes) { epochDat << mg.second << " "; }
+		epochDat << "\n";
+		for (MGene&  mg : bestGenes) { printMGene(mg, epochDat); }
+
 	}
 
 	// Write result to text file

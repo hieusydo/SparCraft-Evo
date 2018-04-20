@@ -1057,19 +1057,18 @@ void SearchExperiment::runExperiment()
 		std::cout << "Time elasped: " << std::chrono::duration_cast<std::chrono::seconds>(end - start).count() <<" seconds\n";
 	}
 
-	//Player_POE* poePlayer = dynamic_cast<Player_POE*>(p1.get());
+	Player_POE* poePlayer = dynamic_cast<Player_POE*>(p1.get());
+	if (poePlayer) {
+		std::cout << "Doing POE evolution\n";
+		std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
+		
+		CooperativeCoevolution cc = CooperativeCoevolution(8, 2, 200, 2);
+		cc.evolveParams(states, p1, p2);
 
-	//if (poePlayer) {
-	//	std::cout << "Doing POE evolution\n";
-	//	std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
-	//	
-	//	CooperativeCoevolution cc = CooperativeCoevolution(8, 4, 20, 2);
-	//	cc.evolveParams(states, p1, p2);
-
-	//	std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
-	//	std::cout << "Time elasped: " << std::chrono::duration_cast<std::chrono::seconds>(end - start).count() << " seconds\n";
-	//	return;
-	//}
+		std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
+		std::cout << "End of offline evolution. Time elasped: " << std::chrono::duration_cast<std::chrono::seconds>(end - start).count() << " seconds\n";
+		return;
+	}
 
 	// for each player one player
 	for (size_t p1Player(0); p1Player < players[0].size(); p1Player++)
