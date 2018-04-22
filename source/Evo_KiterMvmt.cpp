@@ -95,7 +95,7 @@ void Evo_KiterMvmt::writeFinalResult(const ChromosomeEMP& c) const {
 	std::cout << "Evolution complete. Writing final result...\n";
 	// result data for each epoch
 	std::ofstream finalRes;
-	finalRes.open("kiterEMP/finalRes.txt");
+	finalRes.open("kiterMvmt/finalRes.txt");
 
 	for (auto it = c.first.begin(); it != c.first.end(); it++) {
 		for (size_t i = 0; i < it->size(); ++i) {
@@ -124,11 +124,11 @@ void Evo_KiterMvmt::evolveParams(const std::vector<GameState>& states, PlayerPtr
 
 	// summary result for each epoch
 	std::ofstream epochDat;
-	epochDat.open("kiterEMP/epochDat.txt");
+	epochDat.open("kiterMvmt/epochDat.txt");
 	epochDat << "epoch, score\n";
 	// raw result for each epoch
 	std::ofstream epochRaw;
-	epochRaw.open("kiterEMP/epochRaw.txt");
+	epochRaw.open("kiterMvmt/epochRaw.txt");
 	epochRaw << "Initial bestGene:\n";
 	this->printChrom(bestGene, epochRaw);
 
@@ -140,7 +140,7 @@ void Evo_KiterMvmt::evolveParams(const std::vector<GameState>& states, PlayerPtr
 			_genePool.pop_back();
 		}
 		// re-mutate mu best
-		for (size_t m = 0; m < _mu; ++m) {
+		for (size_t m = 0; m < _lambda; ++m) {
 			ChromosomeEMP c = _genePool[m];
 			ChromosomeEMP mutated = mutate(c, states, p1, p2);
 			_genePool.push_back(mutated);

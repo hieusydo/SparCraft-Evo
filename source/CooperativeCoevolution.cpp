@@ -3,7 +3,7 @@
 #include "Common.h"
 using namespace SparCraft;
 
-std::string SEP = "========================================================================";
+std::string SEP = "\n========================================================================\n";
 bool DEBUG = false;
 std::random_device CC_RD;
 unsigned int CC_SEED = 1294198436;
@@ -80,10 +80,24 @@ void printMGene(MGene mg, std::ostream& os = std::cout) {
 	os << "\n";
 }
 
+void writeFinalResult(const vector<MGene>& mgs) {
+	std::cout << "POE offlince evo complete. Writing final result...\n";
+	// result data for each epoch
+	std::ofstream finalRes;
+	finalRes.open("CC_result/offlineResult.txt");
+	for (MGene mg : mgs) {
+		for (auto it = mg.first.begin(); it != mg.first.end(); it++) {
+			for (size_t i = 0; i < it->size(); ++i) {
+				finalRes << it->at(i) << " ";
+			}
+			finalRes << "\n";
+		}
+		finalRes << "\n";
+	}
+	finalRes.close();
+}
 
-
-void CooperativeCoevolution::evolveParams(const std::vector<GameState>& state, PlayerPtr & p1, PlayerPtr & p2) {
-	
+void CooperativeCoevolution::evolveParams(const std::vector<GameState>& state, PlayerPtr & p1, PlayerPtr & p2) {	
 	// Set up the ecosystem
 	initEvosys(state, p1, p2);
 
@@ -91,7 +105,7 @@ void CooperativeCoevolution::evolveParams(const std::vector<GameState>& state, P
 
 	// summary result for each epoch
 	std::ofstream epochDat;
-	epochDat.open("CC_result/epochDat.txt");
+	epochDat.open("CC_result/epochData.txt");
 	epochDat << "epoch, bestGenes, score\n";
 
 	// Main cooperative coevolution loop
@@ -121,7 +135,6 @@ void CooperativeCoevolution::evolveParams(const std::vector<GameState>& state, P
 				POEPlayer_KiterEvo* curr = new POEPlayer_KiterEvo(poePlayer->ID());
 				curr->setWeights(_ecosys[currentSubpop][ind].first);
 				poePlayer->addPOEScriptPlayer(POEScriptPlayerPtr(curr));
-
 				// Add other reps to portfolio
 				for (size_t r = 0; r < reps.size(); ++r) {
 					POEPlayer_KiterEvo* rep = new POEPlayer_KiterEvo(poePlayer->ID());
@@ -132,9 +145,9 @@ void CooperativeCoevolution::evolveParams(const std::vector<GameState>& state, P
 				// Evaluate and record score
 				int score = eval(state, p1, p2);
 				_ecosys[currentSubpop][ind].second = score;
-
+				
 				if (DEBUG) {
-					std::cout << "\n============================== \n Epoch " << e << ", subPop " << currentSubpop \
+					std::cout << SEP << "Epoch " << e << ", subPop " << currentSubpop \
 						<< ", ind " << ind << "\n";
 					printMGene(_ecosys[currentSubpop][ind]);
 					std::cout << "...against other reps:\n";
@@ -162,7 +175,7 @@ void CooperativeCoevolution::evolveParams(const std::vector<GameState>& state, P
 			}
 		}
 
-		epochDat << "====================================\nEpoch " \
+		epochDat << SEP << "Epoch " \
 			<< e << " - Best genes score: ";
 		for (MGene& mg : bestGenes) { epochDat << mg.second << " "; }
 		epochDat << "\n";
@@ -171,5 +184,7 @@ void CooperativeCoevolution::evolveParams(const std::vector<GameState>& state, P
 	}
 
 	// Write result to text file
+	writeFinalResult(bestGenes);
+	epochDat.close();
 
 }

@@ -14,6 +14,7 @@ VisualStudio/SparCraft.v12.suo
 VisualStudio/SparCraft.sdf
 bin/CC_result/*
 bin/hieu_benchmark.txt
+bin/kiterMvmt/
 
 VisualStudio/*.user
 lib_src/*

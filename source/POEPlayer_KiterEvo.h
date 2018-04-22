@@ -51,12 +51,15 @@ namespace SparCraft
 		void switchOnOffline();
 		void switchOffOffline();
 
-		void printWeights() const;
+		void printAllWeights() const;
 
 		// Order of direction Array in vector: Left Right Up Down
 		void setWeights(const std::vector<std::vector<double>>& weights);
 
 		void getMoves(GameState & state, const MoveArray & moves, std::vector<Action> & moveVec);
-		IDType getType() { return PlayerModels::KiterEvo1; }
+
+		void getLimitedMoves(GameState & state, const MoveArray & moves, std::vector<Action> & moveVec, std::set<IDType> allowedUnits, bool clearMoveVec);
+
+		IDType getType() { return PlayerModels::KiterEvo; }
 	};
 }

@@ -40,6 +40,7 @@ class SearchExperiment
 	size_t						mu;
 	size_t						lambda;
 	size_t						epoch;
+	size_t						numSubpop;
 
     Map *                       map;
     bool                        showDisplay;

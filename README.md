@@ -41,3 +41,6 @@ The project is built upon the SparCraft framework, which is open source StarCraf
 ## Files summary
 - `Evo_KiterSD` uses mu-lambda ES to evolve a population of `Player_KiterSD` - simple one-param kiter, that is the Safe Distance
 - `Evo_KiterMvmt`, same as `Evo_KiterSD`, but for `Player_KiterMvmt` - a Kiter whose movement (Mvmt) is parameterized into different weights 
+
+- Config note: 
+POE num_generations poe_playout_round_limit population_size num_best_to_keep doOfflineEvo [numEvoStates evoSide mu lambda epoch numSubpop]

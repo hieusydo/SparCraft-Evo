@@ -595,6 +595,23 @@ void SearchExperiment::addPlayer(const std::string & line)
 		iss >> population_size;
 		iss >> num_best_to_keep;
 
+		std::string s;
+		iss >> s;
+		doOfflineEvo = (s == "true") ? true : false;
+		if (doOfflineEvo) {
+			iss >> numEvoStates;
+			iss >> evoSide;
+			iss >> mu;
+			iss >> lambda;
+			iss >> epoch;
+			iss >> numSubpop;
+			std::cout << "Params for POE offline evolution: " << numEvoStates << " " << evoSide <<
+				" " << mu << " " << lambda << " " << epoch << "\n";
+		}
+		else {
+			std::cout << "Not doing offline evolution. Using last params - or just using non-evo scripts...\n";
+		}
+
 		players[playerID].push_back(PlayerPtr(new Player_POE(playerID, num_generations,poe_playout_round_limit,population_size,num_best_to_keep)));
 	}
     else if (playerModelID == PlayerModels::AlphaBeta)
@@ -1046,9 +1063,6 @@ void SearchExperiment::runExperiment()
 		std::cout << "Evolving params for KiterMvmt with mu=" << mu << ", lambda=" << lambda << ", epoch=" << epoch << "...\n";
 		std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
 
-		//size_t mu = 8;
-		//size_t lambda = 4;
-		//size_t epoch = 50;
 		Evo_KiterMvmt k = Evo_KiterMvmt(this->mu, this->lambda, this->epoch);
 		k.evolveParams(this->evoStates , p1, p2);
 		p1EMP->switchOffOffline();
@@ -1058,16 +1072,15 @@ void SearchExperiment::runExperiment()
 	}
 
 	Player_POE* poePlayer = dynamic_cast<Player_POE*>(p1.get());
-	if (poePlayer) {
+	if (poePlayer && doOfflineEvo) {
 		std::cout << "Doing POE evolution\n";
 		std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
 		
-		CooperativeCoevolution cc = CooperativeCoevolution(8, 2, 200, 2);
+		CooperativeCoevolution cc = CooperativeCoevolution(mu, lambda, epoch, numSubpop);
 		cc.evolveParams(states, p1, p2);
 
 		std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
 		std::cout << "End of offline evolution. Time elasped: " << std::chrono::duration_cast<std::chrono::seconds>(end - start).count() << " seconds\n";
-		return;
 	}
 
 	// for each player one player

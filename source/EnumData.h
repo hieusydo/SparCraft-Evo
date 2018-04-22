@@ -106,7 +106,7 @@ class PlayerModels : public EnumData<PlayerModels>
 {
 public:
 	enum { AlphaBeta, POE, AttackClosest, Kiter, Random, AttackWeakest, AttackDPS, KiterDPS, 
-		KiterSD, KiterMvmt, KiterEvo1, KiterEvo2, PortfolioGreedySearchEvo,
+		KiterSD, KiterMvmt, KiterEvo1, KiterEvo2, KiterEvo, PortfolioGreedySearchEvo,
 		NOKDPS, Kiter_NOKDPS, Cluster, PortfolioGreedySearch, UCT, None, Size };
     static void init()
     {
@@ -121,6 +121,7 @@ public:
 		setData(KiterDPS,               "KiterDPS");
 
 		setData(POE, "POE");
+		setData(KiterEvo, "KiterEvo");
 
 		setData(KiterSD, "KiterSD");
 		setData(KiterMvmt, "KiterMvmt");
