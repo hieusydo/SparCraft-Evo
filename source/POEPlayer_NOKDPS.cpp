@@ -13,6 +13,10 @@ void POEPlayer_NOKDPS::getLimitedMoves(GameState & state, const MoveArray & move
 	if (clearMoveVec){
 		moveVec.clear();
 	}
+	if (allowedUnits.size() <= 0)
+	{
+		return;
+	}
 
 	IDType enemy(state.getEnemy(_playerID));
 
@@ -26,10 +30,8 @@ void POEPlayer_NOKDPS::getLimitedMoves(GameState & state, const MoveArray & move
 	for (IDType u(0); u < moves.numUnits(); ++u)
 	{
 		//POE script player part
-		if (allowedUnits.size() > 0){//if it's 0 then just allow all units
-			const bool is_in = allowedUnits.find(u) != allowedUnits.end();//check if this unit is allowed
-			if (!is_in){ continue; }
-		}
+		const bool is_in = allowedUnits.find(u) != allowedUnits.end();//check if this unit is allowed
+		if (!is_in){ continue; }
 		//POE script player part
 
 		bool foundAction(false);

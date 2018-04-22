@@ -13,16 +13,18 @@ void POEPlayer_KiterDPS::getLimitedMoves(GameState & state, const MoveArray & mo
 	if (clearMoveVec){
 		moveVec.clear();
 	}
+	if (allowedUnits.size()<=0)
+	{
+		return;
+	}
 
 	//the u here is NOT UID
 	//IT IS SOMETHING ELSE
 	for (IDType u(0); u<moves.numUnits(); ++u)
 	{
 		//POE script player part
-		if (allowedUnits.size() > 0){//if it's 0 then just allow all units
-			const bool is_in = allowedUnits.find(u) != allowedUnits.end();//check if this unit is allowed
-			if (!is_in){ continue; }
-		}
+		const bool is_in = allowedUnits.find(u) != allowedUnits.end();//check if this unit is allowed
+		if (!is_in){ continue; }
 		//POE script player part
 
 		bool foundAction(false);
