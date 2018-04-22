@@ -9,6 +9,7 @@
 #include <random>
 
 #include "POEPlayer_KiterEvo.h"
+#include <chrono> // C++11
 
 namespace SparCraft
 {

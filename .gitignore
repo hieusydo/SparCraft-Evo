@@ -12,7 +12,8 @@ source/*.o
 VisualStudio/*.opensdf
 VisualStudio/SparCraft.v12.suo
 VisualStudio/SparCraft.sdf
-
+bin/CC_result/*
+bin/hieu_benchmark.txt
 
 VisualStudio/*.user
 lib_src/*

@@ -1,5 +1,0 @@
-Player 0 KiterEMP 4 true 1 8 4 50
-Player 1 Kiter_NOKDPS
-State SeparatedState 100 128 128 400 360 840 360 Protoss_Dragoon 8 Protoss_Zealot 8
-ResultsFile C:\SparCraft-Evo\bin\kiterEMP\result true
-Display true C:\SparCraft-Evo\starcraft_images

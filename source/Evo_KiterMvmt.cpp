@@ -156,6 +156,7 @@ void Evo_KiterMvmt::evolveParams(const std::vector<GameState>& states, PlayerPtr
 	}
 
 	epochDat.close();
+	epochRaw.close();
 
 	// Write result to a .txt file
 	this->writeFinalResult(bestGene);
