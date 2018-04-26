@@ -3,7 +3,7 @@
 #include "Common.h"
 #include "Player.h"
 #include "PortfolioOnlineEvolution.h"
-
+#include "POEPlayer_KiterEvo.h"
 namespace SparCraft
 {
 	class Player_POE : public Player

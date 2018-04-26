@@ -23,8 +23,7 @@ namespace SparCraft
 	class POEPlayer_KiterEvo : public POEScriptPlayer
 	{
 	private:
-		std::string _wFile = "kiterEvo/wEvo1.txt";
-		bool _offline = false;
+		std::string _wFile;
 
 		std::vector<double> _X;
 
@@ -47,9 +46,6 @@ namespace SparCraft
 	public:
 		POEPlayer_KiterEvo(const IDType & playerID);
 		POEPlayer_KiterEvo(const IDType & playerID, const std::string& filePath);
-
-		void switchOnOffline();
-		void switchOffOffline();
 
 		void printAllWeights() const;
 

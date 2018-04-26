@@ -24,36 +24,20 @@ POEPlayer_KiterEvo::POEPlayer_KiterEvo(const IDType & playerID, const std::strin
 {
 	_playerID = playerID;
 
-	//if (_offline == false) {
-	//	//std::cout << "Reading params from file\n";
-	//	std::ifstream ifs(this->_wFile);
-	//	if (!ifs) { std::cerr << "Error opening file\n"; }
+	std::cout << "Initializing weights for KiterEvo from file\n";
+	std::ifstream ifs(_wFile);
+	if (!ifs) { std::cerr << "Error opening file\n"; }
 
-	//	std::vector<Array<double, Constants::Num_Params>> weights;
-	//	for (size_t i = 0; i < 4; ++i) {
-	//		Array<double, Constants::Num_Params> w;
-	//		w.init(0);
-	//		weights.push_back(w);
-	//	}
+	std::vector<std::vector<double>> weights(4, std::vector<double>(Constants::Num_Params, 0));
+	for (size_t d = 0; d < weights.size(); ++d) {
+		for (size_t i = 0; i < weights[d].capacity(); ++i) {
+			ifs >> weights[d][i];
+		}
+	}
+	setWeights(weights);
+	printAllWeights();
+	std::cout << "Done init\n";
 
-	//	double w;
-	//	for (size_t d = 0; d < weights.size(); ++d) {
-	//		for (size_t i = 0; i < weights[d].capacity(); ++i) {
-	//			ifs >> w;
-	//			weights[d][i] = w;
-	//		}
-	//	}
-
-	//	this->setWeights(weights);
-	//}
-}
-
-void POEPlayer_KiterEvo::switchOnOffline() {
-	_offline = true;
-}
-
-void POEPlayer_KiterEvo::switchOffOffline() {
-	_offline = false;
 }
 
 // Order of direction Array in vector: Left Right Up Down
@@ -123,6 +107,12 @@ void POEPlayer_KiterEvo::printAllWeights() const {
 	printWeight(_Wdown);
 }
 
+bool pairCompare(const std::pair<size_t, double>& firstElem, const std::pair<size_t, double>& secondElem) {
+	return firstElem.second > secondElem.second;
+
+}
+
+// to be used in POEPlayout
 void POEPlayer_KiterEvo::getLimitedMoves(GameState & state, const MoveArray & moves, std::vector<Action> & moveVec, std::set<IDType> allowedUnits, bool clearMoveVec)
 {
 	
@@ -245,15 +235,45 @@ void POEPlayer_KiterEvo::getLimitedMoves(GameState & state, const MoveArray & mo
 			double Vdown = std::inner_product(_X.begin(), _X.end(), _Wdown.begin(), 0.0);
 
 			// Get best V and corresponding move index
-			double allV[4] = { Vleft, Vright, Vup, Vdown };
-			bestMoveIndex = getMaxVDir(allV);
+			//double allV[4] = { Vleft, Vright, Vup, Vdown };
+			//size_t bestDirIndex = getMaxVDir(allV);
+			std::pair<size_t, double> pLeft(0, Vleft);
+			std::pair<size_t, double> pRight(1, Vright);
+			std::pair<size_t, double> pUp(2, Vup);
+			std::pair<size_t, double> pDown(3, Vdown);
+			std::vector<std::pair<size_t, double>> pVec = { pLeft, pRight, pUp, pDown };
+			std::sort(pVec.begin(), pVec.end(), pairCompare);
+
+			// Map bestMoveIndex to moves to validate direction
+			bool found = false;
+			for (auto p : pVec) {
+				if (found) break;
+				Position bestDirPostion(Constants::Move_Dir[p.first][0], Constants::Move_Dir[p.first][1]);
+				for (IDType m = 0; m < moves.numMoves(u); ++m)
+				{
+					const Action move = moves.getMove(u, m);
+					if (move.type() == ActionTypes::MOVE)
+					{
+						//std::cout << "Available move: " << move.debugString() << "\n";
+						if (bestDirPostion == move.getDir()) {
+							bestMoveIndex = m;
+							found = true;
+						}
+					}
+				}
+			}
+
+			//std::cout << "Best move index: " << bestMoveIndex << \
+			//	"vs. " << moves.getMove(u, bestMoveIndex).getDir().getString() << \
+			//	moves.getMove(u, bestMoveIndex).debugString() << "\n";
+
 		}
 
 		moveVec.push_back(moves.getMove(u, bestMoveIndex));
 	}
 }
 
-
+// to be used in actual online game
 void POEPlayer_KiterEvo::getMoves(GameState & state, const MoveArray & moves, std::vector<Action> & moveVec)
 {
 	
@@ -362,9 +382,6 @@ void POEPlayer_KiterEvo::getMoves(GameState & state, const MoveArray & moves, st
 			// For now, use standard method
 			normalize(_X);
 
-			//std::cout << "_Ws:" << _Wleft << "\n" << _Wright << "\n" << _Wup << "\n" << _Wdown << "\n";
-			//std::cout << "_X" << _X << "\n";
-
 			// Calculate V
 			// _W can be either from initialized values or read input
 			double Vleft = std::inner_product(_X.begin(), _X.end(), _Wleft.begin(), 0.0);
@@ -378,7 +395,9 @@ void POEPlayer_KiterEvo::getMoves(GameState & state, const MoveArray & moves, st
 			double allV[4] = { Vleft, Vright, Vup, Vdown };
 			bestMoveIndex = getMaxVDir(allV);
 
-			//std::cout << "Best move index: " << bestMoveIndex << "\n";
+			std::cout << "Best move index: " << bestMoveIndex << \
+				"vs. " << moves.getMove(u, bestMoveIndex).getDir().getString() << \
+				moves.getMove(u, bestMoveIndex).debugString() << "\n";
 		}
 
 		// Update for NOK
