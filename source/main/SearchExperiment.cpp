@@ -561,15 +561,19 @@ void SearchExperiment::addPlayer(const std::string & line)
     }
 	else if (playerModelID == PlayerModels::POE)
 	{
-		size_t num_generations(20);
-		size_t poe_playout_round_limit(10);
-		size_t population_size(18);
-		size_t num_best_to_keep(6);
+		size_t num_generations;
+		size_t poe_playout_round_limit;
+		size_t population_size;
+		size_t num_best_to_keep;
 
 		iss >> num_generations;
 		iss >> poe_playout_round_limit;
 		iss >> population_size;
 		iss >> num_best_to_keep;
+		std::cout << "Config for POE: numGen=" << num_generations 
+			<< " playoutLimit=" << poe_playout_round_limit 
+			<< " popSize=" << population_size
+			<< " bestToKeep" << num_best_to_keep << "\n";
 
 		std::string s;
 		iss >> s;
@@ -580,8 +584,11 @@ void SearchExperiment::addPlayer(const std::string & line)
 			iss >> lambda;
 			iss >> epoch;
 			iss >> numSubpop;
-			std::cout << "Config for POE offline evolution: " << numEvoStates << " " <<
-				" " << mu << " " << lambda << " " << epoch << "\n";
+			std::cout << "Config for POE offline evolution: numEvoStates=" << numEvoStates 
+				<< " mu=" << mu 
+				<< " lambda=" << lambda 
+				<< " epoch=" << epoch 
+				<< " numSubpop=" << numSubpop << "\n";
 		}
 		else {
 			std::cout << "Not doing offline evolution. Using last params - or just using non-evo scripts...\n";

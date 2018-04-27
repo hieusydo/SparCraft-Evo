@@ -22,12 +22,12 @@ Player_POE::Player_POE(const IDType & playerID, const size_t & num_generations,
 	_seed = PlayerModels::NOKDPS;//the enemy used during playout
 
 	clearPortfolio();
-	//addPOEScriptPlayer(POEScriptPlayerPtr(new POEPlayer_NOKDPS(playerID)));
-	//addPOEScriptPlayer(POEScriptPlayerPtr(new POEPlayer_KiterDPS(playerID)));
+	addPOEScriptPlayer(POEScriptPlayerPtr(new POEPlayer_NOKDPS(playerID)));
+	addPOEScriptPlayer(POEScriptPlayerPtr(new POEPlayer_KiterDPS(playerID)));
 
-	// Test with evo in portfolio
-	addPOEScriptPlayer(POEScriptPlayerPtr(new POEPlayer_KiterEvo(playerID, "CC_result/wToBeUsed-1.txt")));
-	addPOEScriptPlayer(POEScriptPlayerPtr(new POEPlayer_KiterEvo(playerID, "CC_result/wToBeUsed-2.txt")));
+	//// Test with evo in portfolio
+	//addPOEScriptPlayer(POEScriptPlayerPtr(new POEPlayer_KiterEvo(playerID, "CC_result/wToBeUsed-1.txt")));
+	//addPOEScriptPlayer(POEScriptPlayerPtr(new POEPlayer_KiterEvo(playerID, "CC_result/wToBeUsed-2.txt")));
 }
 
 void Player_POE::getMoves(GameState & state, const MoveArray & moves, std::vector<Action> & moveVec)

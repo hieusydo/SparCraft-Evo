@@ -6,7 +6,7 @@ using namespace SparCraft;
 std::string SEP = "\n========================================================================\n";
 bool DEBUG = false;
 std::random_device CC_RD;
-unsigned int CC_SEED = 1294198436;
+unsigned int CC_SEED = CC_RD();
 std::mt19937_64 CC_ENGINE(CC_SEED);
 std::normal_distribution<double> CC_WDISTR(0, 1);
 std::normal_distribution<double> CC_MDISTR(0, 0.1);
@@ -180,6 +180,11 @@ void CooperativeCoevolution::evolveParams(const std::vector<GameState>& state, P
 		for (MGene& mg : bestGenes) { epochDat << mg.second << " "; }
 		epochDat << "\n";
 		for (MGene&  mg : bestGenes) { printMGene(mg, epochDat); }
+
+		std::cout << SEP << "Epoch " \
+			<< e << " - Best genes' scores: ";
+		for (MGene& mg : bestGenes) { std::cout << mg.second << " "; }
+		std::cout << "\n";
 
 	}
 
