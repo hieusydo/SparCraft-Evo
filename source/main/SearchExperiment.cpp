@@ -369,29 +369,6 @@ void SearchExperiment::addState(const std::string & line)
             addSeparatedState(unitVec, numUnitVec, cx1, cy1, cx2, cy2, xLimit, yLimit);
         }
 
-		if (this->doOfflineEvo) {
-			// add all evoStates
-			for (int s = 0; s < (this->numEvoStates / 2); ++s) {
-				addSeparatedStateEvo(unitVec, numUnitVec, cx1, cy1, cx2, cy2, xLimit, yLimit);
-			}
-
-			if (this->evoSide == 0) {
-				// Keep left states only
-				for (int i = 1; i < this->numEvoStates / 2; i += 2) {
-					std::swap(evoStates[i], evoStates[this->numEvoStates - 1 - i]);
-				}
-				for (int i = 0; i < this->numEvoStates / 2; ++i) { this->evoStates.pop_back(); }
-			}
-			if (this->evoSide == 1) {
-				// Keep right states only
-				for (int i = 0; i < this->numEvoStates / 2; i += 2) {
-					std::swap(evoStates[i], evoStates[this->numEvoStates - 1 - i]);
-				}
-				for (int i = 0; i < this->numEvoStates / 2; ++i) { this->evoStates.pop_back(); }
-			}
-			std::cout << "\nAdded " << this->numEvoStates << " Symmetric State for evolution. evoStates[] size = "
-				<< this->evoStates.size() << ", evoSide = " << this->evoSide << "\n\n";
-		}
     }
     else
     {
@@ -507,15 +484,14 @@ void SearchExperiment::addPlayer(const std::string & line)
 		players[playerID].push_back(PlayerPtr(new Player_KiterMvmt(playerID)));
 
 		std::string s; 
-		iss >> this->numEvoStates;
 		iss >> s;
 		this->doOfflineEvo = (s == "true") ? true : false;
 		if (this->doOfflineEvo) {
-			iss >> this->evoSide;
+			iss >> this->numEvoStates;
 			iss >> this->mu;
 			iss >> this->lambda;
 			iss >> this->epoch;
-			std::cout << "Params for KiterMvmt: " << this->numEvoStates << " " << std::boolalpha << this->doOfflineEvo << " " << this->evoSide <<
+			std::cout << "Config for KiterMvmt: " << this->numEvoStates << " " << std::boolalpha << this->doOfflineEvo <<
 				" " << this->mu << " " << this->lambda << " " << this->epoch << "\n";
 		}
 		else {
@@ -600,12 +576,11 @@ void SearchExperiment::addPlayer(const std::string & line)
 		doOfflineEvo = (s == "true") ? true : false;
 		if (doOfflineEvo) {
 			iss >> numEvoStates;
-			iss >> evoSide;
 			iss >> mu;
 			iss >> lambda;
 			iss >> epoch;
 			iss >> numSubpop;
-			std::cout << "Params for POE offline evolution: " << numEvoStates << " " << evoSide <<
+			std::cout << "Config for POE offline evolution: " << numEvoStates << " " <<
 				" " << mu << " " << lambda << " " << epoch << "\n";
 		}
 		else {
@@ -813,47 +788,6 @@ GameState SearchExperiment::getSymmetricState( std::vector<std::string> & unitTy
 	return state;
 }
 
-void SearchExperiment::addSeparatedStateEvo(std::vector<std::string> & unitTypes, std::vector<int> & numUnits,
-	const PositionType cx1, const PositionType cy1,
-	const PositionType cx2, const PositionType cy2,
-	const PositionType & xLimit, const PositionType & yLimit)
-{
-	GameState state;
-	GameState state2;
-
-	// for each unit type to add
-	for (size_t i(0); i<unitTypes.size(); ++i)
-	{
-		BWAPI::UnitType type;
-		for (const BWAPI::UnitType & t : BWAPI::UnitTypes::allUnitTypes())
-		{
-			if (t.getName().compare(unitTypes[i]) == 0)
-			{
-				type = t;
-				break;
-			}
-		}
-
-		// add the symmetric unit for each count in the numUnits Vector
-		for (int u(0); u<numUnits[i]; ++u)
-		{
-			Position r((rand.nextInt() % (2 * xLimit)) - xLimit, (rand.nextInt() % (2 * yLimit)) - yLimit);
-			Position u1(cx1 + r.x(), cy1 + r.y());
-			Position u2(cx2 - r.x(), cy2 - r.y());
-
-			state.addUnit(type, Players::Player_One, u1);
-			state.addUnit(type, Players::Player_Two, u2);
-			state2.addUnit(type, Players::Player_One, u2);
-			state2.addUnit(type, Players::Player_Two, u1);
-		}
-	}
-
-	state.finishedMoving();
-
-	evoStates.push_back(state);
-	evoStates.push_back(state2);
-}
-
 void SearchExperiment::addSeparatedState(  std::vector<std::string> & unitTypes, std::vector<int> & numUnits,
                                                 const PositionType cx1, const PositionType cy1, 
                                                 const PositionType cx2, const PositionType cy2,
@@ -1037,18 +971,18 @@ void SearchExperiment::runExperiment()
 	
 	PlayerPtr p1 = PlayerPtr(players[0][0]);
 	PlayerPtr p2 = PlayerPtr(players[1][0]);
-	
+
 	// Evolve safeDist if it's KiterEvo 
-	Player_KiterSD* p1Evo = dynamic_cast<Player_KiterSD *>(p1.get());
-	if (p1Evo) {
-		std::cout << "Starting offline evolution...\n";
+	Player_KiterSD* sdPlayer = dynamic_cast<Player_KiterSD *>(p1.get());
+	if (sdPlayer) {
+		std::cout << "Evolving safe distance...\n";
 		size_t mu = 8;
 		size_t lambda = 4;
 		size_t epoch = 25;
 		size_t evalIter = 100;
 		Evo_KiterSD k = Evo_KiterSD(mu, lambda, epoch, evalIter);
 		size_t safeDist = k.evolveSafeDist(states[3], p1, p2);
-		p1Evo->switchOffOffline();
+		sdPlayer->switchOffOffline();
 		// Write result to a .txt file
 		std::cout << "Offline result: " << safeDist << "\n";
         std::ofstream best;
@@ -1058,29 +992,44 @@ void SearchExperiment::runExperiment()
 	}
 
 	// KiterMvmt
-	Player_KiterMvmt* p1EMP = dynamic_cast<Player_KiterMvmt*> (p1.get());
-	if (p1EMP && this->doOfflineEvo) {
+	Player_KiterMvmt* mvmtPlayer = dynamic_cast<Player_KiterMvmt*> (p1.get());
+	if (mvmtPlayer && doOfflineEvo) {
 		std::cout << "Evolving params for KiterMvmt with mu=" << mu << ", lambda=" << lambda << ", epoch=" << epoch << "...\n";
 		std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
 
+		// Extract evoStates
+		std::vector<GameState> evoStates(states.begin(), states.begin() + numEvoStates);
+		states = std::vector<GameState>(states.begin() + numEvoStates, states.end());
+		std::cout << "Using the first " << numEvoStates
+			<< " states in offline evolution. evoStates[] size = " << evoStates.size()
+			<< ", new states[] size = " << states.size() << "\n";
+		
 		Evo_KiterMvmt k = Evo_KiterMvmt(this->mu, this->lambda, this->epoch);
-		k.evolveParams(this->evoStates , p1, p2);
-		p1EMP->switchOffOffline();
+		k.evolveParams(evoStates, p1, p2);
+		mvmtPlayer->switchOffOffline();
 
 		std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
 		std::cout << "Time elasped: " << std::chrono::duration_cast<std::chrono::seconds>(end - start).count() <<" seconds\n";
 	}
 
+	// POE
 	Player_POE* poePlayer = dynamic_cast<Player_POE*>(p1.get());
 	if (poePlayer && doOfflineEvo) {
-		std::cout << "Doing POE evolution\n";
+		std::cout << "Doing POE offline evolution\n";
 		std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
 		
+		// Extract evoStates
+		std::vector<GameState> evoStates(states.begin(), states.begin() + numEvoStates);
+		states = std::vector<GameState>(states.begin() + numEvoStates, states.end());
+		std::cout << "Using the first " << numEvoStates
+			<< " states in offline evolution. evoStates[] size = " << evoStates.size()
+			<< ", new states[] size = " << states.size() << "\n";
+
 		CooperativeCoevolution cc = CooperativeCoevolution(mu, lambda, epoch, numSubpop);
-		cc.evolveParams(states, p1, p2);
+		cc.evolveParams(evoStates, p1, p2);
 
 		std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
-		std::cout << "End of offline evolution. Time elasped: " << std::chrono::duration_cast<std::chrono::seconds>(end - start).count() << " seconds\n";
+		std::cout << "End of POE offline evolution. Time elasped: " << std::chrono::duration_cast<std::chrono::seconds>(end - start).count() << " seconds\n";
 	}
 
 	// for each player one player

@@ -7,8 +7,8 @@
 using namespace SparCraft;
 
 std::random_device RD;
-unsigned int SEED = 1294198436;
-std::mt19937_64 ENGINE(SEED);
+unsigned int SEED = RD(); // saved "good" seeds: 1294198436
+std::mt19937_64 ENGINE(SEED); // seed the random number generator engine
 std::normal_distribution<double> WDISTR(0, 1); 
 std::normal_distribution<double> MDISTR(0, 0.1);
 
@@ -81,10 +81,12 @@ ChromosomeEMP Evo_KiterMvmt::mutate(const ChromosomeEMP& c, const std::vector<Ga
 // Find the average score of a kiter with a given safeDist
 int Evo_KiterMvmt::eval(const std::vector<GameState>& states, PlayerPtr & p1, PlayerPtr & p2) const {
 	int kiterScore = 0;
-	for (size_t i = 0; i < states.size(); ++i) {
+	//std::cout << "==================\n";
+	for (size_t i = 2; i < states.size(); ++i) {
 		Game gcopy(states[i], p1, p2, 1000);
 		gcopy.play();
 		kiterScore += gcopy.getState().evalLTD2(Players::Player_One);
+		//std::cout << kiterScore << '\n';
 	}
 	// static_cast from size_t to int might cause overflow 
 	// if the states size exceeds INT_MAX, which won't be the case for this project
@@ -148,6 +150,8 @@ void Evo_KiterMvmt::evolveParams(const std::vector<GameState>& states, PlayerPtr
 
 		std::sort(_genePool.begin(), _genePool.end(), KiterComparator(false));
 		bestGene = _genePool[0];
+
+		std::cout << e << ", " << bestGene.second << "\n";
 
 		epochDat << e << ", " << bestGene.second << "\n";
 		epochRaw << "\nbestGene:\n";

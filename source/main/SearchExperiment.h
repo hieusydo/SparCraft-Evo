@@ -33,10 +33,9 @@ class SearchExperiment
     std::vector<GameState>      states;
 
 	// Params for evo players
-	std::vector<GameState>      evoStates;
+	//std::vector<GameState>      evoStates; // init evoStates as data member causes problem during evo?!
 	int							numEvoStates = 0;
 	bool						doOfflineEvo = false;
-	int							evoSide = 2;
 	size_t						mu;
 	size_t						lambda;
 	size_t						epoch;
@@ -80,10 +79,6 @@ class SearchExperiment
     void   addSeparatedState(	std::vector<std::string> & unitTypes, std::vector<int> & numUnits,
                                     const int cx1, const int cy1, const int cx2, const int cy2,
 								    const PositionType & xLimit, const PositionType & yLimit);
-
-	void addSeparatedStateEvo(	std::vector<std::string> & unitTypes, std::vector<int> & numUnits,
-									const int cx1, const int cy1, const int cx2, const int cy2,
-									const PositionType & xLimit, const PositionType & yLimit);
 
     GameState   getSymmetricState(	std::vector<std::string> & unitTypes, std::vector<int> & numUnits,
 								    const PositionType & xLimit, const PositionType & yLimit);

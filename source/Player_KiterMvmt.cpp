@@ -78,13 +78,17 @@ void Player_KiterMvmt::printWeights() const {
 	std::cout << "_Ws:" << _Wleft << "\n" << _Wright << "\n" << _Wup << "\n" << _Wdown << "\n";
 }
 
+bool pairCompareMvmt(const std::pair<size_t, double>& firstElem, const std::pair<size_t, double>& secondElem) {
+	return firstElem.second > secondElem.second;
+}
+
 void Player_KiterMvmt::getMoves(GameState & state, const MoveArray & moves, std::vector<Action> & moveVec)
 {
 	moveVec.clear();
 
 	if (_offline == false) {
 		//std::cout << "Reading params from file\n";
-		std::ifstream ifs("KiterMvmt/finalRes.txt");
+		std::ifstream ifs("kiterMvmt/finalRes.txt");
 		if (!ifs) { std::cerr << "Error opening file\n"; }
 
 		std::vector<Array<double, Constants::Num_Params>> weights;
@@ -112,7 +116,6 @@ void Player_KiterMvmt::getMoves(GameState & state, const MoveArray & moves, std:
 	{
 		hpRemaining[u] = state.getUnit(enemy, u).currentHP();
 	}
-
 
 	for (IDType u = 0; u < moves.numUnits(); ++u)
 	{
@@ -142,7 +145,6 @@ void Player_KiterMvmt::getMoves(GameState & state, const MoveArray & moves, std:
 			if (move.type() == ActionTypes::ATTACK)
 			{
 				const Unit & target = state.getUnit(state.getEnemy(move.player()), move.index());
-				//double dpsHPValue = target.dpf() / target.currentHP();
 				double dpsHPValue = (target.dpf() / hpRemaining[move.index()]);
 
 				if (dpsHPValue > actionHighestDPS)
@@ -174,7 +176,7 @@ void Player_KiterMvmt::getMoves(GameState & state, const MoveArray & moves, std:
 		{
 			bestMoveIndex = actionMoveIndex;
 		}
-		// otherwise use the closest move to the opponent
+		// otherwise use the evo move
 		else
 		{
 			// dx, dy (encode direction and distance) --> Use cut-off to normalize?
@@ -208,9 +210,6 @@ void Player_KiterMvmt::getMoves(GameState & state, const MoveArray & moves, std:
 			// For now, use standard method
 			this->normalize(_X);
 
-			//std::cout << "_Ws:" << _Wleft << "\n" << _Wright << "\n" << _Wup << "\n" << _Wdown << "\n";
-			//std::cout << "_X" << _X << "\n";
-
 			// Calculate V
 			// _W can be either from initialized values or read input
 			double Vleft = _X.dot(_Wleft);
@@ -220,11 +219,40 @@ void Player_KiterMvmt::getMoves(GameState & state, const MoveArray & moves, std:
 
 			//std::cout << "Vs: " << Vleft << " " << Vright << " " << Vup << " " << Vdown << "\n";
 
-			// Get best V and corresponding move index
-			double allV[4] = { Vleft, Vright, Vup, Vdown };
-			bestMoveIndex = this->getMaxVDir(allV);
+			// Map bestMoveIndex to moves to validate direction
+			std::pair<size_t, double> pLeft(0, Vleft);
+			std::pair<size_t, double> pRight(1, Vright);
+			std::pair<size_t, double> pUp(2, Vup);
+			std::pair<size_t, double> pDown(3, Vdown);
+			std::vector<std::pair<size_t, double>> pVec = { pLeft, pRight, pUp, pDown };
+			std::sort(pVec.begin(), pVec.end(), pairCompareMvmt);
 
-			//std::cout << "Best move index: " << bestMoveIndex << "\n";
+			bool found = false;
+			for (auto p : pVec) {
+				if (found) break;
+				Position bestDirPostion(Constants::Move_Dir[p.first][0], Constants::Move_Dir[p.first][1]);
+				for (IDType m = 0; m < moves.numMoves(u); ++m)
+				{
+					const Action move = moves.getMove(u, m);
+					if (move.type() == ActionTypes::MOVE && bestDirPostion == move.getDir()) {
+						bestMoveIndex = m;
+						found = true;
+						break;
+					}
+				}
+			}
+
+			//// Debug code to verify direction
+			//Position expectedP(Constants::Move_Dir[pVec[0].first][0], Constants::Move_Dir[pVec[0].first][1]);
+			//Position chosenP = moves.getMove(u, bestMoveIndex).getDir();
+			//if (!(chosenP == expectedP)) {
+			//	std::cout << "Sorted move dir by weight:\n";
+			//	for (auto p : pVec) { 
+			//		Position cp(Constants::Move_Dir[p.first][0], Constants::Move_Dir[p.first][1]);
+			//		std::cout << cp.getString() << " " << p.second << ", ";
+			//	}
+			//	std::cout << "\nExpected " << expectedP.getString() << " but got " << chosenP.getString() << '\n';
+			//}
 		}
 
 		// Update for NOK

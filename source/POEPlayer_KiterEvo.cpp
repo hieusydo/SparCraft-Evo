@@ -109,7 +109,6 @@ void POEPlayer_KiterEvo::printAllWeights() const {
 
 bool pairCompare(const std::pair<size_t, double>& firstElem, const std::pair<size_t, double>& secondElem) {
 	return firstElem.second > secondElem.second;
-
 }
 
 // to be used in POEPlayout
@@ -122,7 +121,13 @@ void POEPlayer_KiterEvo::getLimitedMoves(GameState & state, const MoveArray & mo
 	if (allowedUnits.size() <= 0) { return; }
 
 
-	// Not doing NOK here since portfolio expected to have NOKDPS
+	// Set up for NOK
+	IDType enemy(state.getEnemy(_playerID));
+	Array<int, Constants::Max_Units> hpRemaining;
+	for (IDType u(0); u<state.numUnits(enemy); ++u)
+	{
+		hpRemaining[u] = state.getUnit(enemy, u).currentHP();
+	}
 
 	//the u here is NOT UID
 	//IT IS SOMETHING ELSE
@@ -159,8 +164,7 @@ void POEPlayer_KiterEvo::getLimitedMoves(GameState & state, const MoveArray & mo
 			if (move.type() == ActionTypes::ATTACK)
 			{
 				const Unit & target = state.getUnit(state.getEnemy(move.player()), move.index());
-				double dpsHPValue = target.dpf() / target.currentHP();
-				//double dpsHPValue = (target.dpf() / hpRemaining[move.index()]);
+				double dpsHPValue = (target.dpf() / hpRemaining[move.index()]);
 
 				if (dpsHPValue > actionHighestDPS)
 				{
@@ -267,6 +271,13 @@ void POEPlayer_KiterEvo::getLimitedMoves(GameState & state, const MoveArray & mo
 			//	"vs. " << moves.getMove(u, bestMoveIndex).getDir().getString() << \
 			//	moves.getMove(u, bestMoveIndex).debugString() << "\n";
 
+		}
+
+		// Update for NOK
+		Action theMove(moves.getMove(u, actionMoveIndex));
+		if (theMove.type() == ActionTypes::ATTACK)
+		{
+			hpRemaining[theMove.index()] -= state.getUnit(_playerID, theMove.unit()).damage();
 		}
 
 		moveVec.push_back(moves.getMove(u, bestMoveIndex));

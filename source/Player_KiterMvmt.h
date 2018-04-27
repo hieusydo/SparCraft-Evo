@@ -18,7 +18,6 @@ namespace SparCraft
 	
 	typedef std::pair<double, double> Dxy;
 	
-	// Uses NOK!! Kiting movement is parameterized for evolution
 	class Player_KiterMvmt : public Player
 	{
 	private:
