@@ -573,7 +573,7 @@ void SearchExperiment::addPlayer(const std::string & line)
 		std::cout << "Config for POE: numGen=" << num_generations 
 			<< " playoutLimit=" << poe_playout_round_limit 
 			<< " popSize=" << population_size
-			<< " bestToKeep" << num_best_to_keep << "\n";
+			<< " bestToKeep=" << num_best_to_keep << "\n";
 
 		std::string s;
 		iss >> s;

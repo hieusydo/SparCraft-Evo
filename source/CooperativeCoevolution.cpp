@@ -110,6 +110,9 @@ void CooperativeCoevolution::evolveParams(const std::vector<GameState>& state, P
 
 	// Main cooperative coevolution loop
 	for (size_t e = 0; e < _epoch; ++e) {
+
+		std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
+
 		/* Do ES of this subpop. Note aout fitness score: 
 		*		Choose 1 fixed representative from other subpops that are not under evaluation
 		*		Calculate the score when this subpop cooperates/behaves with those reps from other subpops
@@ -126,9 +129,6 @@ void CooperativeCoevolution::evolveParams(const std::vector<GameState>& state, P
 
 			// Evaluate performance of each individual in currentSubpop with reps
 			for (size_t ind = 0; ind < _ecosys[currentSubpop].size(); ++ind) {
-				
-				std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
-
 				// Add the current individual to the portfolio 
 				Player_POE* poePlayer = dynamic_cast<Player_POE*>(p1.get());
 				poePlayer->clearPortfolio();
@@ -152,11 +152,7 @@ void CooperativeCoevolution::evolveParams(const std::vector<GameState>& state, P
 					printMGene(_ecosys[currentSubpop][ind]);
 					std::cout << "...against other reps:\n";
 					for (MGene& mg : reps) { printMGene(mg); }
-					std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
-					std::cout << "Evaluation duration: " << std::chrono::duration_cast<std::chrono::seconds>(end - start).count() << " seconds\n";
 				}
-
-
 			}
 
 			sort(_ecosys[currentSubpop].begin(), _ecosys[currentSubpop].end(), MGeneComparator(false));
@@ -175,16 +171,20 @@ void CooperativeCoevolution::evolveParams(const std::vector<GameState>& state, P
 			}
 		}
 
+		// DEBUG PRINT
+		std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
+		std::cout << "Epoch " \
+			<< e << " - Time elapse " << std::chrono::duration_cast<std::chrono::seconds>(end - start).count()  
+			<< " seconds - Best genes scores: ";
+		for (MGene& mg : bestGenes) { std::cout << mg.second << " "; }
+		std::cout << "\n";
+
+		// Write epoch result to file
 		epochDat << SEP << "Epoch " \
 			<< e << " - Best genes score: ";
 		for (MGene& mg : bestGenes) { epochDat << mg.second << " "; }
 		epochDat << "\n";
-		for (MGene&  mg : bestGenes) { printMGene(mg, epochDat); }
-
-		std::cout << SEP << "Epoch " \
-			<< e << " - Best genes' scores: ";
-		for (MGene& mg : bestGenes) { std::cout << mg.second << " "; }
-		std::cout << "\n";
+		for (MGene& mg : bestGenes) { printMGene(mg, epochDat); }
 
 	}
 
