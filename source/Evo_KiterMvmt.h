@@ -8,6 +8,8 @@
 #include <memory>
 #include <queue>
 
+#include <chrono> // C++11
+
 namespace SparCraft
 {
 	typedef std::pair<std::vector<Array<double, Constants::Num_Params>>, int> ChromosomeEMP;

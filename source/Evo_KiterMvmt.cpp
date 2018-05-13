@@ -131,8 +131,11 @@ void Evo_KiterMvmt::evolveParams(const std::vector<GameState>& states, PlayerPtr
 	// raw result for each epoch
 	std::ofstream epochRaw;
 	epochRaw.open("kiterMvmt/epochRaw.txt");
+	epochRaw << "Seed: " << SEED << "\n\n";
 	epochRaw << "Initial bestGene:\n";
 	this->printChrom(bestGene, epochRaw);
+
+	std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
 
 	// main evolution loop
 	for (size_t e = 0; e < _epoch; ++e) { 		
@@ -160,6 +163,9 @@ void Evo_KiterMvmt::evolveParams(const std::vector<GameState>& states, PlayerPtr
 	}
 
 	epochDat.close();
+
+	std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
+	epochRaw << "\nTime elasped: " << std::chrono::duration_cast<std::chrono::seconds>(end - start).count() << " seconds\n";
 	epochRaw.close();
 
 	// Write result to a .txt file

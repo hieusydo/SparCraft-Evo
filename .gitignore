@@ -21,3 +21,4 @@ lib_src/*
 BWTAlib_2.1/*
 bin/watcher_result/*
 bin/watcher_exp.txt
+*.ps1
